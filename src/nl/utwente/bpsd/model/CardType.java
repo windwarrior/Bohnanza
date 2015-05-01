@@ -1,5 +1,7 @@
 package nl.utwente.bpsd.model;
 
+import java.util.Map;
+
 public class CardType {
   private final String typeName;
   private final int numberOfType;
@@ -9,6 +11,9 @@ public class CardType {
   */
   public CardType(final String typeName, final Map<Integer, Integer> beanOMeter) {
     //NYI
+    this.typeName = typeName;
+    this.numberOfType = 0;
+    this.beanOMeter = beanOMeter;
   }
 
   public String getTypeName()  {

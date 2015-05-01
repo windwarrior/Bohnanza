@@ -1,4 +1,7 @@
-package nl.utwente.bpsd.model;
+package nl.utwente.bpsd.model.piles;
+
+import java.util.List;
+import nl.utwente.bpsd.model.Card;
 
 public class Pile {
     private List<Card> cardList;
