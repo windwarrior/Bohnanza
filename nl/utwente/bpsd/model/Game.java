@@ -4,16 +4,38 @@ import java.util.Observable;
 
 public interface Game extends Observable{
 
-    public void draw(Player p);
+    /**
+     * Give players this game
+     * Set up card piles
+     */
+    public void initialize();
 
-    public void plant(Player p, int field, Card card);
+    /**
+     * Draws (returns) a card for the player p
+     */
+    public Card draw(Player p);
 
+    /**
+     * returns if a Player p may plant Card card in Pile field
+     */
+    public boolean validPlant(Player p, Pile field, Card card);
+
+    //Still difficult
     public void trade(Player current, Player p);
 
-    public void harvest(Player p, int field);
+    /**
+     * returns the profits in a terms of cards if a Player p harvests Pile field
+     */
+    public List<Card> validHarvest(Player p, Pile field);
 
-    public void buyField(Player p);
+    /**
+     * returns if a Player p may buy an extra field
+     */
+    public boolean validBuyField(Player p);
 
+    /**
+     * Adds players to the game
+     */
     public void addPlayers(Player... p);
 
     public void endGame();
