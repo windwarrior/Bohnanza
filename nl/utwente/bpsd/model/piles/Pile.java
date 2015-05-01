@@ -1,6 +1,6 @@
 package nl.utwente.bpsd.model;
 
-public class Pile {
+public abstract class Pile {
     private List<Card> cardList;
 
     public Pile(List<Card> cardList ) {
