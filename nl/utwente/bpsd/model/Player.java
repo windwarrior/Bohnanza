@@ -10,27 +10,17 @@ public class Player {
   // This is for possible expansions.
   private Map<String, Pile> additionalPiles;
 
-  public Player(String name) {
-
-  }
+  public Player(String name) {}
   
-  public Pile getHand() {
+  public Pile getHand() {}
 
-  }
+  public Pile getTreasury() {}
 
-  public Pile getTreasury() {
+  public Pile getTrading() {}
 
-  }
+  public List<Pile> getAllFields() {}
 
-  public Pile getTrading() {
+  public void extendFields(){}
 
-  }
-
-  public List<Pile> getAllFields() {
-
-  }
-
-  public Pile getAdditionalPileByName(String name) {
-
-  }
+  public Pile getAdditionalPileByName(String name) {}
 }
