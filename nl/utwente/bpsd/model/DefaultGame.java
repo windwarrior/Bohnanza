@@ -1,3 +1,5 @@
+package nl.utwente.bpsd.model;
+
 public class DefaultGame implements Game{
 
     private List<Player> players;

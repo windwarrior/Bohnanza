@@ -1,3 +1,5 @@
+package nl.utwente.bpsd.model.piles;
+
 /**
  * In this pile it is possible to shuffle then empty the deck
  */

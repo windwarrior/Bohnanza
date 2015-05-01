@@ -1,3 +1,5 @@
+package nl.utwente.bpsd.model.piles;
+
 /**
  * in this class we have a method which allows a card to be taken from the middle of the hand
  */
