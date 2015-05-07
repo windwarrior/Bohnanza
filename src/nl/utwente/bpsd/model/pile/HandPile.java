@@ -1,4 +1,4 @@
-package nl.utwente.bpsd.model.piles;
+package nl.utwente.bpsd.model.pile;
 
 import java.util.List;
 import java.util.Optional;

@@ -2,13 +2,13 @@ package nl.utwente.bpsd.model;
 
 import java.util.List;
 import java.util.Observable;
-import nl.utwente.bpsd.model.piles.Pile;
+import nl.utwente.bpsd.model.pile.Pile;
 
 public abstract class Game extends Observable {
 
     /**
      * Give players this game
-     * Set up card piles
+     * Set up card pile
      */
     public abstract void initialize();
 
