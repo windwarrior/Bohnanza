@@ -1,7 +1,7 @@
 package nl.utwente.bpsd.model;
 
 import java.util.List;
-import nl.utwente.bpsd.model.piles.Pile;
+import nl.utwente.bpsd.model.pile.Pile;
 
 public class DefaultGame extends Game{
 

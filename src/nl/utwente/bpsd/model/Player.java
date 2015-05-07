@@ -2,7 +2,7 @@ package nl.utwente.bpsd.model;
 
 import java.util.List;
 import java.util.Map;
-import nl.utwente.bpsd.model.piles.Pile;
+import nl.utwente.bpsd.model.pile.Pile;
 
 public class Player {
     private String name;
