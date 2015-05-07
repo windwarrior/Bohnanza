@@ -1,7 +1,11 @@
-package nl.utwente.bpsd.model;
+package nl.utwente.bpsd.impl;
 
 import java.util.List;
+import nl.utwente.bpsd.model.Card;
+import nl.utwente.bpsd.model.Game;
+import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
+import nl.utwente.bpsd.impl.command.DefaultDrawHandCommand;
 
 public class DefaultGame extends Game{
 
@@ -20,8 +24,18 @@ public class DefaultGame extends Game{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Card draw(Player p) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    @Override
+    public void draw(Player p) {
+        // TODO: check if the current state allows this action
+        
+        DefaultDrawHandCommand dc = new DefaultDrawHandCommand();
+        
+        dc.setPlayer(p);
+        dc.execute(this);
+        
+        // TODO: after this something has to happen with the current state
+        // TODO: notify observer of the draw command
+        // TODO: notify observer of the new state
     }
 
     public boolean validPlant(Player p, Pile field, Card card) {
@@ -58,6 +72,11 @@ public class DefaultGame extends Game{
 
     public void nextState() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Pile getGamePile() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     enum GameState {

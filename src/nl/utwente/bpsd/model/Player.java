@@ -17,7 +17,9 @@ public class Player {
 
     public Player(String name) {}
 
-    public void drawIntoHand() {}
+    public void drawIntoHand() {
+        this.game.draw(this);
+    }
 
     public void drawIntoTrading() {}
 
@@ -51,5 +53,9 @@ public class Player {
     //For possible extension with new Piles
     public Pile getAdditionalPileByName(String name) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void addAllHand(List<Card> toBeInserted) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

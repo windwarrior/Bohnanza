@@ -13,9 +13,9 @@ public abstract class Game extends Observable {
     public abstract void initialize();
 
     /**
-     * Draws (returns) a card for the player p
+     * Does the draw action for a player p
      */
-    public abstract Card draw(Player p);
+    public abstract void draw(Player p);
 
     /**
      * returns if a Player p may plant Card card in Pile field
@@ -51,4 +51,6 @@ public abstract class Game extends Observable {
      * Done afer every move made?
      */
     public abstract void nextState();
+    
+    public abstract Pile getGamePile();
 }
