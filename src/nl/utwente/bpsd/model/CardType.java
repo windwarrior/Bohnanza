@@ -20,7 +20,7 @@ public class CardType {
     return this.typeName;
   }
 
-  public Map<Integer, Integer> getValueMap() {
+  public Map<Integer, Integer> getBeanOMeter() {
     return this.beanOMeter;
   }
 }
