@@ -13,4 +13,10 @@ public class Card {
   public CardType getCardType() {
     return this.cardType;
   }
+
+
+  @Override
+  public String toString(){
+    return String.format("Bean of type %s",cardType.getTypeName());
+  }
 }

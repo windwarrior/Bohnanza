@@ -18,7 +18,12 @@ public class HandPile extends Pile{
      * returns the card at index index from the pile, this card is removed from the pile
      */
     public Optional<Card> getCard(int index){
-        throw new UnsupportedOperationException("Not supported yet.");
+        Optional result = Optional.empty();
+        if(0 <= index && index < getCardList().size()){
+            result = Optional.of(getCardList().get(index));
+            getCardList().remove(index);
+        }
+        return result;
     }
 
     /**
@@ -26,6 +31,9 @@ public class HandPile extends Pile{
      * this method might be important during the trading phase
      */
     public Optional<CardType> getCardType(int index){
-        throw new UnsupportedOperationException("Not supported yet.");
+        Optional result = Optional.empty();
+        if(0 <= index && index < getCardList().size())
+            result = Optional.of(getCardList().get(index).getCardType());
+        return result;
     }
 }

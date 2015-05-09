@@ -7,22 +7,21 @@ public class Pile {
     private List<Card> cardList;
 
     public Pile(List<Card> cardList ) {
-      // NYI
+        this.cardList = cardList;
     }
 
     /**
     * Add a card to this pile, last in first out.
     */
     public void append(Card c) {
-      // NYI
+        cardList.add(c);
     }
 
     /**
     * Take the top card of this pile.
     */
     public Card pop() {
-      // NYI
-      return null;
+        return cardList.remove(0);
     }
 
     /**
@@ -31,5 +30,16 @@ public class Pile {
     public Card peek() {
       // NYI
       return null;
+    }
+
+    /**
+     * Get this size of the pile.
+     */
+    public int pileSize(){
+        return cardList.size();
+    }
+
+    protected List<Card> getCardList(){
+        return cardList;
     }
 }

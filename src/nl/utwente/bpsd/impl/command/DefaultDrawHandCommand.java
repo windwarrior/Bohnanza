@@ -26,12 +26,13 @@ public class DefaultDrawHandCommand implements Command {
     }
 
     /**
+     * Draw three cards from Game g gamePile into Player player hand
      * @requires this.player != null && g != null;
      */
     @Override
     public GameStatus execute(Game g) {
         assert this.player != null;
-        
+        // TODO: Error handling in the case that the game pile is empty (and discard pile has been reshuffled twice)
         Pile gamePile = g.getGamePile();        
         
         List<Card> toBeInserted = new ArrayList<Card>();

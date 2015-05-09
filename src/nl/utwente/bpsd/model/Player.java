@@ -1,7 +1,10 @@
 package nl.utwente.bpsd.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 public class Player {
@@ -15,7 +18,21 @@ public class Player {
     // This is for possible expansions.
     private Map<String, Pile> additionalPiles;
 
-    public Player(String name) {}
+    public Player(String name) {
+        this.name = name;
+        List<Card> empty = new ArrayList<>();
+        Pile fieldOne = new Pile(empty);
+        Pile fieldTwo = new Pile(empty);
+        //fields.add(fieldOne);
+        //fields.add(fieldTwo);
+        hand = new HandPile(empty);
+        treasury = new Pile(empty);
+        trading = new Pile(empty);
+    }
+
+    public void setGame(Game game){
+        this.game = game;
+    }
 
     public void drawIntoHand() {
         this.game.draw(this);
@@ -33,7 +50,7 @@ public class Player {
     public void buyField() {}
 
     public Pile getHand() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return hand;
     }
 
     public Pile getTreasury() {
@@ -56,6 +73,13 @@ public class Player {
     }
 
     public void addAllHand(List<Card> toBeInserted) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Card c : toBeInserted) {
+            hand.append(c);
+        }
+    }
+
+    @Override
+    public String toString(){
+        return String.format("This is player with name: %s",this.name);
     }
 }
