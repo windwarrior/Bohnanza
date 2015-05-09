@@ -1,10 +1,15 @@
 package nl.utwente.bpsd.model.pile;
 
+import java.util.ArrayList;
 import java.util.List;
 import nl.utwente.bpsd.model.Card;
 
 public class Pile {
     private List<Card> cardList;
+
+    public Pile(){
+        this.cardList = new ArrayList<>();
+    }
 
     public Pile(List<Card> cardList ) {
         this.cardList = cardList;

@@ -31,7 +31,7 @@ public class CardTypeTest {
         beanOMeter.put(6, 2);
         beanOMeter.put(8, 3);
         beanOMeter.put(10, 4);
-        cardType = new CardType("Blue bean", beanOMeter);
+        cardType = new CardType("Blue bean", beanOMeter,1);
     }
 
     /**

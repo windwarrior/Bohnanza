@@ -20,14 +20,12 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        List<Card> empty = new ArrayList<>();
-        Pile fieldOne = new Pile(empty);
-        Pile fieldTwo = new Pile(empty);
-        //fields.add(fieldOne);
-        //fields.add(fieldTwo);
-        hand = new HandPile(empty);
-        treasury = new Pile(empty);
-        trading = new Pile(empty);
+        fields = new ArrayList<>();
+        fields.add(new Pile());
+        fields.add(new Pile());
+        hand = new HandPile(new ArrayList<>());
+        treasury = new Pile();
+        trading = new Pile();
     }
 
     public void setGame(Game game){
@@ -54,7 +52,7 @@ public class Player {
     }
 
     public Pile getTreasury() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return treasury;
     }
 
     public Pile getTrading() {
@@ -62,7 +60,7 @@ public class Player {
     }
 
     public List<Pile> getAllFields() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return fields;
     }
 
     public void extendFields(){}

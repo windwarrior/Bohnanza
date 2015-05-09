@@ -26,8 +26,7 @@ public class DefaultGame extends Game{
     public void initialize() {
         // TODO: Generate all variables in the game
         generateGameDeck();
-        List<Card> empty = new ArrayList<>();
-        discardPile = new DiscardPile(empty);
+        discardPile = new DiscardPile(new ArrayList<>());
         // TODO: Deal initial hand to players
     }
 
@@ -94,114 +93,100 @@ public class DefaultGame extends Game{
      * Note: Not sure if this should be done here, in any case it needs to happen somewhere
      */
     private void generateGameDeck(){
+        List<CardType> allCardType = new ArrayList<>();
+
         Map<Integer, Integer> coffeeBeanOMeter = new HashMap<>();
         coffeeBeanOMeter.put(4,1);
         coffeeBeanOMeter.put(7,2);
         coffeeBeanOMeter.put(10,3);
         coffeeBeanOMeter.put(12,4);
-        CardType coffeeBean = new CardType("Coffee Bean",coffeeBeanOMeter);
+        CardType coffeeBean = new CardType("Coffee Bean",coffeeBeanOMeter,24);
+        allCardType.add(coffeeBean);
 
         Map<Integer, Integer> waxBeanOMeter = new HashMap<>();
         waxBeanOMeter.put(4,1);
         waxBeanOMeter.put(7,2);
         waxBeanOMeter.put(9,3);
         waxBeanOMeter.put(11,4);
-        CardType waxBean = new CardType("Wax Bean",waxBeanOMeter);
+        CardType waxBean = new CardType("Wax Bean",waxBeanOMeter,22);
+        allCardType.add(waxBean);
 
         Map<Integer, Integer> blueBeanOMeter = new HashMap<>();
         blueBeanOMeter.put(4,1);
         blueBeanOMeter.put(6,2);
         blueBeanOMeter.put(8,3);
         blueBeanOMeter.put(10,4);
-        CardType blueBean = new CardType("Blue Bean",blueBeanOMeter);
+        CardType blueBean = new CardType("Blue Bean",blueBeanOMeter,20);
+        allCardType.add(blueBean);
 
         Map<Integer, Integer> chiliBeanOMeter = new HashMap<>();
         chiliBeanOMeter.put(3,1);
         chiliBeanOMeter.put(6,2);
         chiliBeanOMeter.put(8,3);
         chiliBeanOMeter.put(9,4);
-        CardType chiliBean = new CardType("Chili Bean",chiliBeanOMeter);
+        CardType chiliBean = new CardType("Chili Bean",chiliBeanOMeter,18);
+        allCardType.add(chiliBean);
 
         Map<Integer, Integer> stinkBeanOMeter = new HashMap<>();
         stinkBeanOMeter.put(3,1);
         stinkBeanOMeter.put(5,2);
         stinkBeanOMeter.put(7,3);
         stinkBeanOMeter.put(8,4);
-        CardType stinkBean = new CardType("Stink Bean",stinkBeanOMeter);
+        CardType stinkBean = new CardType("Stink Bean",stinkBeanOMeter,16);
+        allCardType.add(stinkBean);
 
         Map<Integer, Integer> greenBeanOMeter = new HashMap<>();
         greenBeanOMeter.put(3,1);
         greenBeanOMeter.put(5,2);
         greenBeanOMeter.put(6,3);
         greenBeanOMeter.put(7,4);
-        CardType greenBean = new CardType("Green Bean",greenBeanOMeter);
+        CardType greenBean = new CardType("Green Bean",greenBeanOMeter,14);
+        allCardType.add(greenBean);
 
         Map<Integer, Integer> soyBeanOMeter = new HashMap<>();
         soyBeanOMeter.put(2,1);
         soyBeanOMeter.put(4,2);
         soyBeanOMeter.put(6,3);
         soyBeanOMeter.put(7,4);
-        CardType soyBean = new CardType("Soy Bean",soyBeanOMeter);
+        CardType soyBean = new CardType("Soy Bean",soyBeanOMeter,12);
+        allCardType.add(soyBean);
 
         Map<Integer, Integer> blackeyedBeanOMeter = new HashMap<>();
         blackeyedBeanOMeter.put(2,1);
         blackeyedBeanOMeter.put(4,2);
         blackeyedBeanOMeter.put(5,3);
         blackeyedBeanOMeter.put(6,4);
-        CardType blackeyedBean = new CardType("Black-eyed Bean",blackeyedBeanOMeter);
+        CardType blackeyedBean = new CardType("Black-eyed Bean",blackeyedBeanOMeter,10);
+        allCardType.add(blackeyedBean);
 
         Map<Integer, Integer> redBeanOMeter = new HashMap<>();
         redBeanOMeter.put(2,1);
         redBeanOMeter.put(3,2);
         redBeanOMeter.put(4,3);
         redBeanOMeter.put(5,4);
-        CardType redBean = new CardType("Red Bean",redBeanOMeter);
+        CardType redBean = new CardType("Red Bean",redBeanOMeter,8);
+        allCardType.add(redBean);
 
         Map<Integer, Integer> gardenBeanOMeter = new HashMap<>();
         gardenBeanOMeter.put(2,2);
         gardenBeanOMeter.put(3,3);
-        CardType gardenBean = new CardType("Garden Bean",gardenBeanOMeter);
+        CardType gardenBean = new CardType("Garden Bean",gardenBeanOMeter,6);
+        allCardType.add(gardenBean);
 
         Map<Integer, Integer> cocoaBeanOMeter = new HashMap<>();
         cocoaBeanOMeter.put(2,2);
         cocoaBeanOMeter.put(3,3);
         cocoaBeanOMeter.put(4,4);
-        CardType cocoaBean = new CardType("Cocoa Bean",cocoaBeanOMeter);
+        CardType cocoaBean = new CardType("Cocoa Bean",cocoaBeanOMeter,4);
+        allCardType.add(cocoaBean);
 
         List<Card> allCards = new ArrayList<>();
-        Card coffeeBeanCard = new Card(coffeeBean);
-        for(int i = 0; i < 24; i++){ allCards.add(coffeeBeanCard); }
-
-        Card waxBeanCard = new Card(waxBean);
-        for(int i = 0; i < 22; i++){ allCards.add(waxBeanCard); }
-
-        Card blueBeanCard = new Card(blueBean);
-        for(int i = 0; i < 20; i++){ allCards.add(blueBeanCard); }
-
-        Card chiliBeanCard = new Card(chiliBean);
-        for(int i = 0; i < 18; i++){ allCards.add(chiliBeanCard); }
-
-        Card stinkBeanCard = new Card(stinkBean);
-        for(int i = 0; i < 16; i++){ allCards.add(stinkBeanCard); }
-
-        Card greenBeanCard = new Card(greenBean);
-        for(int i = 0; i < 14; i++){ allCards.add(greenBeanCard); }
-
-        Card soyBeanCard = new Card(soyBean);
-        for(int i = 0; i < 12; i++){ allCards.add(soyBeanCard); }
-
-        Card blackeyedBeanCard = new Card(blackeyedBean);
-        for(int i = 0; i < 10; i++){ allCards.add(blackeyedBeanCard); }
-
-        Card redBeanCard = new Card(redBean);
-        for(int i = 0; i < 8; i++){ allCards.add(redBeanCard); }
-
-        Card gardenBeanCard = new Card(gardenBean);
-        for(int i = 0; i < 6; i++){ allCards.add(gardenBeanCard); }
-
-        Card cocoaBeanCard = new Card(cocoaBean);
-        for(int i = 0; i < 4; i++){ allCards.add(cocoaBeanCard); }
-
+        for(CardType ct : allCardType){
+            Card c = new Card(ct);
+            for (int i = 0; i < ct.getNumberOfType(); i++) {
+                allCards.add(c);
+            }
+        }
         // TODO: shuffle allCards before creating game pile
         gamePile = new Pile(allCards);
     }

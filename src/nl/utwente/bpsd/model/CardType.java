@@ -9,10 +9,10 @@ public class CardType {
   /**
   * Creates a CardType with a given name and a map between number of beans and value
   */
-  public CardType(final String typeName, final Map<Integer, Integer> beanOMeter) {
+  public CardType(final String typeName, final Map<Integer, Integer> beanOMeter, final int numberOfType) {
     //NYI
     this.typeName = typeName;
-    this.numberOfType = 0;
+    this.numberOfType = numberOfType;
     this.beanOMeter = beanOMeter;
   }
 
@@ -22,5 +22,9 @@ public class CardType {
 
   public Map<Integer, Integer> getBeanOMeter() {
     return this.beanOMeter;
+  }
+
+  public int getNumberOfType() {
+    return numberOfType;
   }
 }

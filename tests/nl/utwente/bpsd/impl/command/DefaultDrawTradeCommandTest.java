@@ -11,6 +11,8 @@ import static org.junit.Assert.*;
  */
 public class DefaultDrawTradeCommandTest {
 
+
+
     @Before
     public void setUp() throws Exception {
 

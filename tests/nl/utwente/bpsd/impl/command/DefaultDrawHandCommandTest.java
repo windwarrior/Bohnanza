@@ -48,9 +48,9 @@ public class DefaultDrawHandCommandTest {
         assertEquals("Game pile size decreased by three", gamePileSize - 3, game.getGamePile().pileSize());
         assertEquals("Hand pile size increased by three", handPileSize + 3, player.getHand().pileSize());
         //Test if last three hand pile cards have types of the top of the game pile (in order)
-        assertEquals("first added card", ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 3).get(), (testPile.pop().getCardType()));
-        assertEquals("second added card", ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 2).get(), (testPile.pop().getCardType()));
-        assertEquals("third added card", ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 1).get(), (testPile.pop().getCardType()));
+        assertEquals("first added card", (testPile.pop().getCardType()), ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 3).get());
+        assertEquals("second added card", (testPile.pop().getCardType()), ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 2).get());
+        assertEquals("third added card", (testPile.pop().getCardType()), ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 1).get());
     }
 
     @Test
