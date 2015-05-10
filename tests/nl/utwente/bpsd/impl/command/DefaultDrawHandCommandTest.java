@@ -41,7 +41,7 @@ public class DefaultDrawHandCommandTest {
      */
     @Test
     public void testStandardExecute() throws Exception {
-        Pile testPile = game.getGamePile();
+        Pile testPile = new Pile(game.getGamePile());
         int gamePileSize = testPile.pileSize();
         int handPileSize = player.getHand().pileSize();
         drawHandC.execute(game);

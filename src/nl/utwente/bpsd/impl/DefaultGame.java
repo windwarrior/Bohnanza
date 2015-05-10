@@ -2,6 +2,7 @@ package nl.utwente.bpsd.impl;
 
 import java.util.*;
 
+import nl.utwente.bpsd.impl.command.DefaultDrawTradeCommand;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.CardType;
 import nl.utwente.bpsd.model.Game;
@@ -42,6 +43,16 @@ public class DefaultGame extends Game{
         // TODO: after this something has to happen with the current state
         // TODO: notify observer of the draw command
         // TODO: notify observer of the new state
+    }
+
+    @Override
+    public void drawTrading(Player player) {
+        DefaultDrawTradeCommand dc = new DefaultDrawTradeCommand();
+
+        dc.setPlayer(player);
+        dc.execute(this);
+        // TODO: states need to be setup and checked
+        // TODO: Notify observers
     }
 
     public boolean validPlant(Player p, Pile field, Card card) {

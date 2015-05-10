@@ -25,7 +25,7 @@ public class Player {
         fields.add(new Pile());
         hand = new HandPile(new ArrayList<>());
         treasury = new Pile();
-        trading = new Pile();
+        trading = new HandPile(new ArrayList<>());
     }
 
     public void setGame(Game game){
@@ -36,7 +36,7 @@ public class Player {
         this.game.draw(this);
     }
 
-    public void drawIntoTrading() {}
+    public void drawIntoTrading() { this.game.drawTrading(this);}
 
     public void plant(Card card, int fieldIndex) {}
 
@@ -56,7 +56,7 @@ public class Player {
     }
 
     public Pile getTrading() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trading;
     }
 
     public List<Pile> getAllFields() {

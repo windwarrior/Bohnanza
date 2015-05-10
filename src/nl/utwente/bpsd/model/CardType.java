@@ -27,4 +27,18 @@ public class CardType {
   public int getNumberOfType() {
     return numberOfType;
   }
+
+  @Override
+  public boolean equals(Object other){
+      boolean result = false;
+      if(other instanceof CardType){
+          result = this.typeName.equals(((CardType) other).getTypeName());
+      }
+      return result;
+  }
+
+    @Override
+    public String toString(){
+        return String.format("CardType: %s, NumberOfType: %d, BeanOMeter: %s",typeName,numberOfType,beanOMeter.toString());
+    }
 }

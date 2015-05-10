@@ -16,6 +16,16 @@ public class Pile {
     }
 
     /**
+     * Used to make a copy a Pile (used for testing)
+     * @param p - Pile to be copied
+     */
+    public Pile(Pile p){
+        cardList = new ArrayList<>();
+        for(Card c : p.getCardList())
+            cardList.add(c);
+    }
+
+    /**
     * Add a card to this pile, last in first out.
     */
     public void append(Card c) {
@@ -47,4 +57,6 @@ public class Pile {
     protected List<Card> getCardList(){
         return cardList;
     }
+
+
 }

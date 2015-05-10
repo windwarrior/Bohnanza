@@ -13,9 +13,14 @@ public abstract class Game extends Observable {
     public abstract void initialize();
 
     /**
-     * Does the draw action for a player p
+     * Does the draw into hand action for a player p
      */
     public abstract void draw(Player p);
+
+    /**
+     * Does the draw into trading action for a player p
+     */
+    public abstract void drawTrading(Player player);
 
     /**
      * returns if a Player p may plant Card card in Pile field

@@ -5,8 +5,11 @@
  */
 package nl.utwente.bpsd.impl.command;
 
+import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.GameStatus;
+import nl.utwente.bpsd.model.Player;
+import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bsd.model.command.Command;
 
 /**
@@ -15,9 +18,23 @@ import nl.utwente.bsd.model.command.Command;
  */
 public class DefaultDrawTradeCommand implements Command {
 
+    Player player;
+
     @Override
     public GameStatus execute(Game g) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Pile gamePile = g.getGamePile();
+        if(gamePile.pileSize() < 2) {
+            // TODO: Implement reshuffle functionality
+            return GameStatus.GAME_FINISHED;
+        }
+        Card firstDraw = gamePile.pop();
+        Card secondDraw = gamePile.pop();
+        player.getTrading().append(firstDraw);
+        player.getTrading().append(secondDraw);
+        return GameStatus.GAME_PROGRESS;
     }
-    
+
+    public void setPlayer(Player player){
+        this.player = player;
+    }
 }
