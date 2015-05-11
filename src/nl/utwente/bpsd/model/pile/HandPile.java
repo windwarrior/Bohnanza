@@ -16,7 +16,7 @@ public class HandPile extends Pile{
      * returns the card at index index from the pile, this card is removed from the pile
      */
     public Optional<Card> getCard(int index){
-        Optional result = Optional.empty();
+        Optional<Card> result = Optional.empty();
         if(0 <= index && index < getCardList().size()){
             result = Optional.of(getCardList().get(index));
             getCardList().remove(index);
@@ -29,7 +29,7 @@ public class HandPile extends Pile{
      * this method might be important during the trading phase
      */
     public Optional<CardType> getCardType(int index){
-        Optional result = Optional.empty();
+        Optional<CardType> result = Optional.empty();
         if(0 <= index && index < getCardList().size())
             result = Optional.of(getCardList().get(index).getCardType());
         return result;

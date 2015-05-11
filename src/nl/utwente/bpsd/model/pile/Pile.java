@@ -11,10 +11,6 @@ public class Pile {
         this.cardList = new ArrayList<>();
     }
 
-/*    public Pile(List<Card> cardList ) {
-        this.cardList = cardList;
-    }*/
-
     /**
      * Used to make a copy a Pile (used for testing)
      * @param p - Pile to be copied
