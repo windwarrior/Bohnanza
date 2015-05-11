@@ -5,6 +5,7 @@ import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.model.pile.HandPile;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +37,7 @@ public class DefaultDrawHandCommandTest {
     }
 
     /**
-     * Three cards removed from game gamePile
-     * Three cards added to player hand
+     * Three cards removed from game gamePile Three cards added to player hand
      */
     @Test
     public void testStandardExecute() throws Exception {
@@ -45,12 +45,12 @@ public class DefaultDrawHandCommandTest {
         int gamePileSize = testPile.pileSize();
         int handPileSize = player.getHand().pileSize();
         drawHandC.execute(game);
-        assertEquals("Game pile size decreased by three", gamePileSize - 3, game.getGamePile().pileSize());
-        assertEquals("Hand pile size increased by three", handPileSize + 3, player.getHand().pileSize());
+        assertThat("Game pile size decreased by three", gamePileSize - 3, is(game.getGamePile().pileSize()));
+        assertThat("Hand pile size increased by three", handPileSize + 3, is(player.getHand().pileSize()));
         //Test if last three hand pile cards have types of the top of the game pile (in order)
-        assertEquals("first added card", (testPile.pop().getCardType()), ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 3).get());
-        assertEquals("second added card", (testPile.pop().getCardType()), ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 2).get());
-        assertEquals("third added card", (testPile.pop().getCardType()), ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 1).get());
+        assertThat("first added card", (testPile.pop().getCardType()), is(((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 3).get()));
+        assertThat("second added card", (testPile.pop().getCardType()), is(((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 2).get()));
+        assertThat("third added card", (testPile.pop().getCardType()), is(((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 1).get()));
     }
 
     @Test

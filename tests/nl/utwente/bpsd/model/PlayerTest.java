@@ -19,22 +19,22 @@ import static org.junit.Assert.*;
  * @author lennart
  */
 public class PlayerTest {
-    
+
     public PlayerTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -79,7 +79,7 @@ public class PlayerTest {
      */
     @Test
     public void testBuyField() {
-        
+
     }
 
     /**
@@ -123,5 +123,5 @@ public class PlayerTest {
     @Test
     public void testGetAdditionalPileByName() {
     }
-    
+
 }

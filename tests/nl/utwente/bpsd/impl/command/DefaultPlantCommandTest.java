@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import static org.hamcrest.CoreMatchers.is;
+
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by Kasia on 2015-05-10.
@@ -41,10 +44,10 @@ public class DefaultPlantCommandTest extends TestCase {
     @Test
     public void testExecute() throws Exception {
         GameStatus status = plantC.execute(game);
-        assertEquals("Planting on empty field: game status checking", GameStatus.GAME_PROGRESS, status);
-        assertEquals("Planting on empty field: field checking ", 1, player.getAllFields().get(0).pileSize());
+        assertThat("Planting on empty field: game status checking", GameStatus.GAME_PROGRESS, is(status));
+        assertThat("Planting on empty field: field checking ", 1, is(player.getAllFields().get(0).pileSize()));
         plantC.execute(game);
-        assertEquals("Planting on not empty field: field checking ", 2, player.getAllFields().get(0).pileSize());
+        assertThat("Planting on not empty field: field checking ", 2, is(player.getAllFields().get(0).pileSize()));
         Map<Integer, Integer> redBeanOMeter = new HashMap<>();
         redBeanOMeter.put(2, 1);
         redBeanOMeter.put(3, 2);
@@ -55,8 +58,8 @@ public class DefaultPlantCommandTest extends TestCase {
         generateFieldCards(1, 3);
         plantC.setFieldIndex(1);
         status = plantC.execute(game);
-        assertEquals("Planting on field with wrong cards' type: game status checking", GameStatus.GAME_PLANT_ERROR, status);
-        assertEquals("Planting on field with wrong cards' type: field checking ", 3, player.getAllFields().get(1).pileSize());
+        assertThat("Planting on field with wrong cards' type: game status checking", GameStatus.GAME_PLANT_ERROR, is(status));
+        assertThat("Planting on field with wrong cards' type: field checking ", 3, is(player.getAllFields().get(1).pileSize()));
     }
 
     /**

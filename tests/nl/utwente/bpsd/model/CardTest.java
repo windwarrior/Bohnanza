@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 
 import static org.junit.Assert.*;
 
@@ -29,7 +31,6 @@ public class CardTest {
 
     @After
     public void tearDown() throws Exception {
-
     }
 
     @Test
@@ -46,15 +47,15 @@ public class CardTest {
         beanOMeterWaxBean.put(9, 3);
         beanOMeterWaxBean.put(11, 4);
         CardType waxBean = new CardType("Wax Bean",beanOMeterWaxBean,22);
-        assertEquals("Right CardType",blueBean,testCard.getCardType());
-        assertNotEquals("Wrong CardType",waxBean,testCard.getCardType());
+        assertThat("Right CardType",blueBean, is(testCard.getCardType()));
+        assertThat("Wrong CardType",waxBean, not(testCard.getCardType()));
 
         CardType wrongNameBean = new CardType("Wax Bean",beanOMeterBlueBean,20);
         CardType wrongBeanOMeterBean = new CardType("Blue Bean",beanOMeterWaxBean,20);
         CardType wrongNumberBean = new CardType("Blue Bean",beanOMeterBlueBean,0);
-        assertNotEquals("Wrong name",wrongNameBean,testCard.getCardType());
-        assertNotEquals("Wrong beanOMeter",wrongBeanOMeterBean,testCard.getCardType());
-        assertNotEquals("Wrong numberOfCardType",wrongNumberBean,testCard.getCardType());
+        assertThat("Wrong name",wrongNameBean, not(testCard.getCardType()));
+        assertThat("Wrong beanOMeter",wrongBeanOMeterBean, not(testCard.getCardType()));
+        assertThat("Wrong numberOfCardType",wrongNumberBean, not(testCard.getCardType()));
     }
 
 }

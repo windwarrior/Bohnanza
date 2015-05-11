@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.*;
 
@@ -48,11 +49,11 @@ public class DefaultDrawTradeCommandTest {
         int gamePileSize = testPile.pileSize();
         int playerTradingSize = player.getTrading().pileSize();
         drawTradeC.execute(game);
-        assertEquals("Game pile removes two cards",gamePileSize-2,game.getGamePile().pileSize());
-        assertEquals("Trading pile gets two cards",playerTradingSize+2,player.getTrading().pileSize());
+        assertThat("Game pile removes two cards", gamePileSize - 2, is(game.getGamePile().pileSize()));
+        assertThat("Trading pile gets two cards", playerTradingSize + 2, is(player.getTrading().pileSize()));
         //Test if correct cards are added to trading area
-        assertEquals("First card",testPile.pop().getCardType(),((HandPile)player.getTrading()).getCardType(0).get());
-        assertEquals("Second card", testPile.pop().getCardType(), ((HandPile) player.getTrading()).getCardType(1).get());
+        assertThat("First card", testPile.pop().getCardType(), is(((HandPile) player.getTrading()).getCardType(0).get()));
+        assertThat("Second card", testPile.pop().getCardType(), is(((HandPile) player.getTrading()).getCardType(1).get()));
 
     }
 
@@ -64,8 +65,8 @@ public class DefaultDrawTradeCommandTest {
     }
 
     /**
-     * Should test what happens if we want to draw but the deck is finished
-     * and has been reshuffled twice
+     * Should test what happens if we want to draw but the deck is finished and
+     * has been reshuffled twice
      */
     @Test
     public void testEndGame() throws Exception {

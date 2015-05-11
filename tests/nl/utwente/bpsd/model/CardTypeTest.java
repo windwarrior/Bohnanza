@@ -7,10 +7,8 @@ package nl.utwente.bpsd.model;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.After;
-import org.junit.AfterClass;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,11 +17,12 @@ import static org.junit.Assert.*;
  * @author lennart
  */
 public class CardTypeTest {
+
     private CardType cardType;
-    
+
     public CardTypeTest() {
     }
-    
+
     @Before
     public void setUp() {
         Map<Integer, Integer> beanOMeter = new HashMap<>();
@@ -31,7 +30,7 @@ public class CardTypeTest {
         beanOMeter.put(6, 2);
         beanOMeter.put(8, 3);
         beanOMeter.put(10, 4);
-        cardType = new CardType("Blue bean", beanOMeter,1);
+        cardType = new CardType("Blue bean", beanOMeter, 1);
     }
 
     /**
@@ -52,15 +51,16 @@ public class CardTypeTest {
         beanOMeter.put(6, 2);
         beanOMeter.put(10, 4);
         beanOMeter.put(8, 3);
-        
-        assertEquals("The bean0Meter is correctly returned", cardType.getBeanOMeter(), beanOMeter);
+
+        assertThat("The bean0Meter is correctly returned", cardType.getBeanOMeter(), is(beanOMeter));
     }
+
     /**
      * Test of getNumberOfType method, of class CardType.
      */
     @Test
     public void testGetNumberOfType() {
-        assertEquals("The number of cards of certain type is correctly returned", cardType.getNumberOfType(), 1);
+        assertThat("The number of cards of certain type is correctly returned", cardType.getNumberOfType(), is(1));
     }
-    
+
 }

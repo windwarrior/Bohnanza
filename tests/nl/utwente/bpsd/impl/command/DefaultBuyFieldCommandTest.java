@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.*;
 
@@ -38,19 +39,19 @@ public class DefaultBuyFieldCommandTest {
 
     @Test
     public void testExecute() throws Exception {
-        assertEquals("Test number start of fields", 2, player.getAllFields().size());
+        assertThat("Test number start of fields", 2, is(player.getAllFields().size()));
         buyFieldC.execute(game);
-        assertEquals("Not enough money for a field", 2, player.getAllFields().size());
+        assertThat("Not enough money for a field", 2, is(player.getAllFields().size()));
         //Setup treasury to buy a third field (should be allowed, so treasury will be empty after buying field
         fillTreasury();
         buyFieldC.execute(game);
-        assertEquals("Buy a third field", 3, player.getAllFields().size());
-        assertEquals("Check if treasury is used", 0, player.getTreasury().pileSize());
+        assertThat("Buy a third field", 3, is(player.getAllFields().size()));
+        assertThat("Check if treasury is used", 0, is(player.getTreasury().pileSize()));
         //Setup treasury to buy a fourth field (shouldn't be allowed, treasury should still be full)
         fillTreasury();
         buyFieldC.execute(game);
-        assertEquals("Buy a fourth field", 3, player.getAllFields().size());
-        assertEquals("Check if treasury is used", 3, player.getTreasury().pileSize());
+        assertThat("Buy a fourth field", 3, is(player.getAllFields().size()));
+        assertThat("Check if treasury is used", 3, is(player.getTreasury().pileSize()));
     }
 
     //This test should check the integrity of the player fields after a new field has been added
@@ -66,16 +67,16 @@ public class DefaultBuyFieldCommandTest {
         testField.add(new Pile());
         testField.add(new Pile());
         buyFieldC.execute(game);
-        assertEquals("Field integrity case 1", testField, player.getAllFields());
+        assertThat("Field integrity case 1", testField, is(player.getAllFields()));
         fillTreasury();
         buyFieldC.execute(game);
         testField.add(new Pile());
-        assertEquals("Field integrity case 2", testField, player.getAllFields());
+        assertThat("Field integrity case 2", testField, is(player.getAllFields()));
         buyFieldC.execute(game);
-        assertEquals("Field integrity case 3", testField, player.getAllFields());
+        assertThat("Field integrity case 3", testField, is(player.getAllFields()));
         fillTreasury();
         buyFieldC.execute(game);
-        assertEquals("Field integrity cate 4", testField, player.getAllFields());
+        assertThat("Field integrity cate 4", testField, is(player.getAllFields()));
     }
 
     //Put some coins (cards) from the game pill into the players treasury
