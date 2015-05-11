@@ -44,7 +44,8 @@ public class DefaultPlantCommandTest extends TestCase {
         GameCommandResult status = plantC.execute(game);
         assertThat("Planting on empty field: game status checking", status, is(DefaultGameCommandResult.PLANT));
         assertThat("Planting on empty field: field checking ", player.getAllFields().get(0).pileSize(), is(1));
-        plantC.execute(game);
+        status = plantC.execute(game);        
+        assertThat("Planting on non empty field: game status checking", status, is(DefaultGameCommandResult.PLANT));
         assertThat("Planting on not empty field: field checking ", player.getAllFields().get(0).pileSize(), is(2));
         Map<Integer, Integer> redBeanOMeter = new HashMap<>();
         redBeanOMeter.put(2, 1);

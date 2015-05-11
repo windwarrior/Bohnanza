@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.*;
@@ -50,28 +51,26 @@ public class PileTest {
 
     @Test
     public void testPop() throws Exception {
-        Card expected = new Card(new CardType("TestCT", new HashMap<>(), 1));
-        Card result = testPile.pop();
+        Optional<Card> expected = Optional.of(new Card(new CardType("TestCT", new HashMap<>(), 1)));
+        Optional<Card> result = testPile.pop();
         assertThat("Get correct card from pile with cards", result, is(expected));
         assertThat("One cards less in pile after pop()", testPile.pileSize(), is(1));
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
     public void testPopEmptyPile() throws Exception {
-        noCards.pop();
+        assertThat(noCards.pop(), is(Optional.empty()));
     }
 
     @Test
     public void testPeek() throws Exception {
-        Card expected = new Card(new CardType("TestCT", new HashMap<>(), 1));
-        Card result = testPile.peek();
+        Optional<Card> expected = Optional.of(new Card(new CardType("TestCT", new HashMap<>(), 1)));
+        Optional<Card> result = testPile.peek();
         assertThat("See correct card from pile with cards", result, is(expected));
         assertThat("No cards lost after peek()", testPile.pileSize(), is(2));
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testPeekEmptyPile() throws Exception {
-        noCards.peek();
+    public void testPeekEmptyPile() {
+        assertThat(noCards.peek(), is(Optional.empty()));
     }
 
     @Test

@@ -23,8 +23,8 @@ public class DefaultDrawTradeCommand extends DefaultGameCommand {
             // TODO: Implement reshuffle functionality
             return DefaultGameCommandResult.FINISHED;
         }
-        Card firstDraw = gamePile.pop();
-        Card secondDraw = gamePile.pop();
+        Card firstDraw = gamePile.pop().get();
+        Card secondDraw = gamePile.pop().get();
         player.getTrading().append(firstDraw);
         player.getTrading().append(secondDraw);
         return DefaultGameCommandResult.DRAWN_TO_TRADING;

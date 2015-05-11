@@ -2,6 +2,7 @@ package nl.utwente.bpsd.model.pile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import nl.utwente.bpsd.model.Card;
 
 public class Pile {
@@ -32,15 +33,15 @@ public class Pile {
     * Take the top card of this pile.
      * @requires !this.cardList.size().empty();
     */
-    public Card pop() {
-        return cardList.remove(0);
+    public Optional<Card> pop() {
+        return cardList.size() > 0 ? Optional.of(cardList.remove(0)) : Optional.empty();
     }
 
     /**
     * Look a the top card without removing it.
     */
-    public Card peek() {
-      return cardList.get(0);
+    public Optional<Card> peek() {
+      return cardList.size() > 0 ? Optional.of(cardList.get(0)) : Optional.empty();
     }
 
     /**

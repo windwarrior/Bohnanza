@@ -33,7 +33,7 @@ public class DefaultPlantCommand extends DefaultGameCommand {
          * Player can only plant card on empty field or on
          * field with matching card types
          */
-        if(!(field.pileSize() == 0) && !field.peek().equals(card)) {
+        if(!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(card)) {
             //maybe other error handling?
             return DefaultGameCommandResult.INVALID;
         }

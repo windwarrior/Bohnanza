@@ -34,7 +34,7 @@ public class DefaultDrawHandCommand extends DefaultGameCommand {
         List<Card> toBeInserted = new ArrayList<Card>();
 
         for (int i = 0; i < 3; i++) {
-            toBeInserted.add(gamePile.pop());
+            toBeInserted.add(gamePile.pop().get());
         }
             
         this.player.addAllHand(toBeInserted);

@@ -59,7 +59,7 @@ public class DefaultPlayer extends Player {
         dc.setPlayer(this);
         dc.setFieldIndex(fieldIndex);
         // TODO: This should have some check to see if a player still has cards in his hand
-        dc.setCard(this.getHand().pop());
+        dc.setCard(this.getHand().pop().get());
         return super.executeCommand(dc);
     }
 
