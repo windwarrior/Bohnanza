@@ -1,8 +1,6 @@
 package nl.utwente.bpsd;
 
-import nl.utwente.bpsd.impl.command.DefaultBuyFieldCommandTest;
-import nl.utwente.bpsd.impl.command.DefaultDrawHandCommandTest;
-import nl.utwente.bpsd.impl.command.DefaultDrawTradeCommandTest;
+import nl.utwente.bpsd.impl.command.*;
 import nl.utwente.bpsd.model.CardTest;
 import nl.utwente.bpsd.model.CardTypeTest;
 import nl.utwente.bpsd.model.PlayerTest;
@@ -21,7 +19,9 @@ import org.junit.runners.Suite;
         PlayerTest.class,
         DefaultBuyFieldCommandTest.class,
         DefaultDrawHandCommandTest.class,
-        DefaultDrawTradeCommandTest.class
+        DefaultDrawTradeCommandTest.class,
+        DefaultHarvestCommandTest.class,
+        DefaultPlantCommandTest.class
 })
 public class JunitTestSuite {
 }

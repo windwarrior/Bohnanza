@@ -23,9 +23,9 @@ public class Player {
         fields = new ArrayList<>();
         fields.add(new Pile());
         fields.add(new Pile());
-        hand = new HandPile(new ArrayList<>());
+        hand = new HandPile();
         treasury = new Pile();
-        trading = new HandPile(new ArrayList<>());
+        trading = new HandPile();
     }
 
     public void setGame(Game game){
@@ -38,13 +38,19 @@ public class Player {
 
     public void drawIntoTrading() { this.game.drawTrading(this);}
 
-    public void plant(Card card, int fieldIndex) {}
+    public void plantFromTrading(int tradingIndex, int fieldIndex){
+        game.plantFromTrading(this,tradingIndex,fieldIndex);
+    }
+
+    public void plantFromHand(int fieldIndex) {
+        game.plantFromHand(this,fieldIndex);
+    }
 
     //Still needs consideration
     public void trade() {}
 
     public void harvest(int fieldIndex) {
-
+        game.harvest(this,fieldIndex);
     }
 
     public void buyField() {}

@@ -38,7 +38,7 @@ public class DefaultPlantCommand implements Command {
          * Player can only plant card on empty field or on
          * field with matching card types
          */
-        if(!field.getCardList().isEmpty() && !field.getCardList().get(0).equals(card)) {
+        if(!(field.pileSize() == 0) && !field.peek().equals(card)) {
             //maybe other error handling?
             return GameStatus.GAME_PLANT_ERROR;
         }

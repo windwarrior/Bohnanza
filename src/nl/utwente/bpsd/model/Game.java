@@ -25,20 +25,22 @@ public abstract class Game extends Observable {
     /**
      * returns if a Player p may plant Card card in Pile field
      */
-    public abstract boolean validPlant(Player p, Pile field, Card card);
+    public abstract void plantFromHand(Player p, int fieldIndex);
+
+    public abstract void plantFromTrading(Player p, int tradingIndex, int fieldIndex);
 
     //Still difficult
     public abstract void trade(Player current, Player p);
 
     /**
-     * returns the profits in a terms of cards if a Player p harvests Pile field
+     * Haversts Pile field for player p, adds profits to player treasury and the rest of the pile into the game discard pile
      */
-    public abstract List<Card> validHarvest(Player p, Pile field);
+    public abstract void harvest(Player p, int fieldIndex);
 
     /**
      * returns if a Player p may buy an extra field
      */
-    public abstract boolean validBuyField(Player p);
+    public abstract void buyField(Player p);
 
     /**
      * Adds players to the game

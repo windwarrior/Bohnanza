@@ -11,9 +11,9 @@ public class Pile {
         this.cardList = new ArrayList<>();
     }
 
-    public Pile(List<Card> cardList ) {
+/*    public Pile(List<Card> cardList ) {
         this.cardList = cardList;
-    }
+    }*/
 
     /**
      * Used to make a copy a Pile (used for testing)
@@ -26,7 +26,7 @@ public class Pile {
     }
 
     /**
-    * Add a card to this pile, last in first out.
+    * Add a card to the bottom of this pile, first in first out.
     */
     public void append(Card c) {
         cardList.add(c);
@@ -34,6 +34,7 @@ public class Pile {
 
     /**
     * Take the top card of this pile.
+     * @requires !this.cardList.size().empty();
     */
     public Card pop() {
         return cardList.remove(0);
@@ -53,7 +54,7 @@ public class Pile {
         return cardList.size();
     }
 
-    public List<Card> getCardList(){
+    protected List<Card> getCardList(){
         return cardList;
     }
 

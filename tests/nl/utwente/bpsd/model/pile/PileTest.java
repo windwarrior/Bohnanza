@@ -29,7 +29,8 @@ public class PileTest {
         List<Card> cards = new ArrayList<>();
         cards.add(c1);
         cards.add(c2);
-        testPile = new Pile(cards);
+        testPile = new Pile();
+        testPile.append(c1);testPile.append(c2);
         noCards = new Pile();
     }
 

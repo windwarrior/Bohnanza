@@ -32,7 +32,6 @@ public class DefaultHarvestCommand implements Command {
     @Override
     public GameStatus execute(Game g) {
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null
-        Pile treasury = player.getTreasury();
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
 
@@ -52,22 +51,16 @@ public class DefaultHarvestCommand implements Command {
 
         if(field.pileSize()>0 && singleCard) {
             int fieldSize = field.pileSize();
-            List<Card> cards = field.getCardList();
-            TreeMap<Integer, Integer> beanOMeter = new TreeMap<Integer, Integer>(cards.get(0).getCardType().getBeanOMeter());
+            TreeMap<Integer, Integer> beanOMeter = new TreeMap<Integer, Integer>(field.peek().getCardType().getBeanOMeter());
 
-            int earnedCoins = 0;
+            int earnedCoins;
             Integer previousKey = beanOMeter.firstKey();
-            for(Integer key: beanOMeter.keySet()){
-                if(key>=fieldSize) {
-                   if(key>fieldSize) {
-                        earnedCoins = beanOMeter.get(previousKey);
-                    }
-                    else
-                        earnedCoins = beanOMeter.get(key);
-                    break;
+            for(Integer key: beanOMeter.keySet()) {
+                if (key <= fieldSize) {
+                    previousKey = key;
                 }
-                previousKey = key;
             }
+            earnedCoins = beanOMeter.get(previousKey);
 
             int numberOfDiscarded = fieldSize - earnedCoins;
             for(int i=numberOfDiscarded; i>0; --i) {

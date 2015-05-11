@@ -8,8 +8,8 @@ import nl.utwente.bpsd.model.Card;
  */
 public class DiscardPile extends Pile{
 
-    public DiscardPile(List<Card> cardList) {
-        super(cardList);
+    public DiscardPile() {
+        super();
     }
 
     /**

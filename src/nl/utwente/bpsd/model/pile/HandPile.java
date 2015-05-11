@@ -10,9 +10,7 @@ import nl.utwente.bpsd.model.CardType;
  */
 public class HandPile extends Pile{
 
-    public HandPile(List<Card> cardList) {
-        super(cardList);
-    }
+    public HandPile(){super();}
 
     /**
      * returns the card at index index from the pile, this card is removed from the pile
