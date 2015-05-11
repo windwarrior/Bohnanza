@@ -7,10 +7,6 @@ import nl.utwente.bpsd.model.Command;
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.GameCommandResult;
 
-/**
- *
- * @author lennart
- */
 public class DefaultGameCommand implements Command {
 
     @Override
