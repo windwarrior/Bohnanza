@@ -14,9 +14,6 @@ import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Jochem Elsinga on 5/9/2015.
- */
 public class DefaultBuyFieldCommandTest {
 
     Player player;
@@ -39,19 +36,19 @@ public class DefaultBuyFieldCommandTest {
 
     @Test
     public void testExecute() throws Exception {
-        assertThat("Test number start of fields", 2, is(player.getAllFields().size()));
+        assertThat("Test number start of fields", player.getAllFields().size(), is(2));
         buyFieldC.execute(game);
-        assertThat("Not enough money for a field", 2, is(player.getAllFields().size()));
+        assertThat("Not enough money for a field", player.getAllFields().size(), is(2));
         //Setup treasury to buy a third field (should be allowed, so treasury will be empty after buying field
         fillTreasury();
         buyFieldC.execute(game);
-        assertThat("Buy a third field", 3, is(player.getAllFields().size()));
-        assertThat("Check if treasury is used", 0, is(player.getTreasury().pileSize()));
+        assertThat("Buy a third field", player.getAllFields().size(), is(3));
+        assertThat("Check if treasury is used", player.getTreasury().pileSize(), is(0));
         //Setup treasury to buy a fourth field (shouldn't be allowed, treasury should still be full)
         fillTreasury();
         buyFieldC.execute(game);
-        assertThat("Buy a fourth field", 3, is(player.getAllFields().size()));
-        assertThat("Check if treasury is used", 3, is(player.getTreasury().pileSize()));
+        assertThat("Buy a fourth field", player.getAllFields().size(), is(3));
+        assertThat("Check if treasury is used", player.getTreasury().pileSize(), is(3));
     }
 
     //This test should check the integrity of the player fields after a new field has been added
@@ -62,7 +59,7 @@ public class DefaultBuyFieldCommandTest {
     //  4. 3 fields + not enough money
     // TODO: How should we compare lists of piles??
     @Test
-    public void testFieldConsistency() throws Exception{
+    public void testFieldConsistency() throws Exception {
         List<Pile> testField = new ArrayList<>();
         testField.add(new Pile());
         testField.add(new Pile());
@@ -80,7 +77,7 @@ public class DefaultBuyFieldCommandTest {
     }
 
     //Put some coins (cards) from the game pill into the players treasury
-    private void fillTreasury(){
+    private void fillTreasury() {
         player.getTreasury().append(game.getGamePile().pop());
         player.getTreasury().append(game.getGamePile().pop());
         player.getTreasury().append(game.getGamePile().pop());

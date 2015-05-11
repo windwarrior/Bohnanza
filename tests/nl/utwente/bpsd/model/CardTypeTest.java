@@ -38,7 +38,7 @@ public class CardTypeTest {
      */
     @Test
     public void testGetTypeName() {
-        assertEquals("The name of a bean is correctly returned", cardType.getTypeName(), "Blue bean");
+        assertThat("The name of a bean is correctly returned", cardType.getTypeName(), is("Blue bean"));
     }
 
     /**

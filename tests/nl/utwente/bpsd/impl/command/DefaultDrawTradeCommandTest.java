@@ -15,9 +15,6 @@ import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Jochem Elsinga on 5/9/2015.
- */
 public class DefaultDrawTradeCommandTest {
 
     Player player;
@@ -49,11 +46,11 @@ public class DefaultDrawTradeCommandTest {
         int gamePileSize = testPile.pileSize();
         int playerTradingSize = player.getTrading().pileSize();
         drawTradeC.execute(game);
-        assertThat("Game pile removes two cards", gamePileSize - 2, is(game.getGamePile().pileSize()));
-        assertThat("Trading pile gets two cards", playerTradingSize + 2, is(player.getTrading().pileSize()));
+        assertThat("Game pile removes two cards", game.getGamePile().pileSize(), is(gamePileSize - 2));
+        assertThat("Trading pile gets two cards", player.getTrading().pileSize(), is(playerTradingSize + 2));
         //Test if correct cards are added to trading area
-        assertThat("First card", testPile.pop().getCardType(), is(((HandPile) player.getTrading()).getCardType(0).get()));
-        assertThat("Second card", testPile.pop().getCardType(), is(((HandPile) player.getTrading()).getCardType(1).get()));
+        assertThat("First card", ((HandPile) player.getTrading()).getCardType(0).get(), is(testPile.pop().getCardType()));
+        assertThat("Second card", ((HandPile) player.getTrading()).getCardType(1).get(), is(testPile.pop().getCardType()));
 
     }
 

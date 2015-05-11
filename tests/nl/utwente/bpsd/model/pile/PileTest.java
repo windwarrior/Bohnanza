@@ -43,17 +43,17 @@ public class PileTest {
     public void testAppend() throws Exception {
         Card c3 = new Card(new CardType("TestCT", new HashMap<>(), 1));
         testPile.append(c3);
-        assertThat("Added card to a pile with 2 cards", 3, is(testPile.pileSize()));
+        assertThat("Added card to a pile with 2 cards", testPile.pileSize(), is(3));
         noCards.append(c3);
-        assertThat("Added card to a pile with no cards", 1, is(noCards.pileSize()));
+        assertThat("Added card to a pile with no cards", noCards.pileSize(), is(1));
     }
 
     @Test
     public void testPop() throws Exception {
         Card expected = new Card(new CardType("TestCT", new HashMap<>(), 1));
         Card result = testPile.pop();
-        assertThat("Get correct card from pile with cards", expected, is(result));
-        assertThat("One cards less in pile after pop()", 1, is(testPile.pileSize()));
+        assertThat("Get correct card from pile with cards", result, is(expected));
+        assertThat("One cards less in pile after pop()", testPile.pileSize(), is(1));
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
@@ -65,8 +65,8 @@ public class PileTest {
     public void testPeek() throws Exception {
         Card expected = new Card(new CardType("TestCT", new HashMap<>(), 1));
         Card result = testPile.peek();
-        assertThat("See correct card from pile with cards", expected, is(result));
-        assertThat("No cards lost after peek()", 2, is(testPile.pileSize()));
+        assertThat("See correct card from pile with cards", result, is(expected));
+        assertThat("No cards lost after peek()", testPile.pileSize(), is(2));
     }
 
     @Test(expected = IndexOutOfBoundsException.class)

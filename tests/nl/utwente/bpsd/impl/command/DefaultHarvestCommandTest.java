@@ -13,9 +13,6 @@ import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by Kasia on 2015-05-10.
- */
 public class DefaultHarvestCommandTest extends TestCase {
 
     Player player;
@@ -37,30 +34,31 @@ public class DefaultHarvestCommandTest extends TestCase {
     @Test
     public void testExecute() throws Exception {
         GameStatus status = harvestC.execute(game);
-        assertThat("Harvesting from field without any cards", GameStatus.GAME_HARVEST_ERROR, is(is(status)));
+        assertThat("Harvesting from field without any cards", status, is(GameStatus.GAME_HARVEST_ERROR));
         generateFieldCards(0, 1);
         status = harvestC.execute(game);
-        assertThat("Harvesting from field with only one card, other fields are empty", GameStatus.GAME_HARVEST_ERROR, is(status));
+        assertThat("Harvesting from field with only one card, other fields are empty", status, is(GameStatus.GAME_HARVEST_ERROR));
         generateFieldCards(1, 1);
         status = harvestC.execute(game);
-        assertThat("Harvesting from field with only one card, all player's fields consist of one card", GameStatus.GAME_PROGRESS, is(status));
+        assertThat("Harvesting from field with only one card, all player's fields consist of one card", status, is(GameStatus.GAME_PROGRESS));
         generateFieldCards(0, 3);
         status = harvestC.execute(game);
-        assertThat("Harvesting with the equal number of cards to those required in beanOMeter", GameStatus.GAME_PROGRESS, is(status));
-        assertThat("(0) Player's field after harvesting should be empty", 0, is(player.getAllFields().get(0).pileSize()));
-        assertThat("Player's treasury - 1 card added", 2, is(player.getTreasury().pileSize()));
-        assertThat("Game's discardPile - 2 cards added", 2, is(game.getDiscardPile().pileSize()));
+        assertThat("Harvesting with the equal number of cards to those required in beanOMeter", status, is(GameStatus.GAME_PROGRESS));
+        assertThat("(0) Player's field after harvesting should be empty", player.getAllFields().get(0).pileSize(), is(0));
+        assertThat("Player's treasury - 1 card added", player.getTreasury().pileSize(), is(2));
+        assertThat("Game's discardPile - 2 cards added", game.getDiscardPile().pileSize(), is(2));
         generateFieldCards(1, 6);
         harvestC.setFieldIndex(1);
         status = harvestC.execute(game);
-        assertThat("Harvesting from field with not equal number of cards to those required in beanOMeter ", GameStatus.GAME_PROGRESS, is(status));
-        assertThat("(1) Player's field after harvesting should be empty", 0, is(player.getAllFields().get(1).pileSize()));
-        assertThat("Player's treasury - 2 cards added", 4, is(player.getTreasury().pileSize()));
-        assertThat("Game's discardPile - 5 cards added", 7, is(game.getDiscardPile().pileSize()));
+        assertThat("Harvesting from field with not equal number of cards to those required in beanOMeter ", status, is(GameStatus.GAME_PROGRESS));
+        assertThat("(1) Player's field after harvesting should be empty", player.getAllFields().get(1).pileSize(), is(0));
+        assertThat("Player's treasury - 2 cards added", player.getTreasury().pileSize(), is(4));
+        assertThat("Game's discardPile - 5 cards added", game.getDiscardPile().pileSize(), is(7));
     }
 
     /**
      * adds Chili Bean cards to player's field
+     *
      * @param index index of the field to be filled with cards
      * @param num number of additional ChilliCards to be placed in the field
      */
@@ -71,8 +69,8 @@ public class DefaultHarvestCommandTest extends TestCase {
         chiliBeanOMeter.put(6, 2);
         chiliBeanOMeter.put(8, 3);
         chiliBeanOMeter.put(9, 4);
-        CardType chiliBean = new CardType("Chili Bean",chiliBeanOMeter,18);
-        for (int i=0; i<num; ++i) {
+        CardType chiliBean = new CardType("Chili Bean", chiliBeanOMeter, 18);
+        for (int i = 0; i < num; ++i) {
             Card c = new Card(chiliBean);
             this.player.getAllFields().get(index).append(c);
         }

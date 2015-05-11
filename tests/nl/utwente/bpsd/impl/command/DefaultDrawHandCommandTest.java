@@ -12,9 +12,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Jochem Elsinga on 5/9/2015.
- */
 public class DefaultDrawHandCommandTest {
 
     Player player;
@@ -45,12 +42,12 @@ public class DefaultDrawHandCommandTest {
         int gamePileSize = testPile.pileSize();
         int handPileSize = player.getHand().pileSize();
         drawHandC.execute(game);
-        assertThat("Game pile size decreased by three", gamePileSize - 3, is(game.getGamePile().pileSize()));
-        assertThat("Hand pile size increased by three", handPileSize + 3, is(player.getHand().pileSize()));
+        assertThat("Game pile size decreased by three", game.getGamePile().pileSize(), is(gamePileSize - 3));
+        assertThat("Hand pile size increased by three", player.getHand().pileSize(), is(handPileSize + 3));
         //Test if last three hand pile cards have types of the top of the game pile (in order)
-        assertThat("first added card", (testPile.pop().getCardType()), is(((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 3).get()));
-        assertThat("second added card", (testPile.pop().getCardType()), is(((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 2).get()));
-        assertThat("third added card", (testPile.pop().getCardType()), is(((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 1).get()));
+        assertThat("first added card", ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 3).get(), is((testPile.pop().getCardType())));
+        assertThat("second added card", ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 2).get(), is((testPile.pop().getCardType())));
+        assertThat("third added card", ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 1).get(), is((testPile.pop().getCardType())));
     }
 
     @Test
