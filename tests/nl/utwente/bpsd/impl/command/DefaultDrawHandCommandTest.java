@@ -2,7 +2,7 @@ package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.impl.DefaultGame;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.Player;
+import nl.utwente.bpsd.impl.DefaultPlayer;
 import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.model.pile.HandPile;
 import static org.hamcrest.CoreMatchers.is;
@@ -14,13 +14,13 @@ import static org.junit.Assert.*;
 
 public class DefaultDrawHandCommandTest {
 
-    Player player;
-    Game game;
+    DefaultPlayer player;
+    DefaultGame game;
     DefaultDrawHandCommand drawHandC;
 
     @Before
     public void setUp() throws Exception {
-        player = new Player("TestPlayer");
+        player = new DefaultPlayer("TestPlayer");
         game = new DefaultGame();
         game.addPlayers(player);
         game.initialize();

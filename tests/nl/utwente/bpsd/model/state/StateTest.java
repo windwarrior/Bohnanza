@@ -5,10 +5,13 @@
  */
 package nl.utwente.bpsd.model.state;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
-import nl.utwente.bpsd.model.DefaultGameCommandResult;
+import nl.utwente.bpsd.impl.DefaultGameCommandResult;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.command.Command;
+import nl.utwente.bpsd.model.Command;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import org.junit.Before;
@@ -149,6 +152,19 @@ public class StateTest {
         assertThat(s4.isAllowedClass(ACommand.class), is(true));
         assertThat(s4.isAllowedClass(BCommand.class), is(true));
         assertThat(s4.isAllowedClass(CCommand.class), is(true));
+    }
+    
+    @Test
+    public void testAlphabet() {
+        assertThat(s1.alphabet(new ArrayList<>()), is(new HashSet<>(Arrays.asList("a", "b", "c"))));
+        
+        State<String, Command> sFirst = new State("S1");
+        State<String, Command> sSecond = new State("S2");
+        
+        sFirst.addTransition("a", sSecond);
+        sSecond.addTransition("b", sFirst);
+        
+        assertThat(sFirst.alphabet(new ArrayList<>()), is(new HashSet<>(Arrays.asList("a", "b"))));
     }
     
     class ACommand implements Command {

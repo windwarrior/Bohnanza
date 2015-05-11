@@ -7,15 +7,17 @@ package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.DefaultGameCommandResult;
-import nl.utwente.bpsd.model.Player;
+import nl.utwente.bpsd.impl.DefaultGameCommandResult;
+import nl.utwente.bpsd.impl.DefaultPlayer;
 import nl.utwente.bpsd.model.pile.Pile;
-import nl.utwente.bpsd.model.command.Command;
+import nl.utwente.bpsd.model.Command;
 
 import java.util.List;
+import nl.utwente.bpsd.impl.DefaultGame;
+import nl.utwente.bpsd.model.GameCommandResult;
 
-public class DefaultPlantCommand implements Command {
-    Player player;
+public class DefaultPlantCommand extends DefaultGameCommand {
+    DefaultPlayer player;
     int fieldIndex;
     Card card;
 
@@ -24,7 +26,10 @@ public class DefaultPlantCommand implements Command {
      * @requires this.player != null this.fieldIndex != null && g != null && this.card != null
      */
     @Override
-    public DefaultGameCommandResult execute(Game g) {
+    public GameCommandResult execute(Game game) {
+        super.execute(game); // force a check that this is indeed a defaultgame
+        DefaultGame dg = (DefaultGame) game; // Cast it because it is now indeed a DefaultGame
+        
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null && this.card!= null
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
@@ -35,7 +40,7 @@ public class DefaultPlantCommand implements Command {
          */
         if(!(field.pileSize() == 0) && !field.peek().equals(card)) {
             //maybe other error handling?
-            return DefaultGameCommandResult.GAME_PLANT_ERROR;
+            return DefaultGameCommandResult.INVALID;
         }
         else {
             /* TODO: What about removing card from player's hand? Where it should be done?
@@ -43,11 +48,11 @@ public class DefaultPlantCommand implements Command {
              * In case of error should it be put back in player's hand?
             */
             field.append(card);
-            return DefaultGameCommandResult.GAME_PROGRESS;
+            return DefaultGameCommandResult.PLANT;
         }
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(DefaultPlayer player) {
         this.player = player;
     }
 

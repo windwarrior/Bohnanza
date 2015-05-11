@@ -3,11 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.utwente.bpsd.model.command;
-
-import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.DefaultGameCommandResult;
+package nl.utwente.bpsd.model;
 
 public interface Command {
-    public DefaultGameCommandResult execute(Game g);
+    public GameCommandResult execute(Game g);
 }

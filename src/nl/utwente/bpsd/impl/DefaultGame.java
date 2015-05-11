@@ -8,17 +8,16 @@ import nl.utwente.bpsd.impl.command.DefaultPlantCommand;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.CardType;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.DiscardPile;
-import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.impl.command.*;
-import nl.utwente.bpsd.model.DefaultGameCommandResult;
-import nl.utwente.bpsd.model.command.Command;
+import nl.utwente.bpsd.model.Command;
+import nl.utwente.bpsd.model.GameCommandResult;
+import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.state.State;
 import nl.utwente.bpsd.model.state.StateManager;
 
-public class DefaultGame extends Game{
+public class DefaultGame extends Game {
 
     private List<Player> players;
     private Pile discardPile;
@@ -27,7 +26,7 @@ public class DefaultGame extends Game{
     private int reshuffleCounter;
     private StateManager stateManager;
 
-    public DefaultGame(){
+    public DefaultGame() {
         players = new ArrayList<>();
     }
 
@@ -36,151 +35,84 @@ public class DefaultGame extends Game{
         generateGameDeck();
         discardPile = new DiscardPile();
         // TODO: Deal initial hand to players
-        
+
         // This stateManager is only aware of the states that a certain player has
         // It should be parallely composed with a statemanager that holds track 
         // of the players, but that is represented in the currentPlayer
         // Below are all states (with a name)
-        State<DefaultGameCommandResult, Command> 
-                startState = new State("Turn", DefaultPlantCommand.class, DefaultHarvestCommand.class);
-        
-        State<DefaultGameCommandResult, Command> 
-                onePlantedState = new State("One bean planted", DefaultPlantCommand.class, DefaultSkipCommand.class);
-        
-        State<DefaultGameCommandResult, Command> 
-                drawCardToTradingState = new State("Draw cards to trading area", DefaultDrawTradeCommand.class);
-        
-        State<DefaultGameCommandResult, Command> 
-                tradingState = new State("Start trading", DefaultTradeCommand.class, DefaultSkipCommand.class);
-        
-        State<DefaultGameCommandResult, Command> 
-                plantTradedCardsState = new State("Plant traded cards", DefaultPlantTradedCommand.class, DefaultSkipCommand.class);
-        
-        State<DefaultGameCommandResult, Command> 
-                drawCardState = new State("Draw cards to your hand", DefaultDrawHandCommand.class);
-        
+        State<DefaultGameCommandResult, Command> startState = new State("Turn", DefaultPlantCommand.class, DefaultHarvestCommand.class);
+
+        State<DefaultGameCommandResult, Command> onePlantedState = new State("One bean planted", DefaultPlantCommand.class, DefaultSkipCommand.class);
+
+        State<DefaultGameCommandResult, Command> drawCardToTradingState = new State("Draw cards to trading area", DefaultDrawTradeCommand.class);
+
+        State<DefaultGameCommandResult, Command> tradingState = new State("Start trading", DefaultTradeCommand.class, DefaultSkipCommand.class);
+
+        State<DefaultGameCommandResult, Command> plantTradedCardsState = new State("Plant traded cards", DefaultPlantTradedCommand.class, DefaultSkipCommand.class);
+
+        State<DefaultGameCommandResult, Command> drawCardState = new State("Draw cards to your hand", DefaultDrawHandCommand.class);
+
         // TODO buy field command
-        
         // These are per state all transitions that can be taken
         startState.addTransition(DefaultGameCommandResult.HARVEST, startState);
         startState.addTransition(DefaultGameCommandResult.PLANT, onePlantedState);
-        
+
         onePlantedState.addTransition(DefaultGameCommandResult.PLANT, drawCardToTradingState);
         onePlantedState.addTransition(DefaultGameCommandResult.SKIP, drawCardToTradingState);
-        
+
         drawCardToTradingState.addTransition(DefaultGameCommandResult.DRAWN_TO_TRADING, tradingState);
-        
+
+        // Trading is implemented in the statemachine, but not yet with the players
         tradingState.addTransition(DefaultGameCommandResult.TRADE, tradingState);
         tradingState.addTransition(DefaultGameCommandResult.SKIP, plantTradedCardsState);
-        
+
         plantTradedCardsState.addTransition(DefaultGameCommandResult.PLANT_TRADED, plantTradedCardsState);
         plantTradedCardsState.addTransition(DefaultGameCommandResult.SKIP, drawCardState);
-        
+
         drawCardState.addTransition(DefaultGameCommandResult.DRAWN_TO_HAND, startState);
 
         stateManager = new StateManager(startState);
     }
 
     @Override
-    public void draw(Player player) {
-        if (player == this.currentPlayer && this.stateManager.isAllowedClass(DefaultDrawHandCommand.class)) {
+    public boolean executeCommand(Player p, Command klass) {
+        boolean result = false;
 
-            DefaultDrawHandCommand dc = new DefaultDrawHandCommand();
+        // Yes comparison by reference, should be the same instance as well!
+        if (this.currentPlayer == p && this.stateManager.isAllowedClass(klass.getClass())) {
+            GameCommandResult commandOutput = klass.execute(this);
 
-            dc.setPlayer(player);
-            stateManager.doTransition(dc.execute(this));
+            result = this.stateManager.isTransition(commandOutput);
 
-            // TODO: after this something has to happen with the current state
-            // TODO: notify observer of the draw command
-            // TODO: notify observer of the new state
+            if (result) {
+                this.stateManager.doTransition(commandOutput);
+
+                if (this.stateManager.isInAcceptingState()) {
+                    this.gameEnd();
+                }
+            }
         }
+
+        return result;
+
     }
 
     @Override
-    public void drawTrading(Player player) {
-        if (player == this.currentPlayer && this.stateManager.isAllowedClass(DefaultDrawTradeCommand.class)) {
-
-            DefaultDrawTradeCommand dc = new DefaultDrawTradeCommand();
-
-            dc.setPlayer(player);
-            dc.execute(this);
-            // TODO: states need to be setup and checked
-            // TODO: Notify observers
-        }
-    }
-
-    public void plantFromTrading(Player p, int tradingIndex, int fieldIndex){
-        // TODO: handle states
-        DefaultPlantCommand dc = new DefaultPlantCommand();
-        dc.setPlayer(p);
-        dc.setFieldIndex(fieldIndex);
-        Optional<Card> card = ((HandPile)(p.getTrading())).getCard(tradingIndex);
-        // TODO: check if optional card contains a card otherwise error
-        dc.setCard(card.get());
-        dc.execute(this);
-    }
-
-    public void plantFromHand(Player p, int fieldIndex) {
-        // TODO: handle states
-        DefaultPlantCommand dc = new DefaultPlantCommand();
-        dc.setPlayer(p);
-        dc.setFieldIndex(fieldIndex);
-        // TODO: This should have some check to see if a player still has cards in his hand
-        dc.setCard(p.getHand().pop());
-        dc.execute(this);
-    }
-
-    public void trade(Player current, Player p) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void harvest(Player p, int fieldIndex) {
-        DefaultHarvestCommand dc = new DefaultHarvestCommand();
-        dc.setPlayer(p);
-        dc.setFieldIndex(fieldIndex);
-        dc.execute(this);
-    }
-
-    public void buyField(Player p) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void addPlayers(Player... p) {
-        for(Player player : p){
-            players.add(player);
-            player.setGame(this);
-        }
-    }
-
-    public void endGame() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public Player determineWinner() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public Player getCurrentPlayer() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.currentPlayer;
     }
 
-    public void nextState() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public Pile getGamePile() {
         return gamePile;
     }
 
-    @Override
     public Pile getDiscardPile() {
         return discardPile;
     }
 
     /**
-     * Creates all cards and puts these in the gamePile
-     * Note: Not sure if this should be done here, in any case it needs to happen somewhere
+     * Creates all cards and puts these in the gamePile Note: Not sure if this
+     * should be done here, in any case it needs to happen somewhere
      */
     private void generateGameDeck() {
         List<CardType> allCardType = new ArrayList<>();
@@ -283,4 +215,27 @@ public class DefaultGame extends Game{
             gamePile.append(c);
         }
     }
+
+    @Override
+    public void addPlayers(Player... players) {
+        this.players = Arrays.asList(players);
+    }
+
+    @Override
+    public void gameEnd() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Optional<Pile> getPileByName(String name) {
+        switch (name.toLowerCase()) {
+            case "discard":
+                return Optional.of(this.getDiscardPile());
+            case "game":
+                return Optional.of(this.getGamePile());
+            default:
+                return Optional.empty();
+        }
+    }
+
 }

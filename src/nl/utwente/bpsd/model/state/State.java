@@ -1,19 +1,29 @@
 package nl.utwente.bpsd.model.state;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 
 public class State<K, C> {
     private final String name;
     private final List<Class<? extends C>> allowedClasses;
+    private boolean isAcceptingState;
     
     private Map<K, State> transitions;
     
     public State(String name, Class<? extends C>... allowedClasses) {
+        this(name, false, allowedClasses);
+    }
+    
+    public State(String name, boolean isAcceptingState, Class<? extends C>... allowedClasses) {
         this.name = name;
+        this.isAcceptingState = isAcceptingState;
         this.allowedClasses = Arrays.asList(allowedClasses);
         transitions = new HashMap<>();
     }
@@ -43,9 +53,47 @@ public class State<K, C> {
         return allowedClasses.contains(command);
     }
     
+    public boolean isAcceptingState() {
+        return this.isAcceptingState;
+    }
+    
     @Override
     public String toString() {
         return this.name;
     }
     
+    public Set<K> alphabet(List<Entry<K, State>> visitedTransitions) {
+        Set<K> alphabet = new HashSet<>();
+        
+        for(Entry<K, State> transition: transitions.entrySet()) {
+            if(!visitedTransitions.contains(transition)) {
+                // add letter to the alphabet
+                alphabet.add(transition.getKey());
+                // add this transition to the visted map
+                visitedTransitions.add(transition);
+                
+                // call recursively on the end of this transition
+                Set<K> otherAlphabet = transition.getValue().alphabet(visitedTransitions);
+                
+                // add all discovered letters to the alphabet
+                alphabet.addAll(otherAlphabet);             
+            }
+        }
+        
+        return alphabet;
+    }
+    
+    public Set<State> reachable(Set<State> visited) {
+        Set<State> reachable = new HashSet<>(Arrays.asList(this));
+        
+        visited.add(this);
+        
+        for(Entry<K, State> transition: transitions.entrySet()) {
+            if(!visited.contains(transition.getValue())) {
+                Set<State> otherReachable = transition.getValue().reachable(visited);
+            }
+        }
+        
+        return reachable;
+    }
 }

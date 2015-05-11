@@ -1,14 +1,15 @@
 package nl.utwente.bpsd.impl.command;
 
-import nl.utwente.bpsd.model.DefaultGameCommandResult;
+import nl.utwente.bpsd.impl.DefaultGameCommandResult;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.command.Command;
+import nl.utwente.bpsd.model.Command;
+import nl.utwente.bpsd.model.GameCommandResult;
 
 
-public class DefaultPlantTradedCommand implements Command {
+public class DefaultPlantTradedCommand extends DefaultGameCommand {
 
     @Override
-    public DefaultGameCommandResult execute(Game g) {
+    public GameCommandResult execute(Game game) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

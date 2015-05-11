@@ -2,7 +2,7 @@ package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.impl.DefaultGame;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.Player;
+import nl.utwente.bpsd.impl.DefaultPlayer;
 import nl.utwente.bpsd.model.pile.Pile;
 import org.junit.After;
 import org.junit.Before;
@@ -16,13 +16,13 @@ import static org.junit.Assert.*;
 
 public class DefaultBuyFieldCommandTest {
 
-    Player player;
-    Game game;
+    DefaultPlayer player;
+    DefaultGame game;
     DefaultBuyFieldCommand buyFieldC;
 
     @Before
     public void setUp() throws Exception {
-        player = new Player("TestPlayer");
+        player = new DefaultPlayer("TestPlayer");
         game = new DefaultGame();
         game.addPlayers(player);
         game.initialize();

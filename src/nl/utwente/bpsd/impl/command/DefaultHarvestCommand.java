@@ -7,17 +7,19 @@ package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.DefaultGameCommandResult;
-import nl.utwente.bpsd.model.Player;
+import nl.utwente.bpsd.impl.DefaultGameCommandResult;
+import nl.utwente.bpsd.impl.DefaultPlayer;
 import nl.utwente.bpsd.model.pile.Pile;
-import nl.utwente.bpsd.model.command.Command;
+import nl.utwente.bpsd.model.Command;
 
 import java.util.List;
 import java.util.TreeMap;
+import nl.utwente.bpsd.impl.DefaultGame;
+import nl.utwente.bpsd.model.GameCommandResult;
 
-public class DefaultHarvestCommand implements Command {
+public class DefaultHarvestCommand extends DefaultGameCommand {
 
-    Player player;
+    DefaultPlayer player;
     int fieldIndex;
 
     /**
@@ -25,7 +27,10 @@ public class DefaultHarvestCommand implements Command {
      * @requires this.player != null this.fieldIndex != null && g != null;
      */
     @Override
-    public DefaultGameCommandResult execute(Game g) {
+    public GameCommandResult execute(Game game) {        
+        super.execute(game); // force a check that this is indeed a defaultgame
+        DefaultGame dg = (DefaultGame) game; // Cast it because it is now indeed a DefaultGame
+        
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
@@ -59,23 +64,23 @@ public class DefaultHarvestCommand implements Command {
 
             int numberOfDiscarded = fieldSize - earnedCoins;
             for(int i=numberOfDiscarded; i>0; --i) {
-                g.getDiscardPile().append(field.pop());
+                dg.getDiscardPile().append(field.pop());
             }
 
             for(int i=earnedCoins; i>0; --i) {
                 player.getTreasury().append(field.pop());
             }
 
-            return DefaultGameCommandResult.GAME_PROGRESS;
+            return DefaultGameCommandResult.HARVEST;
         }
         else {
             //maybe other error handling?
-            return DefaultGameCommandResult.GAME_HARVEST_ERROR;
+            return DefaultGameCommandResult.INVALID;
         }
 
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(DefaultPlayer player) {
         this.player = player;
     }
 

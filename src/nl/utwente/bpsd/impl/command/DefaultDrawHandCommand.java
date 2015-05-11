@@ -7,17 +7,19 @@ package nl.utwente.bpsd.impl.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import nl.utwente.bpsd.impl.DefaultGame;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.DefaultGameCommandResult;
-import nl.utwente.bpsd.model.Player;
+import nl.utwente.bpsd.impl.DefaultGameCommandResult;
+import nl.utwente.bpsd.impl.DefaultPlayer;
 import nl.utwente.bpsd.model.pile.Pile;
-import nl.utwente.bpsd.model.command.Command;
+import nl.utwente.bpsd.model.Command;
+import nl.utwente.bpsd.model.GameCommandResult;
 
-public class DefaultDrawHandCommand implements Command {
-    private Player player;
+public class DefaultDrawHandCommand extends DefaultGameCommand {
+    private DefaultPlayer player;
     
-    public void setPlayer(Player p ) {
+    public void setPlayer(DefaultPlayer p ) {
         this.player = p;
     }
 
@@ -26,10 +28,13 @@ public class DefaultDrawHandCommand implements Command {
      * @requires this.player != null && g != null;
      */
     @Override
-    public DefaultGameCommandResult execute(Game g) {
+    public GameCommandResult execute(Game game) {
+        super.execute(game); // force a check that this is indeed a defaultgame
+        DefaultGame dg = (DefaultGame) game; // Cast it because it is now indeed a DefaultGame
+        
         assert this.player != null;
         // TODO: Error handling in the case that the game pile is empty (and discard pile has been reshuffled twice)
-        Pile gamePile = g.getGamePile();        
+        Pile gamePile = dg.getGamePile();        
         
         List<Card> toBeInserted = new ArrayList<Card>();
 
@@ -39,7 +44,7 @@ public class DefaultDrawHandCommand implements Command {
             
         this.player.addAllHand(toBeInserted);
         
-        return DefaultGameCommandResult.GAME_PROGRESS;
+        return DefaultGameCommandResult.DRAWN_TO_HAND;
     }
     
 }

@@ -1,5 +1,7 @@
 package nl.utwente.bpsd.impl.command;
 
+import nl.utwente.bpsd.impl.DefaultGameCommandResult;
+import nl.utwente.bpsd.impl.DefaultPlayer;
 import junit.framework.TestCase;
 import nl.utwente.bpsd.impl.DefaultGame;
 import nl.utwente.bpsd.model.*;
@@ -14,13 +16,13 @@ import static org.junit.Assert.assertThat;
 
 public class DefaultPlantCommandTest extends TestCase {
 
-    Player player;
+    DefaultPlayer player;
     Game game;
     DefaultPlantCommand plantC;
 
     @Before
     public void setUp() throws Exception {
-        player = new Player("TestPlayer");
+        player = new DefaultPlayer("TestPlayer");
         game = new DefaultGame();
         game.addPlayers(player);
         game.initialize();
@@ -39,8 +41,8 @@ public class DefaultPlantCommandTest extends TestCase {
 
     @Test
     public void testExecute() throws Exception {
-        DefaultGameCommandResult status = plantC.execute(game);
-        assertThat("Planting on empty field: game status checking", status, is(DefaultGameCommandResult.GAME_PROGRESS));
+        GameCommandResult status = plantC.execute(game);
+        assertThat("Planting on empty field: game status checking", status, is(DefaultGameCommandResult.PLANT));
         assertThat("Planting on empty field: field checking ", player.getAllFields().get(0).pileSize(), is(1));
         plantC.execute(game);
         assertThat("Planting on not empty field: field checking ", player.getAllFields().get(0).pileSize(), is(2));
@@ -54,7 +56,7 @@ public class DefaultPlantCommandTest extends TestCase {
         generateFieldCards(1, 3);
         plantC.setFieldIndex(1);
         status = plantC.execute(game);
-        assertThat("Planting on field with wrong cards' type: game status checking", status, is(DefaultGameCommandResult.GAME_PLANT_ERROR));
+        assertThat("Planting on field with wrong cards' type: game status checking", status, is(DefaultGameCommandResult.INVALID));
         assertThat("Planting on field with wrong cards' type: field checking ", player.getAllFields().get(1).pileSize(), is(3));
     }
 
