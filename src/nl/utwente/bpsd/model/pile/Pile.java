@@ -58,5 +58,26 @@ public class Pile {
         return cardList;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Pile pile = (Pile) o;
+
+        return getCardList().equals(pile.getCardList());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getCardList().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Pile{" +
+                "cardList=" + cardList +
+                '}';
+    }
 }
