@@ -223,7 +223,7 @@ public class DefaultGame extends Game {
 
     @Override
     public void gameEnd() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
