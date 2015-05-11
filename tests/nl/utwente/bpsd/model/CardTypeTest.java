@@ -53,7 +53,14 @@ public class CardTypeTest {
         beanOMeter.put(10, 4);
         beanOMeter.put(8, 3);
         
-        assertEquals("The beanOMeter is correctly returned", cardType.getBeanOMeter(), beanOMeter);
+        assertEquals("The bean0Meter is correctly returned", cardType.getBeanOMeter(), beanOMeter);
+    }
+    /**
+     * Test of getNumberOfType method, of class CardType.
+     */
+    @Test
+    public void testGetNumberOfType() {
+        assertEquals("The number of cards of certain type is correctly returned", cardType.getNumberOfType(), 1);
     }
     
 }

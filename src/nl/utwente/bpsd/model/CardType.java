@@ -7,7 +7,7 @@ public class CardType {
   private final int numberOfType;
   private final Map<Integer, Integer> beanOMeter;
   /**
-  * Creates a CardType with a given name and a map between number of beans and value
+  * Creates a CardType with a given name, a map between number of beans and value, and number of bean cards in deck
   */
   public CardType(final String typeName, final Map<Integer, Integer> beanOMeter, final int numberOfType) {
     //NYI

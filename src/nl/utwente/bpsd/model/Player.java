@@ -43,7 +43,9 @@ public class Player {
     //Still needs consideration
     public void trade() {}
 
-    public void harvest(int fieldIndex) {}
+    public void harvest(int fieldIndex) {
+
+    }
 
     public void buyField() {}
 

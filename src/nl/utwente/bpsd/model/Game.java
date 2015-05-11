@@ -58,4 +58,6 @@ public abstract class Game extends Observable {
     public abstract void nextState();
     
     public abstract Pile getGamePile();
+
+    public abstract Pile getDiscardPile();
 }

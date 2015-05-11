@@ -11,5 +11,7 @@ package nl.utwente.bpsd.model;
  */
 public enum GameStatus {
     GAME_FINISHED,
-    GAME_PROGRESS
+    GAME_PROGRESS,
+    GAME_HARVEST_ERROR,
+    GAME_PLANT_ERROR
 }

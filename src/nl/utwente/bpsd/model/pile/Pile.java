@@ -54,7 +54,7 @@ public class Pile {
         return cardList.size();
     }
 
-    protected List<Card> getCardList(){
+    public List<Card> getCardList(){
         return cardList;
     }
 

@@ -3,6 +3,7 @@ package nl.utwente.bpsd.impl;
 import java.util.*;
 
 import nl.utwente.bpsd.impl.command.DefaultDrawTradeCommand;
+import nl.utwente.bpsd.impl.command.DefaultHarvestCommand;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.CardType;
 import nl.utwente.bpsd.model.Game;
@@ -97,6 +98,11 @@ public class DefaultGame extends Game{
     @Override
     public Pile getGamePile() {
         return gamePile;
+    }
+
+    @Override
+    public Pile getDiscardPile() {
+        return discardPile;
     }
 
     /**
