@@ -1,7 +1,7 @@
 package nl.utwente.bpsd.model.state;
 
 import java.util.Optional;
-import nl.utwente.bsd.model.command.Command;
+import nl.utwente.bpsd.model.command.Command;
 
 public class StateManager {
     private State currentState;
