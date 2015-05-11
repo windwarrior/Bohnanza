@@ -43,8 +43,7 @@ public class Pile {
     * Look a the top card without removing it.
     */
     public Card peek() {
-      // NYI
-      return null;
+      return cardList.get(0);
     }
 
     /**

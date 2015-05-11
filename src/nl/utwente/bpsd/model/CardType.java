@@ -32,7 +32,10 @@ public class CardType {
   public boolean equals(Object other){
       boolean result = false;
       if(other instanceof CardType){
-          result = this.typeName.equals(((CardType) other).getTypeName());
+          CardType ct = (CardType) other;
+          result = this.typeName.equals(ct.getTypeName())
+            && this.numberOfType == ct.getNumberOfType()
+            && this.beanOMeter.equals(ct.getBeanOMeter());
       }
       return result;
   }
