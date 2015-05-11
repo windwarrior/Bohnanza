@@ -41,6 +41,14 @@ public class CardType {
   }
 
     @Override
+    public int hashCode() {
+        int result = typeName.hashCode();
+        result = 31 * result + numberOfType;
+        result = 31 * result + beanOMeter.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString(){
         return String.format("CardType: %s, NumberOfType: %d, BeanOMeter: %s",typeName,numberOfType,beanOMeter.toString());
     }
