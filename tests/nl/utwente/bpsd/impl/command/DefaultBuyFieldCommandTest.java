@@ -78,8 +78,8 @@ public class DefaultBuyFieldCommandTest {
 
     //Put some coins (cards) from the game pill into the players treasury
     private void fillTreasury() {
-        player.getTreasury().append(game.getGamePile().pop());
-        player.getTreasury().append(game.getGamePile().pop());
-        player.getTreasury().append(game.getGamePile().pop());
+        player.getTreasury().append(game.getGamePile().pop().get());
+        player.getTreasury().append(game.getGamePile().pop().get());
+        player.getTreasury().append(game.getGamePile().pop().get());
     }
 }
