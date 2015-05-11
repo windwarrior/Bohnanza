@@ -10,7 +10,7 @@ import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.GameStatus;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
-import nl.utwente.bsd.model.command.Command;
+import nl.utwente.bpsd.model.command.Command;
 
 import java.util.List;
 import java.util.TreeMap;

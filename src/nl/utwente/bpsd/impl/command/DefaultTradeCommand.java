@@ -7,7 +7,7 @@ package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.GameStatus;
-import nl.utwente.bsd.model.command.Command;
+import nl.utwente.bpsd.model.command.Command;
 
 /**
  *
