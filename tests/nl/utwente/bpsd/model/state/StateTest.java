@@ -81,6 +81,11 @@ public class StateTest {
         // Also check that that transition can be added back (also a source of bugs)
         s1.addTransition("a", s2);
         assertThat(s1.getTransition("a"), is(Optional.of(s2)));
+        // And finally test that a transition that doesnt exist can be removed.
+        // Should not throw errors or make the internal state inconsistent.
+        assertThat(s1.getTransition("c"), is(Optional.empty()));
+        s1.removeTransition("c");
+        assertThat(s1.getTransition("c"), is(Optional.empty()));
     }
 
     /**
