@@ -6,17 +6,13 @@
 package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.GameStatus;
+import nl.utwente.bpsd.model.DefaultGameCommandResult;
 import nl.utwente.bpsd.model.command.Command;
 
-/**
- *
- * @author lennart
- */
 public class DefaultTradeCommand implements Command {
 
     @Override
-    public GameStatus execute(Game g) {
+    public DefaultGameCommandResult execute(Game g) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

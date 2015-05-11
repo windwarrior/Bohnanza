@@ -6,17 +6,14 @@
 package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.GameStatus;
+import nl.utwente.bpsd.model.DefaultGameCommandResult;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.model.command.Command;
 
 import java.util.List;
 
-/**
- *
- * @author lennart
- */
+//TODO: Add this to the state machine.
 public class DefaultBuyFieldCommand implements Command {
 
     Player player;
@@ -24,7 +21,7 @@ public class DefaultBuyFieldCommand implements Command {
     public static final int NUMMAXFIELDS = 3;
 
     @Override
-    public GameStatus execute(Game g) {
+    public DefaultGameCommandResult execute(Game g) {
         Pile treasury = player.getTreasury();
         List<Pile> fields = player.getAllFields();
         if(treasury.pileSize() >= FIELDCOST && fields.size() < NUMMAXFIELDS){
@@ -34,7 +31,7 @@ public class DefaultBuyFieldCommand implements Command {
             Pile newField = new Pile();
             fields.add(newField);
         }
-        return GameStatus.GAME_PROGRESS;
+        return DefaultGameCommandResult.GAME_PROGRESS;
     }
 
     public void setPlayer(Player player) {

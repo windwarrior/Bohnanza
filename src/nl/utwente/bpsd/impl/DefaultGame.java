@@ -12,16 +12,20 @@ import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.DiscardPile;
 import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
-import nl.utwente.bpsd.impl.command.DefaultDrawHandCommand;
+import nl.utwente.bpsd.impl.command.*;
+import nl.utwente.bpsd.model.DefaultGameCommandResult;
+import nl.utwente.bpsd.model.command.Command;
+import nl.utwente.bpsd.model.state.State;
+import nl.utwente.bpsd.model.state.StateManager;
 
 public class DefaultGame extends Game{
 
     private List<Player> players;
     private Pile discardPile;
     private Pile gamePile;
-    private GameState currentTurnState;
     private Player currentPlayer;
     private int reshuffleCounter;
+    private StateManager stateManager;
 
     public DefaultGame(){
         players = new ArrayList<>();
@@ -32,30 +36,77 @@ public class DefaultGame extends Game{
         generateGameDeck();
         discardPile = new DiscardPile();
         // TODO: Deal initial hand to players
+        
+        // This stateManager is only aware of the states that a certain player has
+        // It should be parallely composed with a statemanager that holds track 
+        // of the players, but that is represented in the currentPlayer
+        // Below are all states (with a name)
+        State<DefaultGameCommandResult, Command> 
+                startState = new State("Turn", DefaultPlantCommand.class, DefaultHarvestCommand.class);
+        
+        State<DefaultGameCommandResult, Command> 
+                onePlantedState = new State("One bean planted", DefaultPlantCommand.class, DefaultSkipCommand.class);
+        
+        State<DefaultGameCommandResult, Command> 
+                drawCardToTradingState = new State("Draw cards to trading area", DefaultDrawTradeCommand.class);
+        
+        State<DefaultGameCommandResult, Command> 
+                tradingState = new State("Start trading", DefaultTradeCommand.class, DefaultSkipCommand.class);
+        
+        State<DefaultGameCommandResult, Command> 
+                plantTradedCardsState = new State("Plant traded cards", DefaultPlantTradedCommand.class, DefaultSkipCommand.class);
+        
+        State<DefaultGameCommandResult, Command> 
+                drawCardState = new State("Draw cards to your hand", DefaultDrawHandCommand.class);
+        
+        // TODO buy field command
+        
+        // These are per state all transitions that can be taken
+        startState.addTransition(DefaultGameCommandResult.HARVEST, startState);
+        startState.addTransition(DefaultGameCommandResult.PLANT, onePlantedState);
+        
+        onePlantedState.addTransition(DefaultGameCommandResult.PLANT, drawCardToTradingState);
+        onePlantedState.addTransition(DefaultGameCommandResult.SKIP, drawCardToTradingState);
+        
+        drawCardToTradingState.addTransition(DefaultGameCommandResult.DRAWN_TO_TRADING, tradingState);
+        
+        tradingState.addTransition(DefaultGameCommandResult.TRADE, tradingState);
+        tradingState.addTransition(DefaultGameCommandResult.SKIP, plantTradedCardsState);
+        
+        plantTradedCardsState.addTransition(DefaultGameCommandResult.PLANT_TRADED, plantTradedCardsState);
+        plantTradedCardsState.addTransition(DefaultGameCommandResult.SKIP, drawCardState);
+        
+        drawCardState.addTransition(DefaultGameCommandResult.DRAWN_TO_HAND, startState);
+
+        stateManager = new StateManager(startState);
     }
 
     @Override
-    public void draw(Player p) {
-        // TODO: check if the current state allows this action
-        
-        DefaultDrawHandCommand dc = new DefaultDrawHandCommand();
-        
-        dc.setPlayer(p);
-        dc.execute(this);
-        
-        // TODO: after this something has to happen with the current state
-        // TODO: notify observer of the draw command
-        // TODO: notify observer of the new state
+    public void draw(Player player) {
+        if (player == this.currentPlayer && this.stateManager.isAllowedClass(DefaultDrawHandCommand.class)) {
+
+            DefaultDrawHandCommand dc = new DefaultDrawHandCommand();
+
+            dc.setPlayer(player);
+            stateManager.doTransition(dc.execute(this));
+
+            // TODO: after this something has to happen with the current state
+            // TODO: notify observer of the draw command
+            // TODO: notify observer of the new state
+        }
     }
 
     @Override
     public void drawTrading(Player player) {
-        DefaultDrawTradeCommand dc = new DefaultDrawTradeCommand();
+        if (player == this.currentPlayer && this.stateManager.isAllowedClass(DefaultDrawTradeCommand.class)) {
 
-        dc.setPlayer(player);
-        dc.execute(this);
-        // TODO: states need to be setup and checked
-        // TODO: Notify observers
+            DefaultDrawTradeCommand dc = new DefaultDrawTradeCommand();
+
+            dc.setPlayer(player);
+            dc.execute(this);
+            // TODO: states need to be setup and checked
+            // TODO: Notify observers
+        }
     }
 
     public void plantFromTrading(Player p, int tradingIndex, int fieldIndex){
@@ -231,17 +282,5 @@ public class DefaultGame extends Game{
         for (Card c : allCards) {
             gamePile.append(c);
         }
-    }
-
-    enum GameState {
-        PREPERATION,
-        PLAY,
-        END,
-        MUST_PLANT_FROM_HAND,
-        MAY_PLANT_FROM_HAND,
-        DRAW_FOR_TRADING,
-        TRADE,
-        PLANT_FROM_TRADING,
-        DRAW_FOR_HAND
     }
 }

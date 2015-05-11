@@ -33,7 +33,7 @@ public abstract class Game extends Observable {
     public abstract void trade(Player current, Player p);
 
     /**
-     * Haversts Pile field for player p, adds profits to player treasury and the rest of the pile into the game discard pile
+     * Harvest Pile field for player p, adds profits to player treasury and the rest of the pile into the game discard pile
      */
     public abstract void harvest(Player p, int fieldIndex);
 
@@ -53,11 +53,6 @@ public abstract class Game extends Observable {
 
     public abstract Player getCurrentPlayer();
 
-    /**
-     * Update game state and currentPlayer or end game
-     * Done afer every move made?
-     */
-    public abstract void nextState();
     
     public abstract Pile getGamePile();
 

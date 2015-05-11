@@ -39,8 +39,8 @@ public class DefaultPlantCommandTest extends TestCase {
 
     @Test
     public void testExecute() throws Exception {
-        GameStatus status = plantC.execute(game);
-        assertThat("Planting on empty field: game status checking", status, is(GameStatus.GAME_PROGRESS));
+        DefaultGameCommandResult status = plantC.execute(game);
+        assertThat("Planting on empty field: game status checking", status, is(DefaultGameCommandResult.GAME_PROGRESS));
         assertThat("Planting on empty field: field checking ", player.getAllFields().get(0).pileSize(), is(1));
         plantC.execute(game);
         assertThat("Planting on not empty field: field checking ", player.getAllFields().get(0).pileSize(), is(2));
@@ -54,7 +54,7 @@ public class DefaultPlantCommandTest extends TestCase {
         generateFieldCards(1, 3);
         plantC.setFieldIndex(1);
         status = plantC.execute(game);
-        assertThat("Planting on field with wrong cards' type: game status checking", status, is(GameStatus.GAME_PLANT_ERROR));
+        assertThat("Planting on field with wrong cards' type: game status checking", status, is(DefaultGameCommandResult.GAME_PLANT_ERROR));
         assertThat("Planting on field with wrong cards' type: field checking ", player.getAllFields().get(1).pileSize(), is(3));
     }
 

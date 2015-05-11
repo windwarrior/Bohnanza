@@ -3,18 +3,20 @@ package nl.utwente.bpsd.model.state;
 import java.util.Optional;
 import nl.utwente.bpsd.model.command.Command;
 
-public class StateManager {
+public class StateManager<K, C> {
     private State currentState;
+    private final State initialState;
     
-    public StateManager() {
-        this.currentState = null;
+    public StateManager(State initial) {
+        this.initialState = initial;
+        this.currentState = initial;
     }
     
     public void addInitialState(State s) {
         this.currentState = s;
     }
     
-    public Optional<State> doTransition(String label) {
+    public Optional<State> doTransition(K label) {
         Optional<State> result = currentState.getTransition(label);
         
         result.ifPresent((State x) -> this.currentState = x);
@@ -22,11 +24,15 @@ public class StateManager {
         return result;
     }
     
-    public boolean isTransition(String label) {
+    public boolean isTransition(K label) {
         return currentState.getTransition(label).isPresent();
     }
     
-    public boolean isAllowedCommand(Class<? extends Command> command) {
-        return currentState.isAllowedCommand(command);
+    public boolean isAllowedClass(Class<? extends C> klass) {
+        return currentState.isAllowedClass(klass);
+    }
+    
+    public void reset() {
+        this.currentState = this.initialState;
     }
 }

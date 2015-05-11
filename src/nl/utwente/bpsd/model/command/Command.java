@@ -6,12 +6,8 @@
 package nl.utwente.bpsd.model.command;
 
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.GameStatus;
+import nl.utwente.bpsd.model.DefaultGameCommandResult;
 
-/**
- *
- * @author lennart
- */
 public interface Command {
-    public GameStatus execute(Game g);
+    public DefaultGameCommandResult execute(Game g);
 }

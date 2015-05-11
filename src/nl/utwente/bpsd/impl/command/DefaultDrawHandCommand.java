@@ -9,15 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.GameStatus;
+import nl.utwente.bpsd.model.DefaultGameCommandResult;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.model.command.Command;
 
-/**
- *
- * @author lennart
- */
 public class DefaultDrawHandCommand implements Command {
     private Player player;
     
@@ -30,7 +26,7 @@ public class DefaultDrawHandCommand implements Command {
      * @requires this.player != null && g != null;
      */
     @Override
-    public GameStatus execute(Game g) {
+    public DefaultGameCommandResult execute(Game g) {
         assert this.player != null;
         // TODO: Error handling in the case that the game pile is empty (and discard pile has been reshuffled twice)
         Pile gamePile = g.getGamePile();        
@@ -43,7 +39,7 @@ public class DefaultDrawHandCommand implements Command {
             
         this.player.addAllHand(toBeInserted);
         
-        return GameStatus.GAME_PROGRESS;
+        return DefaultGameCommandResult.GAME_PROGRESS;
     }
     
 }

@@ -7,7 +7,7 @@ package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.GameStatus;
+import nl.utwente.bpsd.model.DefaultGameCommandResult;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.model.command.Command;
@@ -15,11 +15,6 @@ import nl.utwente.bpsd.model.command.Command;
 import java.util.List;
 import java.util.TreeMap;
 
-/**
- *
- * @author lennart
- * @author Kasia
- */
 public class DefaultHarvestCommand implements Command {
 
     Player player;
@@ -30,7 +25,7 @@ public class DefaultHarvestCommand implements Command {
      * @requires this.player != null this.fieldIndex != null && g != null;
      */
     @Override
-    public GameStatus execute(Game g) {
+    public DefaultGameCommandResult execute(Game g) {
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
@@ -71,11 +66,11 @@ public class DefaultHarvestCommand implements Command {
                 player.getTreasury().append(field.pop());
             }
 
-            return GameStatus.GAME_PROGRESS;
+            return DefaultGameCommandResult.GAME_PROGRESS;
         }
         else {
             //maybe other error handling?
-            return GameStatus.GAME_HARVEST_ERROR;
+            return DefaultGameCommandResult.GAME_HARVEST_ERROR;
         }
 
     }

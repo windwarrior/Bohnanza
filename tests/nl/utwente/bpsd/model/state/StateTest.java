@@ -6,6 +6,9 @@
 package nl.utwente.bpsd.model.state;
 
 import java.util.Optional;
+import nl.utwente.bpsd.model.DefaultGameCommandResult;
+import nl.utwente.bpsd.model.Game;
+import nl.utwente.bpsd.model.command.Command;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import org.junit.Before;
@@ -13,10 +16,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class StateTest {
-    private State s1;
-    private State s2;
-    private State s3;
-    private State s4;
+    private State<String, Command> s1;
+    private State<String, Command> s2;
+    private State<String, Command> s3;
+    private State<String, Command> s4;
     
     public StateTest() {
     }
@@ -32,10 +35,10 @@ public class StateTest {
              V  /
              S3V---c-->S4
         */
-        s1 = new State("1");
-        s2 = new State("2");
-        s3 = new State("3");
-        s4 = new State("4");
+        s1 = new State<>("1", CCommand.class);
+        s2 = new State<>("2", BCommand.class);
+        s3 = new State<>("3", ACommand.class, BCommand.class);
+        s4 = new State<>("4", ACommand.class, BCommand.class, CCommand.class);
         
         // Transitions from S1
         s1.addTransition("a", s2);
@@ -123,7 +126,52 @@ public class StateTest {
      * Test of isAllowedCommand method, of class State.
      */
     @Test
-    public void testIsAllowedCommand() {
+    public void testIsAllowedClass() {
+        // Everything in state 1
+        assertThat(s1.isAllowedClass(CCommand.class), is(true));
+
+        assertThat(s1.isAllowedClass(ACommand.class), is(false));
+        assertThat(s1.isAllowedClass(BCommand.class), is(false));
+        
+        // Everything in state 2
+        assertThat(s2.isAllowedClass(BCommand.class), is(true));
+
+        assertThat(s2.isAllowedClass(ACommand.class), is(false));
+        assertThat(s2.isAllowedClass(CCommand.class), is(false));
+        
+        // Everything in state 3
+        assertThat(s3.isAllowedClass(ACommand.class), is(true));
+        assertThat(s3.isAllowedClass(BCommand.class), is(true));
+        
+        assertThat(s3.isAllowedClass(CCommand.class), is(false));
+        
+        // Everything in state 4
+        assertThat(s4.isAllowedClass(ACommand.class), is(true));
+        assertThat(s4.isAllowedClass(BCommand.class), is(true));
+        assertThat(s4.isAllowedClass(CCommand.class), is(true));
     }
+    
+    class ACommand implements Command {
+        @Override
+        public DefaultGameCommandResult execute(Game g) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }        
+    }
+    
+    class BCommand implements Command {
+        @Override
+        public DefaultGameCommandResult execute(Game g) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }        
+    }
+    
+    class CCommand implements Command {
+        @Override
+        public DefaultGameCommandResult execute(Game g) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }        
+    }
+    
+    
     
 }

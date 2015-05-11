@@ -7,18 +7,13 @@ package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.GameStatus;
+import nl.utwente.bpsd.model.DefaultGameCommandResult;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.model.command.Command;
 
 import java.util.List;
 
-/**
- *
- * @author lennart
- * @author Kasia
- */
 public class DefaultPlantCommand implements Command {
     Player player;
     int fieldIndex;
@@ -29,7 +24,7 @@ public class DefaultPlantCommand implements Command {
      * @requires this.player != null this.fieldIndex != null && g != null && this.card != null
      */
     @Override
-    public GameStatus execute(Game g) {
+    public DefaultGameCommandResult execute(Game g) {
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null && this.card!= null
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
@@ -40,7 +35,7 @@ public class DefaultPlantCommand implements Command {
          */
         if(!(field.pileSize() == 0) && !field.peek().equals(card)) {
             //maybe other error handling?
-            return GameStatus.GAME_PLANT_ERROR;
+            return DefaultGameCommandResult.GAME_PLANT_ERROR;
         }
         else {
             /* TODO: What about removing card from player's hand? Where it should be done?
@@ -48,7 +43,7 @@ public class DefaultPlantCommand implements Command {
              * In case of error should it be put back in player's hand?
             */
             field.append(card);
-            return GameStatus.GAME_PROGRESS;
+            return DefaultGameCommandResult.GAME_PROGRESS;
         }
     }
 

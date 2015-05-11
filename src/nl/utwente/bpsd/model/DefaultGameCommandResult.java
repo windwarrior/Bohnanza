@@ -5,13 +5,16 @@
  */
 package nl.utwente.bpsd.model;
 
-/**
- *
- * @author lennart
- */
-public enum GameStatus {
+public enum DefaultGameCommandResult {
     GAME_FINISHED,
     GAME_PROGRESS,
     GAME_HARVEST_ERROR,
-    GAME_PLANT_ERROR
+    GAME_PLANT_ERROR, 
+    SKIP,
+    HARVEST, 
+    PLANT, 
+    DRAWN_TO_TRADING, 
+    TRADE, 
+    PLANT_TRADED, 
+    DRAWN_TO_HAND
 }
