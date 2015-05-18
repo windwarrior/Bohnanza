@@ -71,7 +71,9 @@ public class DefaultPlayer extends Player {
     }
 
     public boolean buyField() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        DefaultBuyFieldCommand dc = new DefaultBuyFieldCommand();
+
+        return super.executeCommand(dc);
     }
 
     public Pile getHand() {
@@ -93,12 +95,6 @@ public class DefaultPlayer extends Player {
     //For possible extension with new Piles
     public Pile getAdditionalPileByName(String name) {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void addAllHand(List<Card> toBeInserted) {
-        for (Card c : toBeInserted) {
-            hand.append(c);
-        }
     }
 
     @Override

@@ -1,10 +1,11 @@
 package nl.utwente.bpsd.impl.command;
 
 import nl.utwente.bpsd.impl.DefaultGame;
-import nl.utwente.bpsd.model.Game;
+import nl.utwente.bpsd.impl.DefaultGameCommandResult;
+import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.impl.DefaultPlayer;
+import nl.utwente.bpsd.model.GameCommandResult;
 import nl.utwente.bpsd.model.pile.Pile;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +20,7 @@ public class DefaultBuyFieldCommandTest {
     DefaultPlayer player;
     DefaultGame game;
     DefaultBuyFieldCommand buyFieldC;
+    GameCommandResult result;
 
     @Before
     public void setUp() throws Exception {
@@ -29,25 +31,24 @@ public class DefaultBuyFieldCommandTest {
         buyFieldC = new DefaultBuyFieldCommand();
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void testExecute() throws Exception {
         assertThat("Test number start of fields", player.getAllFields().size(), is(2));
-        buyFieldC.execute(player,game);
+        result = buyFieldC.execute(player, game);
         assertThat("Not enough money for a field", player.getAllFields().size(), is(2));
+        assertThat("INVALID game command result", result, is(DefaultGameCommandResult.INVALID));
         //Setup treasury to buy a third field (should be allowed, so treasury will be empty after buying field
         fillTreasury();
-        buyFieldC.execute(player,game);
+        result = buyFieldC.execute(player,game);
         assertThat("Buy a third field", player.getAllFields().size(), is(3));
         assertThat("Check if treasury is used", player.getTreasury().pileSize(), is(0));
+        assertThat("BOUGHT_FIELD game command result",result,is(DefaultGameCommandResult.BOUGHT_FIELD));
         //Setup treasury to buy a fourth field (shouldn't be allowed, treasury should still be full)
         fillTreasury();
-        buyFieldC.execute(player,game);
+        result = buyFieldC.execute(player, game);
         assertThat("Buy a fourth field", player.getAllFields().size(), is(3));
         assertThat("Check if treasury is used", player.getTreasury().pileSize(), is(3));
+        assertThat("INVALID game command result",result,is(DefaultGameCommandResult.INVALID));
     }
 
     //This test should check the integrity of the player fields after a new field has been added
@@ -56,7 +57,6 @@ public class DefaultBuyFieldCommandTest {
     //  2. 2 fields + non enough money,
     //  3. 3 fields + enough money,
     //  4. 3 fields + not enough money
-    // TODO: How should we compare lists of piles??
     @Test
     public void testFieldConsistency() throws Exception {
         List<Pile> testField = new ArrayList<>();
@@ -77,8 +77,8 @@ public class DefaultBuyFieldCommandTest {
 
     //Put some coins (cards) from the game pill into the players treasury
     private void fillTreasury() {
-        player.getTreasury().append(game.getGamePile().pop().get());
-        player.getTreasury().append(game.getGamePile().pop().get());
-        player.getTreasury().append(game.getGamePile().pop().get());
+        for (int i = 0; i < DefaultBuyFieldCommand.FIELDCOST; i++) {
+            game.getGamePile().pop().ifPresent((Card c) -> player.getTreasury().append(c));
+        }
     }
 }
