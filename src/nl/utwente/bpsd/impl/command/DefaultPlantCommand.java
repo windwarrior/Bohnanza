@@ -1,18 +1,14 @@
 package nl.utwente.bpsd.impl.command;
 
-import nl.utwente.bpsd.model.Card;
-import nl.utwente.bpsd.model.Game;
+import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.impl.DefaultGameCommandResult;
 import nl.utwente.bpsd.impl.DefaultPlayer;
 import nl.utwente.bpsd.model.pile.Pile;
-import nl.utwente.bpsd.model.Command;
 
 import java.util.List;
 import nl.utwente.bpsd.impl.DefaultGame;
-import nl.utwente.bpsd.model.GameCommandResult;
 
 public class DefaultPlantCommand extends DefaultGameCommand {
-    DefaultPlayer player;
     int fieldIndex;
     Card card;
 
@@ -21,10 +17,11 @@ public class DefaultPlantCommand extends DefaultGameCommand {
      * @requires this.player != null this.fieldIndex != null && g != null && this.card != null
      */
     @Override
-    public GameCommandResult execute(Game game) {
-        super.execute(game); // force a check that this is indeed a defaultgame
-        DefaultGame dg = (DefaultGame) game; // Cast it because it is now indeed a DefaultGame
-        
+    public GameCommandResult execute(Player p, Game g) {
+        super.execute(p,g); // force a check that this is indeed a defaultgame
+        DefaultGame game = (DefaultGame) g; // Cast it because it is now indeed a DefaultGame
+        DefaultPlayer player = (DefaultPlayer) p;
+
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null && this.card!= null
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
@@ -45,10 +42,6 @@ public class DefaultPlantCommand extends DefaultGameCommand {
             field.append(card);
             return DefaultGameCommandResult.PLANT;
         }
-    }
-
-    public void setPlayer(DefaultPlayer player) {
-        this.player = player;
     }
 
     public void setFieldIndex(int index){

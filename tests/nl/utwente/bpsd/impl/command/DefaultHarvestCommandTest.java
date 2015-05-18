@@ -29,29 +29,28 @@ public class DefaultHarvestCommandTest extends TestCase {
         game.initialize();
 
         harvestC = new DefaultHarvestCommand();
-        harvestC.setPlayer(player);
         harvestC.setFieldIndex(0);
     }
 
     @Test
     public void testExecute() throws Exception {
-        GameCommandResult status = harvestC.execute(game);
+        GameCommandResult status = harvestC.execute(player,game);
         assertThat("Harvesting from field without any cards", status, is(DefaultGameCommandResult.INVALID));
         generateFieldCards(0, 1);
-        status = harvestC.execute(game);
+        status = harvestC.execute(player,game);
         assertThat("Harvesting from field with only one card, other fields are empty", status, is(DefaultGameCommandResult.INVALID));
         generateFieldCards(1, 1);
-        status = harvestC.execute(game);
+        status = harvestC.execute(player,game);
         assertThat("Harvesting from field with only one card, all player's fields consist of one card", status, is(DefaultGameCommandResult.HARVEST));
         generateFieldCards(0, 3);
-        status = harvestC.execute(game);
+        status = harvestC.execute(player,game);
         assertThat("Harvesting with the equal number of cards to those required in beanOMeter", status, is(DefaultGameCommandResult.HARVEST));
         assertThat("(0) Player's field after harvesting should be empty", player.getAllFields().get(0).pileSize(), is(0));
         assertThat("Player's treasury - 1 card added", player.getTreasury().pileSize(), is(2));
         assertThat("Game's discardPile - 2 cards added", game.getDiscardPile().pileSize(), is(2));
         generateFieldCards(1, 6);
         harvestC.setFieldIndex(1);
-        status = harvestC.execute(game);
+        status = harvestC.execute(player,game);
         assertThat("Harvesting from field with not equal number of cards to those required in beanOMeter ", status, is(DefaultGameCommandResult.HARVEST));
         assertThat("(1) Player's field after harvesting should be empty", player.getAllFields().get(1).pileSize(), is(0));
         assertThat("Player's treasury - 2 cards added", player.getTreasury().pileSize(), is(4));

@@ -14,6 +14,8 @@ import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.Command;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+
+import nl.utwente.bpsd.model.Player;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -169,21 +171,21 @@ public class StateTest {
     
     class ACommand implements Command {
         @Override
-        public DefaultGameCommandResult execute(Game g) {
+        public DefaultGameCommandResult execute(Player p,Game g) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }        
     }
     
     class BCommand implements Command {
         @Override
-        public DefaultGameCommandResult execute(Game g) {
+        public DefaultGameCommandResult execute(Player p,Game g) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }        
     }
     
     class CCommand implements Command {
         @Override
-        public DefaultGameCommandResult execute(Game g) {
+        public DefaultGameCommandResult execute(Player p,Game g) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }        
     }

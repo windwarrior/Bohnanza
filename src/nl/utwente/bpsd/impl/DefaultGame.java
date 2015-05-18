@@ -80,7 +80,7 @@ public class DefaultGame extends Game {
 
         // Yes comparison by reference, should be the same instance as well!
         if (this.currentPlayer == p && this.stateManager.isAllowedClass(klass.getClass())) {
-            GameCommandResult commandOutput = klass.execute(this);
+            GameCommandResult commandOutput = klass.execute(p,this);
 
             result = this.stateManager.isTransition(commandOutput);
 

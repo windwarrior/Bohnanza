@@ -28,7 +28,6 @@ public class DefaultPlantCommandTest extends TestCase {
         game.initialize();
 
         plantC = new DefaultPlantCommand();
-        plantC.setPlayer(player);
         plantC.setFieldIndex(0);
         Map<Integer, Integer> blackeyedBeanOMeter = new HashMap<>();
         blackeyedBeanOMeter.put(2, 1);
@@ -41,10 +40,10 @@ public class DefaultPlantCommandTest extends TestCase {
 
     @Test
     public void testExecute() throws Exception {
-        GameCommandResult status = plantC.execute(game);
+        GameCommandResult status = plantC.execute(player,game);
         assertThat("Planting on empty field: game status checking", status, is(DefaultGameCommandResult.PLANT));
         assertThat("Planting on empty field: field checking ", player.getAllFields().get(0).pileSize(), is(1));
-        status = plantC.execute(game);        
+        status = plantC.execute(player,game);
         assertThat("Planting on non empty field: game status checking", status, is(DefaultGameCommandResult.PLANT));
         assertThat("Planting on not empty field: field checking ", player.getAllFields().get(0).pileSize(), is(2));
         Map<Integer, Integer> redBeanOMeter = new HashMap<>();
@@ -56,7 +55,7 @@ public class DefaultPlantCommandTest extends TestCase {
         plantC.setCard(new Card(redBean));
         generateFieldCards(1, 3);
         plantC.setFieldIndex(1);
-        status = plantC.execute(game);
+        status = plantC.execute(player,game);
         assertThat("Planting on field with wrong cards' type: game status checking", status, is(DefaultGameCommandResult.INVALID));
         assertThat("Planting on field with wrong cards' type: field checking ", player.getAllFields().get(1).pileSize(), is(3));
     }

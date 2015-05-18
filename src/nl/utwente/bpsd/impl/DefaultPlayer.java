@@ -30,7 +30,6 @@ public class DefaultPlayer extends Player {
 
     public boolean drawIntoHand() {
         DefaultDrawHandCommand dc = new DefaultDrawHandCommand();
-        dc.setPlayer(this);
 
         return super.executeCommand(dc);
     }
@@ -38,14 +37,11 @@ public class DefaultPlayer extends Player {
     public boolean drawIntoTrading() {
         DefaultDrawTradeCommand dc = new DefaultDrawTradeCommand();
 
-        dc.setPlayer(this);
-
         return super.executeCommand(dc);
     }
 
     public boolean plantFromTrading(int tradingIndex, int fieldIndex) {
         DefaultPlantCommand dc = new DefaultPlantCommand();
-        dc.setPlayer(this);
         dc.setFieldIndex(fieldIndex);
         Optional<Card> card = ((HandPile) (this.getTrading())).getCard(tradingIndex);
         // TODO: check if optional card contains a card otherwise error
@@ -56,7 +52,6 @@ public class DefaultPlayer extends Player {
     public boolean plantFromHand(int fieldIndex) {
         // TODO: handle states
         DefaultPlantCommand dc = new DefaultPlantCommand();
-        dc.setPlayer(this);
         dc.setFieldIndex(fieldIndex);
         // TODO: This should have some check to see if a player still has cards in his hand
         dc.setCard(this.getHand().pop().get());
@@ -70,7 +65,6 @@ public class DefaultPlayer extends Player {
 
     public boolean harvest(int fieldIndex) {
         DefaultHarvestCommand dc = new DefaultHarvestCommand();
-        dc.setPlayer(this);
         dc.setFieldIndex(fieldIndex);
 
         return super.executeCommand(dc);

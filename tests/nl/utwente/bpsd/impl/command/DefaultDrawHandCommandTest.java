@@ -25,7 +25,6 @@ public class DefaultDrawHandCommandTest {
         game.addPlayers(player);
         game.initialize();
         drawHandC = new DefaultDrawHandCommand();
-        drawHandC.setPlayer(player);
     }
 
     @After
@@ -41,7 +40,7 @@ public class DefaultDrawHandCommandTest {
         Pile testPile = new Pile(game.getGamePile());
         int gamePileSize = testPile.pileSize();
         int handPileSize = player.getHand().pileSize();
-        drawHandC.execute(game);
+        drawHandC.execute(player,game);
         assertThat("Game pile size decreased by three", game.getGamePile().pileSize(), is(gamePileSize - 3));
         assertThat("Hand pile size increased by three", player.getHand().pileSize(), is(handPileSize + 3));
         //Test if last three hand pile cards have types of the top of the game pile (in order)

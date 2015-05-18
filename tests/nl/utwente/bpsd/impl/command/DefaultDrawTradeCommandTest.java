@@ -28,7 +28,6 @@ public class DefaultDrawTradeCommandTest {
         game.addPlayers(player);
         game.initialize();
         drawTradeC = new DefaultDrawTradeCommand();
-        drawTradeC.setPlayer(player);
     }
 
     @After
@@ -45,7 +44,7 @@ public class DefaultDrawTradeCommandTest {
         Pile testPile = new Pile(game.getGamePile());
         int gamePileSize = testPile.pileSize();
         int playerTradingSize = player.getTrading().pileSize();
-        drawTradeC.execute(game);
+        drawTradeC.execute(player,game);
         assertThat("Game pile removes two cards", game.getGamePile().pileSize(), is(gamePileSize - 2));
         assertThat("Trading pile gets two cards", player.getTrading().pileSize(), is(playerTradingSize + 2));
         //Test if correct cards are added to trading area

@@ -1,20 +1,16 @@
 package nl.utwente.bpsd.impl.command;
 
-import nl.utwente.bpsd.model.Card;
-import nl.utwente.bpsd.model.Game;
+import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.impl.DefaultGameCommandResult;
 import nl.utwente.bpsd.impl.DefaultPlayer;
 import nl.utwente.bpsd.model.pile.Pile;
-import nl.utwente.bpsd.model.Command;
 
 import java.util.List;
 import java.util.TreeMap;
 import nl.utwente.bpsd.impl.DefaultGame;
-import nl.utwente.bpsd.model.GameCommandResult;
 
 public class DefaultHarvestCommand extends DefaultGameCommand {
 
-    DefaultPlayer player;
     int fieldIndex;
 
     /**
@@ -23,9 +19,10 @@ public class DefaultHarvestCommand extends DefaultGameCommand {
      * @requires this.player != null this.fieldIndex != null && g != null;
      */
     @Override
-    public GameCommandResult execute(Game game) {
-        super.execute(game); // force a check that this is indeed a defaultgame
-        DefaultGame dg = (DefaultGame) game; // Cast it because it is now indeed a DefaultGame
+    public GameCommandResult execute(Player p, Game g) {
+        super.execute(p,g); // force a check that this is indeed a defaultgame
+        DefaultGame game = (DefaultGame) g; // Cast it because it is now indeed a DefaultGame
+        DefaultPlayer player = (DefaultPlayer) p;
 
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null
         List<Pile> fields = player.getAllFields();
@@ -62,7 +59,7 @@ public class DefaultHarvestCommand extends DefaultGameCommand {
             for (int i = numberOfDiscarded; i > 0; --i) {
                 // TODO do something with this result
                 DefaultGameCommandResult res = field.pop().map((Card x) -> {
-                    dg.getDiscardPile().append(x);
+                    game.getDiscardPile().append(x);
                     return DefaultGameCommandResult.HARVEST;
                 }).orElse(DefaultGameCommandResult.INVALID);
             }
@@ -81,10 +78,6 @@ public class DefaultHarvestCommand extends DefaultGameCommand {
             return DefaultGameCommandResult.INVALID;
         }
 
-    }
-
-    public void setPlayer(DefaultPlayer player) {
-        this.player = player;
     }
 
     public void setFieldIndex(int index) {
