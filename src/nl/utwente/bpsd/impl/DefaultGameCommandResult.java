@@ -13,6 +13,6 @@ public enum DefaultGameCommandResult implements GameCommandResult {
     PLANT, 
     PLANT_TRADED, 
     SKIP, 
-    TRADE
-
+    TRADE,
+    RESHUFFLE
 }

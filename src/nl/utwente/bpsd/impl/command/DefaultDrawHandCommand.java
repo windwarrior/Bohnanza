@@ -1,18 +1,17 @@
 package nl.utwente.bpsd.impl.command;
 
-import java.util.ArrayList;
-import java.util.List;
 import nl.utwente.bpsd.impl.DefaultGame;
-import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.impl.DefaultGameCommandResult;
 import nl.utwente.bpsd.impl.DefaultPlayer;
+import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.model.pile.Pile;
 
 public class DefaultDrawHandCommand extends DefaultGameCommand {
 
+    public static final int DRAW_HAND_AMOUNT = 3;
+
     /**
      * Draw three cards from Game g gamePile into Player player hand
-     * @requires this.player != null && g != null;
      */
     @Override
     public GameCommandResult execute(Player p, Game g) {
@@ -20,19 +19,18 @@ public class DefaultDrawHandCommand extends DefaultGameCommand {
         DefaultGame game = (DefaultGame) g; // Cast it because it is now indeed a DefaultGame
         DefaultPlayer player = (DefaultPlayer) p;
 
-        // TODO: Error handling in the case that the game pile is empty (and discard pile has been reshuffled twice)
+        GameCommandResult result = DefaultGameCommandResult.RESHUFFLE;
+
         Pile gamePile = game.getGamePile();
-        
-        List<Card> toBeInserted = new ArrayList<Card>();
-
-        for (int i = 0; i < 3; i++) {
-            toBeInserted.add(gamePile.pop().get());
+        if(gamePile.pileSize() > DRAW_HAND_AMOUNT) {
+            for (int i = 0; i < DRAW_HAND_AMOUNT && result != DefaultGameCommandResult.INVALID; i++) {
+                result = gamePile.pop().map((Card c) -> {
+                    player.getHand().append(c);
+                    return DefaultGameCommandResult.DRAWN_TO_HAND;
+                }).orElse(DefaultGameCommandResult.INVALID);
+            }
         }
-            
-        player.addAllHand(toBeInserted);
-
-        
-        return DefaultGameCommandResult.DRAWN_TO_HAND;
+        return result;
     }
     
 }
