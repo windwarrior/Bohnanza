@@ -38,6 +38,7 @@ public class DefaultDrawHandCommand extends DefaultGameCommand {
         }
             
         this.player.addAllHand(toBeInserted);
+
         
         return DefaultGameCommandResult.DRAWN_TO_HAND;
     }

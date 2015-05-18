@@ -87,6 +87,21 @@ public class DefaultGame extends Game {
             if (result) {
                 this.stateManager.doTransition(commandOutput);
 
+/*                if(commandOutput == DefaultGameCommandResult.RESHUFFLE) {
+                    //TODO: Reshuffle
+                    //end game or:
+                    commandOutput = klass.execute(this);
+                }*/
+
+                if(commandOutput == DefaultGameCommandResult.DRAWN_TO_HAND) {
+                    int currentPlayerIndex = this.players.indexOf(this.currentPlayer);
+
+                    this.currentPlayer = this.players.get((currentPlayerIndex + 1) % this.players.size());
+                    // Notify observers
+                    this.setChanged();
+                    this.notifyObservers();
+                }
+
                 if (this.stateManager.isInAcceptingState()) {
                     this.gameEnd();
                 }
