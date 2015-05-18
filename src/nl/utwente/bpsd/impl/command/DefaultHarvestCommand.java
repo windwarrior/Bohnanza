@@ -46,14 +46,16 @@ public class DefaultHarvestCommand extends DefaultGameCommand {
             int fieldSize = field.pileSize();
             TreeMap<Integer, Integer> beanOMeter = new TreeMap<Integer, Integer>(field.peek().get().getCardType().getBeanOMeter());
 
-            int earnedCoins;
-            Integer previousKey = beanOMeter.firstKey();
-            for (Integer key : beanOMeter.keySet()) {
-                if (key <= fieldSize) {
-                    previousKey = key;
+            int earnedCoins = 0;
+            if(field.pileSize() > 1) {
+                Integer previousKey = beanOMeter.firstKey();
+                for (Integer key : beanOMeter.keySet()) {
+                    if (key <= fieldSize) {
+                        previousKey = key;
+                    }
                 }
+                earnedCoins = beanOMeter.get(previousKey);
             }
-            earnedCoins = beanOMeter.get(previousKey);
 
             int numberOfDiscarded = fieldSize - earnedCoins;
             for (int i = numberOfDiscarded; i > 0; --i) {
@@ -74,7 +76,6 @@ public class DefaultHarvestCommand extends DefaultGameCommand {
 
             return DefaultGameCommandResult.HARVEST;
         } else {
-            //maybe other error handling?
             return DefaultGameCommandResult.INVALID;
         }
 

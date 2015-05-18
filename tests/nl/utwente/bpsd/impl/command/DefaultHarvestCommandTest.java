@@ -5,7 +5,6 @@ import nl.utwente.bpsd.impl.DefaultPlayer;
 import junit.framework.TestCase;
 import nl.utwente.bpsd.impl.DefaultGame;
 import nl.utwente.bpsd.model.*;
-import nl.utwente.bpsd.model.pile.Pile;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,28 +32,46 @@ public class DefaultHarvestCommandTest extends TestCase {
     }
 
     @Test
-    public void testExecute() throws Exception {
-        GameCommandResult status = harvestC.execute(player,game);
-        assertThat("Harvesting from field without any cards", status, is(DefaultGameCommandResult.INVALID));
+    public void testHarvestFromEmptyField() throws Exception{
+        GameCommandResult result = harvestC.execute(player,game);
+        assertThat("Harvesting from field without any cards: result", result, is(DefaultGameCommandResult.INVALID));
+        assertThat("Player's treasury - no cards added", player.getTreasury().pileSize(), is(0));
+        assertThat("Game's discardPile - no cards added", game.getDiscardPile().pileSize(), is(0));
+    }
+    @Test
+    public void testHarvestFromFieldWithOneCard() throws Exception{
         generateFieldCards(0, 1);
-        status = harvestC.execute(player,game);
-        assertThat("Harvesting from field with only one card, other fields are empty", status, is(DefaultGameCommandResult.INVALID));
+        GameCommandResult result = harvestC.execute(player,game);
+        assertThat("Harvesting from field with only one card, other fields are empty: result", result, is(DefaultGameCommandResult.INVALID));
+        assertThat("Player's treasury - no cards added", player.getTreasury().pileSize(), is(0));
+        assertThat("Game's discardPile - no cards added", game.getDiscardPile().pileSize(), is(0));
         generateFieldCards(1, 1);
-        status = harvestC.execute(player,game);
-        assertThat("Harvesting from field with only one card, all player's fields consist of one card", status, is(DefaultGameCommandResult.HARVEST));
+        result = harvestC.execute(player,game);
+        assertThat("Harvesting from field with only one card, all player's fields consist of one card", result, is(DefaultGameCommandResult.HARVEST));
+        assertThat("Player's treasury - no cards added", player.getTreasury().pileSize(), is(0));
+        assertThat("Game's discardPile - 1 card added", game.getDiscardPile().pileSize(), is(1));
+    }
+
+    @Test
+    public void testHarvestEqualNumberOfCardsAsInBeanometer() throws Exception{
         generateFieldCards(0, 3);
-        status = harvestC.execute(player,game);
-        assertThat("Harvesting with the equal number of cards to those required in beanOMeter", status, is(DefaultGameCommandResult.HARVEST));
-        assertThat("(0) Player's field after harvesting should be empty", player.getAllFields().get(0).pileSize(), is(0));
-        assertThat("Player's treasury - 1 card added", player.getTreasury().pileSize(), is(2));
+        GameCommandResult result = harvestC.execute(player,game);
+        assertThat("Harvesting with the equal number of cards to those required in beanOMeter: result", result, is(DefaultGameCommandResult.HARVEST));
+        assertThat("Player's field after harvesting should be empty", player.getAllFields().get(0).pileSize(), is(0));
+        assertThat("Player's treasury - 1 card added", player.getTreasury().pileSize(), is(1));
         assertThat("Game's discardPile - 2 cards added", game.getDiscardPile().pileSize(), is(2));
-        generateFieldCards(1, 6);
+    }
+    @Test
+    public void testHarvestNotEqualNumberOfCardsAsInBeanometer() throws Exception{
+        generateFieldCards(1, 7);
+        generateFieldCards(0, 1);
         harvestC.setFieldIndex(1);
-        status = harvestC.execute(player,game);
-        assertThat("Harvesting from field with not equal number of cards to those required in beanOMeter ", status, is(DefaultGameCommandResult.HARVEST));
-        assertThat("(1) Player's field after harvesting should be empty", player.getAllFields().get(1).pileSize(), is(0));
-        assertThat("Player's treasury - 2 cards added", player.getTreasury().pileSize(), is(4));
-        assertThat("Game's discardPile - 5 cards added", game.getDiscardPile().pileSize(), is(7));
+        GameCommandResult result = harvestC.execute(player,game);
+        assertThat("Harvesting from field with not equal number of cards to those required in beanOMeter: result ", result, is(DefaultGameCommandResult.HARVEST));
+        assertThat("Player's field after harvesting should be empty", player.getAllFields().get(1).pileSize(), is(0));
+        assertThat("Number of cards on other fields should not be changed", player.getAllFields().get(0).pileSize(), is(1));
+        assertThat("Player's treasury - 2 cards added", player.getTreasury().pileSize(), is(2));
+        assertThat("Game's discardPile - 5 cards added", game.getDiscardPile().pileSize(), is(5));
     }
 
     /**

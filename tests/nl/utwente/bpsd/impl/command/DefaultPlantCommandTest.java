@@ -39,13 +39,21 @@ public class DefaultPlantCommandTest extends TestCase {
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testPlantOnNotEmptyField() throws Exception {
+        GameCommandResult result = plantC.execute(player,game);
+        assertThat("Planting on non empty field: command result checking", result, is(DefaultGameCommandResult.PLANT));
+        assertThat("Planting on not empty field: field checking ", player.getAllFields().get(0).pileSize(), is(1));
+    }
+
+    @Test
+    public void testPlantOnEmptyField() throws Exception {
         GameCommandResult status = plantC.execute(player,game);
-        assertThat("Planting on empty field: game status checking", status, is(DefaultGameCommandResult.PLANT));
+        assertThat("Planting on empty field: command result checking", status, is(DefaultGameCommandResult.PLANT));
         assertThat("Planting on empty field: field checking ", player.getAllFields().get(0).pileSize(), is(1));
-        status = plantC.execute(player,game);
-        assertThat("Planting on non empty field: game status checking", status, is(DefaultGameCommandResult.PLANT));
-        assertThat("Planting on not empty field: field checking ", player.getAllFields().get(0).pileSize(), is(2));
+    }
+
+    @Test
+    public void testPlantWrongCardType() throws Exception {
         Map<Integer, Integer> redBeanOMeter = new HashMap<>();
         redBeanOMeter.put(2, 1);
         redBeanOMeter.put(3, 2);
@@ -55,8 +63,8 @@ public class DefaultPlantCommandTest extends TestCase {
         plantC.setCard(new Card(redBean));
         generateFieldCards(1, 3);
         plantC.setFieldIndex(1);
-        status = plantC.execute(player,game);
-        assertThat("Planting on field with wrong cards' type: game status checking", status, is(DefaultGameCommandResult.INVALID));
+        GameCommandResult result = plantC.execute(player,game);
+        assertThat("Planting on field with wrong cards' type: command result checking", result, is(DefaultGameCommandResult.INVALID));
         assertThat("Planting on field with wrong cards' type: field checking ", player.getAllFields().get(1).pileSize(), is(3));
     }
 

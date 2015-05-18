@@ -18,7 +18,7 @@ public class DefaultPlantCommand extends DefaultGameCommand {
      */
     @Override
     public GameCommandResult execute(Player p, Game g) {
-        super.execute(p,g); // force a check that this is indeed a defaultgame
+        super.execute(p,g); // force a check that this is indeed a defaultGame
         DefaultGame game = (DefaultGame) g; // Cast it because it is now indeed a DefaultGame
         DefaultPlayer player = (DefaultPlayer) p;
 
@@ -31,7 +31,6 @@ public class DefaultPlantCommand extends DefaultGameCommand {
          * field with matching card types
          */
         if(!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(card)) {
-            //maybe other error handling?
             return DefaultGameCommandResult.INVALID;
         }
         else {
