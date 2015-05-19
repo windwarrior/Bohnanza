@@ -17,7 +17,7 @@ public class Card{
 
   @Override
   public String toString(){
-    return String.format("Bean of type %s",cardType.getTypeName());
+    return String.format("Bean of type %s", cardType.getTypeName());
   }
 
   @Override

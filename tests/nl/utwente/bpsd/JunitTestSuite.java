@@ -21,7 +21,8 @@ import org.junit.runners.Suite;
         DefaultDrawHandCommandTest.class,
         DefaultDrawTradeCommandTest.class,
         DefaultHarvestCommandTest.class,
-        DefaultPlantCommandTest.class
+        DefaultPlantCommandTest.class,
+        DefaultReshuffleCommandTest.class
 })
 public class JunitTestSuite {
 }

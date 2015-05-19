@@ -34,6 +34,7 @@ public class DefaultGame extends Game {
         // TODO: Generate all variables in the game
         generateGameDeck();
         discardPile = new DiscardPile();
+        reshuffleCounter = 0;
         // TODO: Deal initial hand to players
 
         // This stateManager is only aware of the states that a certain player has
@@ -90,6 +91,7 @@ public class DefaultGame extends Game {
 /*                if(commandOutput == DefaultGameCommandResult.RESHUFFLE) {
                     //TODO: Reshuffle
                     //end game or:
+                    ++reshuffleCounter;
                     commandOutput = klass.execute(this);
                 }*/
 
@@ -123,6 +125,10 @@ public class DefaultGame extends Game {
 
     public Pile getDiscardPile() {
         return discardPile;
+    }
+
+    public int getReshuffleCounter() {
+        return reshuffleCounter;
     }
 
     /**
@@ -224,7 +230,8 @@ public class DefaultGame extends Game {
                 allCards.add(c);
             }
         }
-        // TODO: shuffle allCards before creating game pile
+
+        Collections.shuffle(allCards);
         gamePile = new Pile();
         for (Card c : allCards) {
             gamePile.append(c);

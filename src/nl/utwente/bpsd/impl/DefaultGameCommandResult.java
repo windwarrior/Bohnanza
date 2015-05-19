@@ -14,5 +14,6 @@ public enum DefaultGameCommandResult implements GameCommandResult {
     PLANT_TRADED, 
     SKIP, 
     TRADE,
-    RESHUFFLE
+    RESHUFFLE, //when need to invoke reshuffle command
+    RESHUFFLED //result of reshuffle command if succeded
 }
