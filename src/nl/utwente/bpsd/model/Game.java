@@ -15,7 +15,7 @@ public abstract class Game extends Observable {
     
     public abstract void addPlayers(Player... players);
 
-    // Only allowed from within trused code
+    // Only allowed from within trusted code
     public abstract boolean executeCommand(Player p, Command c);
 
     public abstract Player getCurrentPlayer();

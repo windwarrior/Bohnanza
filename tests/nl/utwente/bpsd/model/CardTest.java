@@ -1,6 +1,5 @@
 package nl.utwente.bpsd.model;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,9 +10,6 @@ import static org.hamcrest.CoreMatchers.not;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Jochem on 5/10/2015.
- */
 public class CardTest {
 
     Card testCard;
@@ -27,10 +23,6 @@ public class CardTest {
         beanOMeter.put(10, 4);
         CardType cardType = new CardType("Blue Bean", beanOMeter, 20);
         testCard = new Card(cardType);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

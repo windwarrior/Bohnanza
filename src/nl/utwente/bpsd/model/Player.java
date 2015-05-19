@@ -4,7 +4,7 @@ import java.util.Optional;
 import nl.utwente.bpsd.model.pile.Pile;
 
 public abstract class Player {
-    // subclasses need to acces this
+    // subclasses need to access this
     protected Game game;
     
     public void setGame(Game game) {
