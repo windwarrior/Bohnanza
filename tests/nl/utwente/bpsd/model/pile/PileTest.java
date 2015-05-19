@@ -2,7 +2,6 @@ package nl.utwente.bpsd.model.pile;
 
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.CardType;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,8 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 /**
- * Created by Jochem on 5/10/2015. Note: a Pile is FIFO. Take for example a Pile
- * representing a players hand.
+ * Note: a Pile is FIFO. Take for example a Pile representing a players hand.
  */
 public class PileTest {
 
@@ -33,11 +31,6 @@ public class PileTest {
         testPile = new Pile();
         testPile.append(c1);testPile.append(c2);
         noCards = new Pile();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
     }
 
     @Test
@@ -57,6 +50,7 @@ public class PileTest {
         assertThat("One cards less in pile after pop()", testPile.pileSize(), is(1));
     }
 
+    @Test
     public void testPopEmptyPile() throws Exception {
         assertThat(noCards.pop(), is(Optional.empty()));
     }
@@ -69,6 +63,7 @@ public class PileTest {
         assertThat("No cards lost after peek()", testPile.pileSize(), is(2));
     }
 
+    @Test
     public void testPeekEmptyPile() {
         assertThat(noCards.peek(), is(Optional.empty()));
     }
