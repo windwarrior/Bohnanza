@@ -92,11 +92,6 @@ public class DefaultPlayer extends Player {
         return fields;
     }
 
-    //For possible extension with new Piles
-    public Pile getAdditionalPileByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     @Override
     public String toString() {
         return String.format("This is player with name: %s", this.name);

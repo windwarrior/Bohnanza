@@ -232,9 +232,9 @@ public class DefaultGame extends Game {
         }
 
         Collections.shuffle(allCards);
-        gamePile = new Pile();
-        for (Card c : allCards) {
-            gamePile.append(c);
+            gamePile = new Pile();
+            for (Card c : allCards) {
+                gamePile.append(c);
         }
     }
 
