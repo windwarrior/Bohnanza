@@ -8,6 +8,8 @@ import nl.utwente.bpsd.model.pile.DiscardPileTest;
 import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.HandPileTest;
 import nl.utwente.bpsd.model.pile.PileTest;
+import nl.utwente.bpsd.model.state.State;
+import nl.utwente.bpsd.model.state.StateTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -27,7 +29,8 @@ import org.junit.runners.Suite;
         DefaultDrawTradeCommandTest.class,
         DefaultHarvestCommandTest.class,
         DefaultPlantCommandTest.class,
-        DefaultReshuffleCommandTest.class
+        DefaultReshuffleCommandTest.class,
+        StateTest.class
 })
 public class JunitTestSuite {
 }
