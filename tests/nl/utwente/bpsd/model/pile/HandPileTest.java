@@ -40,22 +40,22 @@ public class HandPileTest {
     public void testGetCard() throws Exception {
         //Correct behavior
         int pileSize = pile.pileSize();
-        assertThat("Valid index",pile.getCard(2),is(Optional.of(card3)));
-        assertThat("Size decrease by one",pile.pileSize(),is(pileSize - 1));
+        assertThat("Valid index", pile.getCard(2), is(Optional.of(card3)));
+        assertThat("Size decrease by one", pile.pileSize(), is(pileSize - 1));
         //Bad index range
         pileSize = pile.pileSize();
-        assertThat("Index to large",pile.getCard(10),is(Optional.empty()));
-        assertThat("Size remains the same",pile.pileSize(),is(pileSize));
-        assertThat("Index to small",pile.getCard(-1),is(Optional.empty()));
-        assertThat("Size remains the same",pile.pileSize(),is(pileSize));
+        assertThat("Index to large", pile.getCard(10), is(Optional.empty()));
+        assertThat("Size remains the same", pile.pileSize(), is(pileSize));
+        assertThat("Index to small", pile.getCard(-1), is(Optional.empty()));
+        assertThat("Size remains the same", pile.pileSize(), is(pileSize));
     }
 
     @Test
     public void testGetCardType() throws Exception {
         int pileSize = pile.pileSize();
-        assertThat("Valid index",pile.getCardType(1),is(Optional.of(ct)));
-        assertThat("Index to large",pile.getCardType(3),is(Optional.empty()));
-        assertThat("Index to small",pile.getCardType(-1),is(Optional.empty()));
-        assertThat("No size chance",pile.pileSize(),is(pileSize));
+        assertThat("Valid index", pile.getCardType(1), is(Optional.of(ct)));
+        assertThat("Index to large", pile.getCardType(3), is(Optional.empty()));
+        assertThat("Index to small", pile.getCardType(-1), is(Optional.empty()));
+        assertThat("No size chance", pile.pileSize(), is(pileSize));
     }
 }
