@@ -1,4 +1,4 @@
-package nl.utwente.bpsd.impl;
+package nl.utwente.bpsd.impl.standard;
 
 import nl.utwente.bpsd.impl.standard.StandardGame;
 import nl.utwente.bpsd.impl.standard.StandardPlayer;
@@ -9,10 +9,7 @@ import org.mockito.Mock;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
-/**
- * Created by Jochem on 5/20/2015.
- */
-public class DefaultPlayerTest {
+public class StandardPlayerTest {
 
     StandardPlayer player;
     @Mock StandardGame game;

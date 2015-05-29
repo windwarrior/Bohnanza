@@ -22,6 +22,8 @@ import nl.utwente.bpsd.model.state.StateManager;
 
 public class StandardGame extends Game {
 
+    public static final int NUMBER_START_CARDS = 5;
+
     private List<Player> players;
     private Pile discardPile;
     private Pile gamePile;
@@ -38,7 +40,12 @@ public class StandardGame extends Game {
         generateGameDeck();
         discardPile = new DiscardPile();
         reshuffleCounter = 0;
-        // TODO: Deal initial hand to players
+        for(Player p:players){
+            for (int i = 0; i < NUMBER_START_CARDS; i++) {
+                gamePile.pop().ifPresent((Card c) -> ((StandardPlayer)p).getHand().append(c));
+            }
+        }
+        currentPlayer = players.get(0);
 
         // This stateManager is only aware of the states that a certain player has
         // It should be parallely composed with a statemanager that holds track 
@@ -244,6 +251,7 @@ public class StandardGame extends Game {
     @Override
     public void addPlayers(Player... players) {
         this.players = Arrays.asList(players);
+        for(Player p:players) p.setGame(this);
     }
 
     @Override

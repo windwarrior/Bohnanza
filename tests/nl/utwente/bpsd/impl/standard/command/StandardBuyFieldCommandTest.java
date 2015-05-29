@@ -1,6 +1,5 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
-import nl.utwente.bpsd.impl.standard.command.StandardBuyFieldCommand;
 import nl.utwente.bpsd.impl.standard.StandardGame;
 import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.model.Card;
@@ -16,7 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.*;
 
-public class DefaultBuyFieldCommandTest {
+public class StandardBuyFieldCommandTest {
 
     StandardPlayer player;
     StandardGame game;

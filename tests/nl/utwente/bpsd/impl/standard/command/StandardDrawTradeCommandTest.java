@@ -1,4 +1,4 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
 import nl.utwente.bpsd.impl.standard.command.StandardDrawTradeCommand;
 import nl.utwente.bpsd.impl.standard.StandardGame;
@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.*;
 
-public class DefaultDrawTradeCommandTest {
+public class StandardDrawTradeCommandTest {
 
     StandardPlayer player;
     StandardGame game;

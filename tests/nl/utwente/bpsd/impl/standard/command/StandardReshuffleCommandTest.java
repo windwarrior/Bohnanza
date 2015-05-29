@@ -1,4 +1,4 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
 import nl.utwente.bpsd.impl.standard.command.StandardReshuffleCommand;
 import nl.utwente.bpsd.impl.standard.StandardGame;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 
-public class DefaultReshuffleCommandTest {
+public class StandardReshuffleCommandTest {
 
     @Mock StandardGame game;
     StandardPlayer player;

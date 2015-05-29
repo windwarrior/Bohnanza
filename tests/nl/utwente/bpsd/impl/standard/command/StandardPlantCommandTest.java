@@ -1,4 +1,4 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
 import nl.utwente.bpsd.impl.standard.command.StandardPlantCommand;
 import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.assertThat;
 
-public class DefaultPlantCommandTest extends TestCase {
+public class StandardPlantCommandTest extends TestCase {
 
     StandardPlayer player;
     Game game;

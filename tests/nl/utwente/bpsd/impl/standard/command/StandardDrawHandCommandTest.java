@@ -1,4 +1,4 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
 import nl.utwente.bpsd.impl.standard.command.StandardDrawHandCommand;
 import nl.utwente.bpsd.impl.standard.StandardGame;
@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class DefaultDrawHandCommandTest {
+public class StandardDrawHandCommandTest {
 
     StandardPlayer player;
     StandardGame game;
