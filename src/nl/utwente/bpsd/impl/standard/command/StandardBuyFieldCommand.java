@@ -1,8 +1,8 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
 import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.impl.DefaultGameCommandResult;
-import nl.utwente.bpsd.impl.DefaultPlayer;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
+import nl.utwente.bpsd.impl.standard.StandardPlayer;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import nl.utwente.bpsd.model.GameCommandResult;
 
 //TODO: Add this to the state machine.
-public class DefaultBuyFieldCommand extends DefaultGameCommand {
+public class StandardBuyFieldCommand extends StandardGameCommand {
 
     public static final int FIELDCOST = 3;
     public static final int NUMMAXFIELDS = 3;
@@ -21,9 +21,9 @@ public class DefaultBuyFieldCommand extends DefaultGameCommand {
     @Override
     public GameCommandResult execute(Player p, Game g) {
         super.execute(p,g); // force a check that this is indeed a defaultgame
-        DefaultPlayer player = (DefaultPlayer) p;
+        StandardPlayer player = (StandardPlayer) p;
 
-        GameCommandResult result = DefaultGameCommandResult.INVALID;
+        GameCommandResult result = StandardGameCommandResult.INVALID;
 
         Pile treasury = player.getTreasury();
         List<Pile> fields = player.getAllFields();
@@ -33,7 +33,7 @@ public class DefaultBuyFieldCommand extends DefaultGameCommand {
             }
             Pile newField = new Pile();
             fields.add(newField);
-            result = DefaultGameCommandResult.BOUGHT_FIELD;
+            result = StandardGameCommandResult.BOUGHT_FIELD;
         }
         return result;
     }

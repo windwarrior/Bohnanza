@@ -1,8 +1,9 @@
 package nl.utwente.bpsd.impl.command;
 
-import nl.utwente.bpsd.impl.DefaultGame;
-import nl.utwente.bpsd.impl.DefaultGameCommandResult;
-import nl.utwente.bpsd.impl.DefaultPlayer;
+import nl.utwente.bpsd.impl.standard.command.StandardDrawTradeCommand;
+import nl.utwente.bpsd.impl.standard.StandardGame;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
+import nl.utwente.bpsd.impl.standard.StandardPlayer;
 import nl.utwente.bpsd.model.GameCommandResult;
 import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
@@ -15,22 +16,22 @@ import static org.junit.Assert.*;
 
 public class DefaultDrawTradeCommandTest {
 
-    DefaultPlayer player;
-    DefaultGame game;
-    DefaultDrawTradeCommand drawTradeC;
+    StandardPlayer player;
+    StandardGame game;
+    StandardDrawTradeCommand drawTradeC;
 
     @Before
     public void setUp() throws Exception {
-        player = new DefaultPlayer("TestPlayer");
-        game = new DefaultGame();
+        player = new StandardPlayer("TestPlayer");
+        game = new StandardGame();
         game.addPlayers(player);
         game.initialize();
-        drawTradeC = new DefaultDrawTradeCommand();
+        drawTradeC = new StandardDrawTradeCommand();
     }
 
     /**
-     * Execute should draw DefaultDrawTradeCommand.DRAW_TRADING_AMOUNT cards from game pile into players trade pile
-     * NOTE: DefaultDrawTradeCommand.DRAW_TRADING_AMOUNT = 2;
+     * Execute should draw StandardDrawTradeCommand.DRAW_TRADING_AMOUNT cards from game pile into players trade pile
+ NOTE: StandardDrawTradeCommand.DRAW_TRADING_AMOUNT = 2;
      */
     @Test
     public void testExecute() throws Exception {
@@ -39,14 +40,14 @@ public class DefaultDrawTradeCommandTest {
         int gamePileSize = testPile.pileSize();
         int playerTradingSize = player.getTrading().pileSize();
         GameCommandResult result = drawTradeC.execute(player, game);
-        assertThat("Game pile removes two cards", game.getGamePile().pileSize(), is(gamePileSize - DefaultDrawTradeCommand.DRAW_TRADING_AMOUNT));
-        assertThat("Trading pile gets two cards", player.getTrading().pileSize(), is(playerTradingSize + DefaultDrawTradeCommand.DRAW_TRADING_AMOUNT));
+        assertThat("Game pile removes two cards", game.getGamePile().pileSize(), is(gamePileSize - StandardDrawTradeCommand.DRAW_TRADING_AMOUNT));
+        assertThat("Trading pile gets two cards", player.getTrading().pileSize(), is(playerTradingSize + StandardDrawTradeCommand.DRAW_TRADING_AMOUNT));
         //Test if correct cards are added to trading area
         //TODO: fix Optional .get() calls to something neater?
         assertThat("First card", ((HandPile) player.getTrading()).getCardType(0).get(), is(testPile.pop().get().getCardType()));
         assertThat("Second card", ((HandPile) player.getTrading()).getCardType(1).get(), is(testPile.pop().get().getCardType()));
         //Test if correct game command result is returned
-        assertThat("DRAWN_TO_TRADING game command result",result,is(DefaultGameCommandResult.DRAWN_TO_TRADING));
+        assertThat("DRAWN_TO_TRADING game command result",result,is(StandardGameCommandResult.DRAWN_TO_TRADING));
     }
 
     /**
@@ -54,15 +55,15 @@ public class DefaultDrawTradeCommandTest {
      */
     @Test
     public void testReshuffledDraw() throws Exception {
-        while(game.getGamePile().pileSize() >= DefaultDrawTradeCommand.DRAW_TRADING_AMOUNT) {
+        while(game.getGamePile().pileSize() >= StandardDrawTradeCommand.DRAW_TRADING_AMOUNT) {
             game.getGamePile().pop();
         }
         int gamePileSize = game.getGamePile().pileSize();
         int playerTradingSize = player.getTrading().pileSize();
-        assertThat("Pile is small enough",gamePileSize,is(DefaultDrawTradeCommand.DRAW_TRADING_AMOUNT-1));
+        assertThat("Pile is small enough",gamePileSize,is(StandardDrawTradeCommand.DRAW_TRADING_AMOUNT-1));
         GameCommandResult result = drawTradeC.execute(player,game);
         assertThat("No gamePile size chance",game.getGamePile().pileSize(),is(gamePileSize));
         assertThat("No tradingPile size chance",player.getTrading().pileSize(),is(playerTradingSize));
-        assertThat("RESHUFFLE game command result",result,is(DefaultGameCommandResult.RESHUFFLE));
+        assertThat("RESHUFFLE game command result",result,is(StandardGameCommandResult.RESHUFFLE));
     }
 }

@@ -1,9 +1,10 @@
 package nl.utwente.bpsd.impl.command;
 
-import nl.utwente.bpsd.impl.DefaultGameCommandResult;
-import nl.utwente.bpsd.impl.DefaultPlayer;
+import nl.utwente.bpsd.impl.standard.command.StandardPlantCommand;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
+import nl.utwente.bpsd.impl.standard.StandardPlayer;
 import junit.framework.TestCase;
-import nl.utwente.bpsd.impl.DefaultGame;
+import nl.utwente.bpsd.impl.standard.StandardGame;
 import nl.utwente.bpsd.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,18 +17,18 @@ import static org.junit.Assert.assertThat;
 
 public class DefaultPlantCommandTest extends TestCase {
 
-    DefaultPlayer player;
+    StandardPlayer player;
     Game game;
-    DefaultPlantCommand plantC;
+    StandardPlantCommand plantC;
 
     @Before
     public void setUp() throws Exception {
-        player = new DefaultPlayer("TestPlayer");
-        game = new DefaultGame();
+        player = new StandardPlayer("TestPlayer");
+        game = new StandardGame();
         game.addPlayers(player);
         game.initialize();
 
-        plantC = new DefaultPlantCommand();
+        plantC = new StandardPlantCommand();
         plantC.setFieldIndex(0);
         Map<Integer, Integer> blackeyedBeanOMeter = new HashMap<>();
         blackeyedBeanOMeter.put(2, 1);
@@ -41,14 +42,14 @@ public class DefaultPlantCommandTest extends TestCase {
     @Test
     public void testPlantOnNotEmptyField() throws Exception {
         GameCommandResult result = plantC.execute(player,game);
-        assertThat("Planting on non empty field: command result checking", result, is(DefaultGameCommandResult.PLANT));
+        assertThat("Planting on non empty field: command result checking", result, is(StandardGameCommandResult.PLANT));
         assertThat("Planting on not empty field: field checking ", player.getAllFields().get(0).pileSize(), is(1));
     }
 
     @Test
     public void testPlantOnEmptyField() throws Exception {
         GameCommandResult status = plantC.execute(player,game);
-        assertThat("Planting on empty field: command result checking", status, is(DefaultGameCommandResult.PLANT));
+        assertThat("Planting on empty field: command result checking", status, is(StandardGameCommandResult.PLANT));
         assertThat("Planting on empty field: field checking ", player.getAllFields().get(0).pileSize(), is(1));
     }
 
@@ -64,7 +65,7 @@ public class DefaultPlantCommandTest extends TestCase {
         generateFieldCards(1, 3);
         plantC.setFieldIndex(1);
         GameCommandResult result = plantC.execute(player,game);
-        assertThat("Planting on field with wrong cards' type: command result checking", result, is(DefaultGameCommandResult.INVALID));
+        assertThat("Planting on field with wrong cards' type: command result checking", result, is(StandardGameCommandResult.INVALID));
         assertThat("Planting on field with wrong cards' type: field checking ", player.getAllFields().get(1).pileSize(), is(3));
     }
 

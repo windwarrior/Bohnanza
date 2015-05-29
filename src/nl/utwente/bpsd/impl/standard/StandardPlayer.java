@@ -1,16 +1,20 @@
-package nl.utwente.bpsd.impl;
+package nl.utwente.bpsd.impl.standard;
 
+import nl.utwente.bpsd.impl.standard.command.StandardBuyFieldCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardDrawTradeCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardDrawHandCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardHarvestCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardPlantCommand;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import nl.utwente.bpsd.impl.command.*;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Player;
 
 import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
-public class DefaultPlayer extends Player {
+public class StandardPlayer extends Player {
 
     private String name;
     private List<Pile> fields;
@@ -18,7 +22,7 @@ public class DefaultPlayer extends Player {
     private Pile treasury;
     private Pile trading;
 
-    public DefaultPlayer(String name) {
+    public StandardPlayer(String name) {
         this.name = name;
         fields = new ArrayList<>();
         fields.add(new Pile());
@@ -29,19 +33,19 @@ public class DefaultPlayer extends Player {
     }
 
     public boolean drawIntoHand() {
-        DefaultDrawHandCommand dc = new DefaultDrawHandCommand();
+        StandardDrawHandCommand dc = new StandardDrawHandCommand();
 
         return super.executeCommand(dc);
     }
 
     public boolean drawIntoTrading() {
-        DefaultDrawTradeCommand dc = new DefaultDrawTradeCommand();
+        StandardDrawTradeCommand dc = new StandardDrawTradeCommand();
 
         return super.executeCommand(dc);
     }
 
     public boolean plantFromTrading(int tradingIndex, int fieldIndex) {
-        DefaultPlantCommand dc = new DefaultPlantCommand();
+        StandardPlantCommand dc = new StandardPlantCommand();
         dc.setFieldIndex(fieldIndex);
         Optional<Card> card = ((HandPile) (this.getTrading())).getCard(tradingIndex);
         // TODO: check if optional card contains a card otherwise error
@@ -51,7 +55,7 @@ public class DefaultPlayer extends Player {
 
     public boolean plantFromHand(int fieldIndex) {
         // TODO: handle states
-        DefaultPlantCommand dc = new DefaultPlantCommand();
+        StandardPlantCommand dc = new StandardPlantCommand();
         dc.setFieldIndex(fieldIndex);
         // TODO: This should have some check to see if a player still has cards in his hand
         dc.setCard(this.getHand().pop().get());
@@ -64,14 +68,14 @@ public class DefaultPlayer extends Player {
     }
 
     public boolean harvest(int fieldIndex) {
-        DefaultHarvestCommand dc = new DefaultHarvestCommand();
+        StandardHarvestCommand dc = new StandardHarvestCommand();
         dc.setFieldIndex(fieldIndex);
 
         return super.executeCommand(dc);
     }
 
     public boolean buyField() {
-        DefaultBuyFieldCommand dc = new DefaultBuyFieldCommand();
+        StandardBuyFieldCommand dc = new StandardBuyFieldCommand();
 
         return super.executeCommand(dc);
     }

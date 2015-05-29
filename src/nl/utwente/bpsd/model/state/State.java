@@ -40,7 +40,7 @@ public class State<K, C> {
     }
     
     public void removeTransition(K label) {
-        // The contract of remove states that it will remove something if it
+        // The contract of `remove` states that it will remove something if it
         // is present in the map, so no check is needed.
         this.transitions.remove(label);
     }
@@ -91,6 +91,8 @@ public class State<K, C> {
         for(Entry<K, State> transition: transitions.entrySet()) {
             if(!visited.contains(transition.getValue())) {
                 Set<State> otherReachable = transition.getValue().reachable(visited);
+                
+                reachable.addAll(otherReachable);
             }
         }
         

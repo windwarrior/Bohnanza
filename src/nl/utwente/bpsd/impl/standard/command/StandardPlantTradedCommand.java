@@ -1,13 +1,13 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
-import nl.utwente.bpsd.impl.DefaultGameCommandResult;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.Command;
 import nl.utwente.bpsd.model.GameCommandResult;
 import nl.utwente.bpsd.model.Player;
 
 
-public class DefaultPlantTradedCommand extends DefaultGameCommand {
+public class StandardPlantTradedCommand extends StandardGameCommand {
 
     @Override
     public GameCommandResult execute(Player p, Game g) {

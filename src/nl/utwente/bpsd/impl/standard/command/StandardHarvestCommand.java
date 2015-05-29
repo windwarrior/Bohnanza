@@ -1,15 +1,15 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
 import nl.utwente.bpsd.model.*;
-import nl.utwente.bpsd.impl.DefaultGameCommandResult;
-import nl.utwente.bpsd.impl.DefaultPlayer;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
+import nl.utwente.bpsd.impl.standard.StandardPlayer;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
 import java.util.TreeMap;
-import nl.utwente.bpsd.impl.DefaultGame;
+import nl.utwente.bpsd.impl.standard.StandardGame;
 
-public class DefaultHarvestCommand extends DefaultGameCommand {
+public class StandardHarvestCommand extends StandardGameCommand {
 
     int fieldIndex;
 
@@ -21,8 +21,8 @@ public class DefaultHarvestCommand extends DefaultGameCommand {
     @Override
     public GameCommandResult execute(Player p, Game g) {
         super.execute(p,g); // force a check that this is indeed a defaultgame
-        DefaultGame game = (DefaultGame) g; // Cast it because it is now indeed a DefaultGame
-        DefaultPlayer player = (DefaultPlayer) p;
+        StandardGame game = (StandardGame) g; // Cast it because it is now indeed a StandardGame
+        StandardPlayer player = (StandardPlayer) p;
 
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null
         List<Pile> fields = player.getAllFields();
@@ -60,23 +60,23 @@ public class DefaultHarvestCommand extends DefaultGameCommand {
             int numberOfDiscarded = fieldSize - earnedCoins;
             for (int i = numberOfDiscarded; i > 0; --i) {
                 // TODO do something with this result
-                DefaultGameCommandResult res = field.pop().map((Card x) -> {
+                StandardGameCommandResult res = field.pop().map((Card x) -> {
                     game.getDiscardPile().append(x);
-                    return DefaultGameCommandResult.HARVEST;
-                }).orElse(DefaultGameCommandResult.INVALID);
+                    return StandardGameCommandResult.HARVEST;
+                }).orElse(StandardGameCommandResult.INVALID);
             }
 
             for (int i = earnedCoins; i > 0; --i) {
                 // TODO do something with this result
-                DefaultGameCommandResult res = field.pop().map((Card x) -> {
+                StandardGameCommandResult res = field.pop().map((Card x) -> {
                     player.getTreasury().append(x);
-                    return DefaultGameCommandResult.HARVEST;
-                }).orElse(DefaultGameCommandResult.INVALID);
+                    return StandardGameCommandResult.HARVEST;
+                }).orElse(StandardGameCommandResult.INVALID);
             }
 
-            return DefaultGameCommandResult.HARVEST;
+            return StandardGameCommandResult.HARVEST;
         } else {
-            return DefaultGameCommandResult.INVALID;
+            return StandardGameCommandResult.INVALID;
         }
 
     }

@@ -1,23 +1,26 @@
-package nl.utwente.bpsd.impl;
+package nl.utwente.bpsd.impl.standard;
 
+import nl.utwente.bpsd.impl.standard.command.StandardPlantTradedCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardSkipCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardTradeCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardDrawHandCommand;
 import java.util.*;
 
-import nl.utwente.bpsd.impl.command.DefaultDrawTradeCommand;
-import nl.utwente.bpsd.impl.command.DefaultHarvestCommand;
-import nl.utwente.bpsd.impl.command.DefaultPlantCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardDrawTradeCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardHarvestCommand;
+import nl.utwente.bpsd.impl.standard.command.StandardPlantCommand;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.CardType;
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.pile.DiscardPile;
 import nl.utwente.bpsd.model.pile.Pile;
-import nl.utwente.bpsd.impl.command.*;
 import nl.utwente.bpsd.model.Command;
 import nl.utwente.bpsd.model.GameCommandResult;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.state.State;
 import nl.utwente.bpsd.model.state.StateManager;
 
-public class DefaultGame extends Game {
+public class StandardGame extends Game {
 
     private List<Player> players;
     private Pile discardPile;
@@ -26,7 +29,7 @@ public class DefaultGame extends Game {
     private int reshuffleCounter;
     private StateManager stateManager;
 
-    public DefaultGame() {
+    public StandardGame() {
         players = new ArrayList<>();
     }
 
@@ -41,36 +44,36 @@ public class DefaultGame extends Game {
         // It should be parallely composed with a statemanager that holds track 
         // of the players, but that is represented in the currentPlayer
         // Below are all states (with a name)
-        State<DefaultGameCommandResult, Command> startState = new State("Turn", DefaultPlantCommand.class, DefaultHarvestCommand.class);
+        State<StandardGameCommandResult, Command> startState = new State("Turn", StandardPlantCommand.class, StandardHarvestCommand.class);
 
-        State<DefaultGameCommandResult, Command> onePlantedState = new State("One bean planted", DefaultPlantCommand.class, DefaultSkipCommand.class);
+        State<StandardGameCommandResult, Command> onePlantedState = new State("One bean planted", StandardPlantCommand.class, StandardSkipCommand.class);
 
-        State<DefaultGameCommandResult, Command> drawCardToTradingState = new State("Draw cards to trading area", DefaultDrawTradeCommand.class);
+        State<StandardGameCommandResult, Command> drawCardToTradingState =  new State("Draw cards to trading area", StandardDrawTradeCommand.class);
 
-        State<DefaultGameCommandResult, Command> tradingState = new State("Start trading", DefaultTradeCommand.class, DefaultSkipCommand.class);
+        State<StandardGameCommandResult, Command> tradingState = new State("Start trading", StandardTradeCommand.class, StandardSkipCommand.class);
 
-        State<DefaultGameCommandResult, Command> plantTradedCardsState = new State("Plant traded cards", DefaultPlantTradedCommand.class, DefaultSkipCommand.class);
+        State<StandardGameCommandResult, Command> plantTradedCardsState = new State("Plant traded cards", StandardPlantTradedCommand.class, StandardSkipCommand.class);
 
-        State<DefaultGameCommandResult, Command> drawCardState = new State("Draw cards to your hand", DefaultDrawHandCommand.class);
+        State<StandardGameCommandResult, Command> drawCardState = new State("Draw cards to your hand", StandardDrawHandCommand.class);
 
         // TODO buy field command
         // These are per state all transitions that can be taken
-        startState.addTransition(DefaultGameCommandResult.HARVEST, startState);
-        startState.addTransition(DefaultGameCommandResult.PLANT, onePlantedState);
+        startState.addTransition(StandardGameCommandResult.HARVEST, startState);
+        startState.addTransition(StandardGameCommandResult.PLANT, onePlantedState);
 
-        onePlantedState.addTransition(DefaultGameCommandResult.PLANT, drawCardToTradingState);
-        onePlantedState.addTransition(DefaultGameCommandResult.SKIP, drawCardToTradingState);
+        onePlantedState.addTransition(StandardGameCommandResult.PLANT, drawCardToTradingState);
+        onePlantedState.addTransition(StandardGameCommandResult.SKIP, drawCardToTradingState);
 
-        drawCardToTradingState.addTransition(DefaultGameCommandResult.DRAWN_TO_TRADING, tradingState);
+        drawCardToTradingState.addTransition(StandardGameCommandResult.DRAWN_TO_TRADING, tradingState);
 
         // Trading is implemented in the statemachine, but not yet with the players
-        tradingState.addTransition(DefaultGameCommandResult.TRADE, tradingState);
-        tradingState.addTransition(DefaultGameCommandResult.SKIP, plantTradedCardsState);
+        tradingState.addTransition(StandardGameCommandResult.TRADE, tradingState);
+        tradingState.addTransition(StandardGameCommandResult.SKIP, plantTradedCardsState);
 
-        plantTradedCardsState.addTransition(DefaultGameCommandResult.PLANT_TRADED, plantTradedCardsState);
-        plantTradedCardsState.addTransition(DefaultGameCommandResult.SKIP, drawCardState);
+        plantTradedCardsState.addTransition(StandardGameCommandResult.PLANT_TRADED, plantTradedCardsState);
+        plantTradedCardsState.addTransition(StandardGameCommandResult.SKIP, drawCardState);
 
-        drawCardState.addTransition(DefaultGameCommandResult.DRAWN_TO_HAND, startState);
+        drawCardState.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, startState);
 
         stateManager = new StateManager(startState);
     }
@@ -88,14 +91,14 @@ public class DefaultGame extends Game {
             if (result) {
                 this.stateManager.doTransition(commandOutput);
 
-/*                if(commandOutput == DefaultGameCommandResult.RESHUFFLE) {
+/*                if(commandOutput == StandardGameCommandResult.RESHUFFLE) {
                     //TODO: Reshuffle
                     //end game or:
                     ++reshuffleCounter;
                     commandOutput = klass.execute(this);
                 }*/
 
-                if(commandOutput == DefaultGameCommandResult.DRAWN_TO_HAND) {
+                if(commandOutput == StandardGameCommandResult.DRAWN_TO_HAND) {
                     int currentPlayerIndex = this.players.indexOf(this.currentPlayer);
 
                     this.currentPlayer = this.players.get((currentPlayerIndex + 1) % this.players.size());

@@ -1,5 +1,7 @@
 package nl.utwente.bpsd.impl;
 
+import nl.utwente.bpsd.impl.standard.StandardGame;
+import nl.utwente.bpsd.impl.standard.StandardPlayer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -12,13 +14,13 @@ import static org.mockito.Mockito.mock;
  */
 public class DefaultPlayerTest {
 
-    DefaultPlayer player;
-    @Mock DefaultGame game;
+    StandardPlayer player;
+    @Mock StandardGame game;
 
     @Before
     public void setUp() throws Exception {
-        player = new DefaultPlayer("Test Player");
-        game = mock(DefaultGame.class);
+        player = new StandardPlayer("Test Player");
+        game = mock(StandardGame.class);
     }
 
     @Test

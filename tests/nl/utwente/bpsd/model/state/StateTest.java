@@ -9,16 +9,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
-import nl.utwente.bpsd.impl.DefaultGameCommandResult;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.Command;
+import nl.utwente.bpsd.model.Player;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-
-import nl.utwente.bpsd.model.Player;
+import org.hamcrest.Matchers;
+import static org.hamcrest.Matchers.contains;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
 public class StateTest {
     private State<String, Command> s1;
@@ -169,23 +172,29 @@ public class StateTest {
         assertThat(sFirst.alphabet(new ArrayList<>()), is(new HashSet<>(Arrays.asList("a", "b"))));
     }
     
+    @Test
+    public void testReachable() {
+        System.out.println(s1.reachable(new HashSet<>()));
+        assertThat(s1.reachable(new HashSet<>()), contains(equalTo(s1),equalTo(s2), equalTo(s3), equalTo(s4)));
+    }
+    
     class ACommand implements Command {
         @Override
-        public DefaultGameCommandResult execute(Player p,Game g) {
+        public StandardGameCommandResult execute(Player p,Game g) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }        
     }
     
     class BCommand implements Command {
         @Override
-        public DefaultGameCommandResult execute(Player p,Game g) {
+        public StandardGameCommandResult execute(Player p,Game g) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }        
     }
     
     class CCommand implements Command {
         @Override
-        public DefaultGameCommandResult execute(Player p,Game g) {
+        public StandardGameCommandResult execute(Player p,Game g) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }        
     }

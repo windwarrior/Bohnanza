@@ -1,8 +1,8 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
-import nl.utwente.bpsd.impl.DefaultGame;
-import nl.utwente.bpsd.impl.DefaultGameCommandResult;
-import nl.utwente.bpsd.impl.DefaultPlayer;
+import nl.utwente.bpsd.impl.standard.StandardGame;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
+import nl.utwente.bpsd.impl.standard.StandardPlayer;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.GameCommandResult;
@@ -11,20 +11,20 @@ import nl.utwente.bpsd.model.pile.DiscardPile;
 
 import java.util.List;
 
-public class DefaultReshuffleCommand extends DefaultGameCommand {
+public class StandardReshuffleCommand extends StandardGameCommand {
     /**
      * Adds reshuffled list of cards from discardPile to gamePile.
-     * Returns DefaultGameCommandResult.FINISHED in case of reshuffleCounter > 2
+     * Returns StandardGameCommandResult.FINISHED in case of reshuffleCounter > 2
      */
     @Override
     public GameCommandResult execute(Player p, Game g) {
         super.execute(p, g); // force a check that this is indeed a defaultGame
-        DefaultGame game = (DefaultGame) g; // Cast it because it is now indeed a DefaultGame
-        DefaultPlayer player = (DefaultPlayer) p;
+        StandardGame game = (StandardGame) g; // Cast it because it is now indeed a StandardGame
+        StandardPlayer player = (StandardPlayer) p;
         //game should end after gamePile being exhousted for the 3rd time
         if(game.getReshuffleCounter() > 2) {
             //or maybe should return INVALID?
-            return DefaultGameCommandResult.FINISHED;
+            return StandardGameCommandResult.FINISHED;
         }
         else
         {
@@ -34,7 +34,7 @@ public class DefaultReshuffleCommand extends DefaultGameCommand {
             for (Card c : shuffled) {
                 game.getGamePile().append(c);
             }
-            return DefaultGameCommandResult.RESHUFFLED;
+            return StandardGameCommandResult.RESHUFFLED;
         }
     }
 }

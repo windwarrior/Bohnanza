@@ -1,8 +1,9 @@
 package nl.utwente.bpsd.impl.command;
 
-import nl.utwente.bpsd.impl.DefaultGame;
-import nl.utwente.bpsd.impl.DefaultGameCommandResult;
-import nl.utwente.bpsd.impl.DefaultPlayer;
+import nl.utwente.bpsd.impl.standard.command.StandardReshuffleCommand;
+import nl.utwente.bpsd.impl.standard.StandardGame;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
+import nl.utwente.bpsd.impl.standard.StandardPlayer;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.CardType;
 import nl.utwente.bpsd.model.GameCommandResult;
@@ -25,17 +26,17 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DefaultReshuffleCommandTest {
 
-    @Mock DefaultGame game;
-    DefaultPlayer player;
-    DefaultReshuffleCommand reshuffleC;
+    @Mock StandardGame game;
+    StandardPlayer player;
+    StandardReshuffleCommand reshuffleC;
     Pile gamePile;
     Pile discardPile;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        player = new DefaultPlayer("TestPlayer1");
-        reshuffleC = new DefaultReshuffleCommand();
+        player = new StandardPlayer("TestPlayer1");
+        reshuffleC = new StandardReshuffleCommand();
         gamePile = new Pile();
         discardPile = new DiscardPile();
         generateGamePile();
@@ -46,7 +47,7 @@ public class DefaultReshuffleCommandTest {
     public void testInvalidGameReshuffleCounter() throws Exception {
         when(game.getReshuffleCounter()).thenReturn(3);
         GameCommandResult result = reshuffleC.execute(player,game);
-        assertThat("Trying to reshuffle deck for the 4rd time: result", result, is(DefaultGameCommandResult.FINISHED));
+        assertThat("Trying to reshuffle deck for the 4rd time: result", result, is(StandardGameCommandResult.FINISHED));
     }
 
     @Test
@@ -57,7 +58,7 @@ public class DefaultReshuffleCommandTest {
         int oldGamePileSize = gamePile.pileSize();
         int oldDiscardPileSize = discardPile.pileSize();
         GameCommandResult result = reshuffleC.execute(player,game);
-        assertThat("Trying to reshuffle deck for the 3rd time: result", result, is(DefaultGameCommandResult.RESHUFFLED));
+        assertThat("Trying to reshuffle deck for the 3rd time: result", result, is(StandardGameCommandResult.RESHUFFLED));
         assertThat("Size of gamePile after reshuffling", gamePile.pileSize(), is(oldGamePileSize+oldDiscardPileSize));
         assertThat("Size of discardPile after reshuffling", discardPile.pileSize(), is(0));
     }

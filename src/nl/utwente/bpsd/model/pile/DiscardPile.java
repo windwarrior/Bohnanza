@@ -22,7 +22,7 @@ public class DiscardPile extends Pile{
 
         List<Card> result = new ArrayList<>(this.getCardList());
         //Collections.shuffle(result);
-        /* Fisher–Yates shuffle:
+        /* Fisher-Yates shuffle:
          * going from the bottom of deck,
          * swap card with the pseudo randomly selected one from
          * the cards which are at that position or above in the deck

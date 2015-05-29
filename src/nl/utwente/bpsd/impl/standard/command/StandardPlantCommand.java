@@ -1,14 +1,14 @@
-package nl.utwente.bpsd.impl.command;
+package nl.utwente.bpsd.impl.standard.command;
 
 import nl.utwente.bpsd.model.*;
-import nl.utwente.bpsd.impl.DefaultGameCommandResult;
-import nl.utwente.bpsd.impl.DefaultPlayer;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
+import nl.utwente.bpsd.impl.standard.StandardPlayer;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
-import nl.utwente.bpsd.impl.DefaultGame;
+import nl.utwente.bpsd.impl.standard.StandardGame;
 
-public class DefaultPlantCommand extends DefaultGameCommand {
+public class StandardPlantCommand extends StandardGameCommand {
     int fieldIndex;
     Card card;
 
@@ -19,8 +19,8 @@ public class DefaultPlantCommand extends DefaultGameCommand {
     @Override
     public GameCommandResult execute(Player p, Game g) {
         super.execute(p,g); // force a check that this is indeed a defaultGame
-        DefaultGame game = (DefaultGame) g; // Cast it because it is now indeed a DefaultGame
-        DefaultPlayer player = (DefaultPlayer) p;
+        StandardGame game = (StandardGame) g; // Cast it because it is now indeed a StandardGame
+        StandardPlayer player = (StandardPlayer) p;
 
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null && this.card!= null
         List<Pile> fields = player.getAllFields();
@@ -31,7 +31,7 @@ public class DefaultPlantCommand extends DefaultGameCommand {
          * field with matching card types
          */
         if(!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(card)) {
-            return DefaultGameCommandResult.INVALID;
+            return StandardGameCommandResult.INVALID;
         }
         else {
             /* TODO: What about removing card from player's hand? Where it should be done?
@@ -39,7 +39,7 @@ public class DefaultPlantCommand extends DefaultGameCommand {
              * In case of error should it be put back in player's hand?
             */
             field.append(card);
-            return DefaultGameCommandResult.PLANT;
+            return StandardGameCommandResult.PLANT;
         }
     }
 

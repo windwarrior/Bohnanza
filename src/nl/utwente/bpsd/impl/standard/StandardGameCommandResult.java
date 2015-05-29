@@ -1,8 +1,8 @@
-package nl.utwente.bpsd.impl;
+package nl.utwente.bpsd.impl.standard;
 
 import nl.utwente.bpsd.model.GameCommandResult;
 
-public enum DefaultGameCommandResult implements GameCommandResult {
+public enum StandardGameCommandResult implements GameCommandResult {
 
     BOUGHT_FIELD, 
     DRAWN_TO_HAND, 
