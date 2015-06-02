@@ -271,4 +271,10 @@ public class StandardGame extends Game {
         }
     }
 
+    /**
+     * Help function to make TUI more readable
+     */
+    public State getCurrentState(){
+        return stateManager.getCurrentState();
+    }
 }

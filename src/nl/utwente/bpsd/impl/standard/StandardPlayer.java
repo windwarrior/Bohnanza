@@ -1,10 +1,7 @@
 package nl.utwente.bpsd.impl.standard;
 
-import nl.utwente.bpsd.impl.standard.command.StandardBuyFieldCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardDrawTradeCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardDrawHandCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardHarvestCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardPlantCommand;
+import nl.utwente.bpsd.impl.standard.command.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +29,12 @@ public class StandardPlayer extends Player {
         trading = new HandPile();
     }
 
+    public boolean skip(){
+        StandardSkipCommand dc = new StandardSkipCommand();
+
+        return super.executeCommand(dc);
+    }
+
     public boolean drawIntoHand() {
         StandardDrawHandCommand dc = new StandardDrawHandCommand();
 
@@ -47,6 +50,7 @@ public class StandardPlayer extends Player {
     public boolean plantFromTrading(int tradingIndex, int fieldIndex) {
         StandardPlantCommand dc = new StandardPlantCommand();
         dc.setFieldIndex(fieldIndex);
+        // TODO: only take this card if we really plant
         Optional<Card> card = ((HandPile) (this.getTrading())).getCard(tradingIndex);
         // TODO: check if optional card contains a card otherwise error
         dc.setCard(card.get());

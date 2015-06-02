@@ -46,6 +46,10 @@ public class StateManager<K, C> {
     public Set<K> alphabet() {
         return this.initialState.alphabet(new ArrayList<>());
     }
+
+    public State getCurrentState(){
+        return currentState;
+    }
     /*
     Maybe in the future: 
     
