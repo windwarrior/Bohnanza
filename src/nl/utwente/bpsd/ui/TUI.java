@@ -45,6 +45,13 @@ public class TUI implements Observer {
         while (inCommand.hasNext()) commandParts.add(inCommand.next());
         boolean result;
         switch (commandParts.get(0).toLowerCase()) {
+            case "skip":
+                result = player.skip();
+                if(!result) System.out.println("Action was not completed, is the move valid?");
+                break;
+            case "state":
+                System.out.println("Current state is: "+game.getCurrentState());
+                break;
             case "help":
                 printHelp();
                 break;
@@ -112,15 +119,17 @@ public class TUI implements Observer {
 
     private void printHelp(){
         String result = "The following inputs are possible:\n" +
-                "1. Overview...........................shows player info \n"+
-                "2. DrawH .............................daws cards into players hand \n"+
-                "3. DrawT..............................draws cards into trading area \n"+
-                "4. PlantH fieldIndex..................plant bean from hand into field \n"+
-                "5. PlantT fieldIndex tradingIndex.....plant bean from trading into field \n"+
-                "6. Harvest fieldIndex.................harvest beans from field \n"+
-                "7. Buy................................buys a new field \n"+
-                "8. Help...............................this help menu \n"+
-                "9. End................................ends the game";
+                " 1. Overview...........................shows player info \n"+
+                " 2. DrawH .............................daws cards into players hand \n"+
+                " 3. DrawT..............................draws cards into trading area \n"+
+                " 4. PlantH fieldIndex..................plant bean from hand into field \n"+
+                " 5. PlantT fieldIndex tradingIndex.....plant bean from trading into field \n"+
+                " 6. Harvest fieldIndex.................harvest beans from field \n"+
+                " 7. Buy................................buys a new field \n"+
+                " 8. Skip...............................skips next move if possible \n"+
+                " 9. State..............................returns current game state \n"+
+                "10. Help...............................this help menu \n"+
+                "11. End................................ends the game";
         System.out.println(result);
     }
 

@@ -56,12 +56,7 @@ public class State<K, C> {
     public boolean isAcceptingState() {
         return this.isAcceptingState;
     }
-    
-    @Override
-    public String toString() {
-        return this.name;
-    }
-    
+
     public Set<K> alphabet(List<Entry<K, State>> visitedTransitions) {
         Set<K> alphabet = new HashSet<>();
         
@@ -97,5 +92,12 @@ public class State<K, C> {
         }
         
         return reachable;
+    }
+
+    @Override
+    public String toString() {
+        return "State{" +
+                "name='" + name +
+                "'}";
     }
 }

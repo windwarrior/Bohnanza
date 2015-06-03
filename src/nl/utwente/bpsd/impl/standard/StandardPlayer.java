@@ -1,11 +1,7 @@
 package nl.utwente.bpsd.impl.standard;
 
-import nl.utwente.bpsd.impl.standard.command.StandardBuyFieldCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardDrawTradeCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardDrawHandCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardHarvestCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardPlantCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardStartExchangeCommand;
+import nl.utwente.bpsd.impl.standard.command.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -68,25 +64,6 @@ public class StandardPlayer extends Player {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean startExchange(Player opponent){
-        StandardStartExchangeCommand ec = new StandardStartExchangeCommand();
-        ec.setOpponent(opponent);
-        return super.executeCommand(ec);
-    }
-    //TODO
-    public boolean stopExchange(Player opponent){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean acceptExchange(Player opponent){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean declineExchange(Player opponent){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean addHandCardToExchange(Player opponent, int cardIndex){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean addTradingAreaCardToExchange(Player opponent, int cardIndex){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean removeCardFromExchange(Player opponent, int cardIndex){throw new UnsupportedOperationException("Not supported yet.");}
-
-
     public boolean harvest(int fieldIndex) {
         StandardHarvestCommand dc = new StandardHarvestCommand();
         dc.setFieldIndex(fieldIndex);
@@ -115,8 +92,6 @@ public class StandardPlayer extends Player {
     public List<Pile> getAllFields() {
         return fields;
     }
-
-    public String getName() {return this.name;}
 
     @Override
     public String toString() {

@@ -25,6 +25,7 @@ public class StandardHarvestCommand extends StandardGameCommand {
         StandardPlayer player = (StandardPlayer) p;
 
         // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null
+        if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0) return StandardGameCommandResult.INVALID;
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
 
