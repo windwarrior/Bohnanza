@@ -9,14 +9,9 @@ import java.util.*;
 import nl.utwente.bpsd.impl.standard.command.StandardDrawTradeCommand;
 import nl.utwente.bpsd.impl.standard.command.StandardHarvestCommand;
 import nl.utwente.bpsd.impl.standard.command.StandardPlantCommand;
-import nl.utwente.bpsd.model.Card;
-import nl.utwente.bpsd.model.CardType;
-import nl.utwente.bpsd.model.Game;
+import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.model.pile.DiscardPile;
 import nl.utwente.bpsd.model.pile.Pile;
-import nl.utwente.bpsd.model.Command;
-import nl.utwente.bpsd.model.GameCommandResult;
-import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.state.State;
 import nl.utwente.bpsd.model.state.StateManager;
 
@@ -30,9 +25,12 @@ public class StandardGame extends Game {
     private Player currentPlayer;
     private int reshuffleCounter;
     private StateManager stateManager;
+    private List<Exchange> exchanges;
 
     public StandardGame() {
+
         players = new ArrayList<>();
+        exchanges = new ArrayList<>();
     }
 
     public void initialize() {
@@ -139,6 +137,10 @@ public class StandardGame extends Game {
 
     public int getReshuffleCounter() {
         return reshuffleCounter;
+    }
+
+    public List<Exchange> getExchanges() {
+        return exchanges;
     }
 
     /**
