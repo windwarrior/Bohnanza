@@ -99,6 +99,25 @@ public class StandardPlayer extends Player {
         return fields;
     }
 
+    public boolean startExchange(Player opponent){
+        StandardStartExchangeCommand ec = new StandardStartExchangeCommand();
+        ec.setOpponent(opponent);
+        return super.executeCommand(ec);
+    }
+    //TODO
+    public boolean stopExchange(Player opponent){throw new UnsupportedOperationException("Not supported yet.");}
+    //TODO
+    public boolean acceptExchange(Player opponent){throw new UnsupportedOperationException("Not supported yet.");}
+    //TODO
+    public boolean declineExchange(Player opponent){throw new UnsupportedOperationException("Not supported yet.");}
+    //TODO
+    public boolean addHandCardToExchange(Player opponent, int cardIndex){throw new UnsupportedOperationException("Not supported yet.");}
+    //TODO
+    public boolean addTradingAreaCardToExchange(Player opponent, int cardIndex){throw new UnsupportedOperationException("Not supported yet.");}
+    //TODO
+    public boolean removeCardFromExchange(Player opponent, int cardIndex){throw new UnsupportedOperationException("Not supported yet.");}
+
+
     @Override
     public String toString() {
         return String.format("This is player with name: %s", this.name);
