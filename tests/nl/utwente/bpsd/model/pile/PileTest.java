@@ -57,8 +57,8 @@ public class PileTest {
 
     @Test
     public void testPeek() throws Exception {
-        Optional<Card> expected = Optional.of(new Card(new CardType("TestCT", new HashMap<>(), 1)));
-        Optional<Card> result = testPile.peek();
+        Optional<CardType> expected = Optional.of(new CardType("TestCT", new HashMap<>(), 1));
+        Optional<CardType> result = testPile.peek();
         assertThat("See correct card from pile with cards", result, is(expected));
         assertThat("No cards lost after peek()", testPile.pileSize(), is(2));
     }

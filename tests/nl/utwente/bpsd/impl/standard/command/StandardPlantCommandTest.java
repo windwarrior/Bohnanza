@@ -17,6 +17,9 @@ import static org.junit.Assert.assertThat;
 
 public class StandardPlantCommandTest extends TestCase {
 
+    // TODO: alter tests to now use setCardIndex(int index) instead of setCard(Card c)
+    // TODO: create different tests for result StandardGameCommandResult.PLANT_TRADING instead of StandardGameCommandResult.PLANT
+
     StandardPlayer player;
     Game game;
     StandardPlantCommand plantC;
@@ -36,7 +39,7 @@ public class StandardPlantCommandTest extends TestCase {
         blackeyedBeanOMeter.put(5, 3);
         blackeyedBeanOMeter.put(6, 4);
         CardType blackeyedBean = new CardType("Black-eyed Bean", blackeyedBeanOMeter, 18);
-        plantC.setCard(new Card(blackeyedBean));
+        //plantC.setCard(new Card(blackeyedBean));
     }
 
     @Test
@@ -61,7 +64,7 @@ public class StandardPlantCommandTest extends TestCase {
         redBeanOMeter.put(4, 3);
         redBeanOMeter.put(5, 4);
         CardType redBean = new CardType("Red Bean", redBeanOMeter, 18);
-        plantC.setCard(new Card(redBean));
+        //plantC.setCard(new Card(redBean));
         generateFieldCards(1, 3);
         plantC.setFieldIndex(1);
         GameCommandResult result = plantC.execute(player,game);

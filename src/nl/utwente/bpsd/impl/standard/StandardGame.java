@@ -1,14 +1,9 @@
 package nl.utwente.bpsd.impl.standard;
 
-import nl.utwente.bpsd.impl.standard.command.StandardPlantTradedCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardSkipCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardTradeCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardDrawHandCommand;
+import nl.utwente.bpsd.impl.standard.command.*;
+
 import java.util.*;
 
-import nl.utwente.bpsd.impl.standard.command.StandardDrawTradeCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardHarvestCommand;
-import nl.utwente.bpsd.impl.standard.command.StandardPlantCommand;
 import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.model.pile.DiscardPile;
 import nl.utwente.bpsd.model.pile.Pile;
@@ -49,27 +44,32 @@ public class StandardGame extends Game {
         // It should be parallely composed with a statemanager that holds track 
         // of the players, but that is represented in the currentPlayer
         // Below are all states (with a name)
-        State<StandardGameCommandResult, Command> startState = new State("Turn", StandardPlantCommand.class, StandardHarvestCommand.class);
+        State<StandardGameCommandResult, Command> startState = new State("Turn", StandardPlantCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
-        State<StandardGameCommandResult, Command> onePlantedState = new State("One bean planted", StandardPlantCommand.class, StandardSkipCommand.class);
+        State<StandardGameCommandResult, Command> onePlantedState = new State("One bean planted", StandardPlantCommand.class, StandardSkipCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
-        State<StandardGameCommandResult, Command> drawCardToTradingState =  new State("Draw cards to trading area", StandardDrawTradeCommand.class);
+        State<StandardGameCommandResult, Command> drawCardToTradingState =  new State("Draw cards to trading area", StandardDrawTradeCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
         State<StandardGameCommandResult, Command> tradingState = new State("Start trading", StandardTradeCommand.class, StandardSkipCommand.class);
 
-        State<StandardGameCommandResult, Command> plantTradedCardsState = new State("Plant traded cards", StandardPlantTradedCommand.class, StandardSkipCommand.class);
+        State<StandardGameCommandResult, Command> plantTradedCardsState = new State("Plant traded cards", StandardPlantCommand.class, StandardSkipCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
-        State<StandardGameCommandResult, Command> drawCardState = new State("Draw cards to your hand", StandardDrawHandCommand.class);
+        State<StandardGameCommandResult, Command> drawCardState = new State("Draw cards to your hand", StandardDrawHandCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
         // TODO buy field command
         // These are per state all transitions that can be taken
         startState.addTransition(StandardGameCommandResult.HARVEST, startState);
         startState.addTransition(StandardGameCommandResult.PLANT, onePlantedState);
+        startState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, startState);
 
         onePlantedState.addTransition(StandardGameCommandResult.PLANT, drawCardToTradingState);
         onePlantedState.addTransition(StandardGameCommandResult.SKIP, drawCardToTradingState);
+        onePlantedState.addTransition(StandardGameCommandResult.HARVEST, onePlantedState);
+        onePlantedState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, onePlantedState);
 
         drawCardToTradingState.addTransition(StandardGameCommandResult.DRAWN_TO_TRADING, tradingState);
+        drawCardToTradingState.addTransition(StandardGameCommandResult.HARVEST, drawCardToTradingState);
+        drawCardToTradingState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, drawCardToTradingState);
 
         // Trading is implemented in the statemachine, but not yet with the players
         tradingState.addTransition(StandardGameCommandResult.TRADE, tradingState);
@@ -77,8 +77,12 @@ public class StandardGame extends Game {
 
         plantTradedCardsState.addTransition(StandardGameCommandResult.PLANT_TRADED, plantTradedCardsState);
         plantTradedCardsState.addTransition(StandardGameCommandResult.SKIP, drawCardState);
+        plantTradedCardsState.addTransition(StandardGameCommandResult.HARVEST, plantTradedCardsState);
+        plantTradedCardsState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, plantTradedCardsState);
 
         drawCardState.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, startState);
+        drawCardState.addTransition(StandardGameCommandResult.HARVEST, drawCardState);
+        drawCardState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, drawCardState);
 
         stateManager = new StateManager(startState);
     }
@@ -243,9 +247,15 @@ public class StandardGame extends Game {
             }
         }
 
+        List<Card> testCards = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Card c = new Card(chiliBean);
+            testCards.add(c);
+        }
+
         Collections.shuffle(allCards);
             gamePile = new Pile();
-            for (Card c : allCards) {
+            for (Card c : testCards) {
                 gamePile.append(c);
         }
     }

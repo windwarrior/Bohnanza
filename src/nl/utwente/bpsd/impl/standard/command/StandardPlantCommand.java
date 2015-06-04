@@ -3,13 +3,17 @@ package nl.utwente.bpsd.impl.standard.command;
 import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.impl.standard.StandardPlayer;
+import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
+import java.util.Optional;
+
 import nl.utwente.bpsd.impl.standard.StandardGame;
 
 public class StandardPlantCommand extends StandardGameCommand {
     int fieldIndex;
+    int tradingIndex = -1;
     Card card;
 
     /**
@@ -19,27 +23,37 @@ public class StandardPlantCommand extends StandardGameCommand {
     @Override
     public GameCommandResult execute(Player p, Game g) {
         super.execute(p,g); // force a check that this is indeed a defaultGame
-        StandardGame game = (StandardGame) g; // Cast it because it is now indeed a StandardGame
         StandardPlayer player = (StandardPlayer) p;
 
-        // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null && this.card!= null
+        if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0) return StandardGameCommandResult.INVALID;
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
+
+        //Get the card type
+        // TODO: correct use of optionals
+        Optional<CardType> ct = tradingIndex == -1 ? player.getHand().peek() : ((HandPile) player.getTrading()).getCardType(fieldIndex);
 
         /*
          * Player can only plant card on empty field or on
          * field with matching card types
          */
-        if(!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(card)) {
+        if(ct.isPresent() && !(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(ct.get())) {
             return StandardGameCommandResult.INVALID;
         }
         else {
-            /* TODO: What about removing card from player's hand? Where it should be done?
-             * Is it already removed here?
-             * In case of error should it be put back in player's hand?
-            */
-            field.append(card);
-            return StandardGameCommandResult.PLANT;
+            GameCommandResult result;
+            if(tradingIndex == -1){
+                 result = player.getHand().pop().map((Card c) -> {
+                    field.append(c);
+                    return StandardGameCommandResult.PLANT;
+                }).orElse(StandardGameCommandResult.INVALID);
+            } else {
+                result = ((HandPile)player.getTrading()).getCard(tradingIndex).map((Card c) -> {
+                    field.append(c);
+                    return StandardGameCommandResult.PLANT_TRADED;
+                }).orElse(StandardGameCommandResult.INVALID);
+            }
+            return result;
         }
     }
 
@@ -47,8 +61,7 @@ public class StandardPlantCommand extends StandardGameCommand {
         this.fieldIndex = index;
     }
 
-    public void setCard(Card card){
-        this.card = card;
+    public void setCardIndex(int index){
+        this.tradingIndex = index;
     }
-    
 }

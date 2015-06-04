@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import nl.utwente.bpsd.model.Card;
+import nl.utwente.bpsd.model.CardType;
 
 public class Pile {
     private List<Card> cardList;
@@ -40,8 +41,8 @@ public class Pile {
     /**
     * Look a the top card without removing it.
     */
-    public Optional<Card> peek() {
-      return cardList.size() > 0 ? Optional.of(cardList.get(0)) : Optional.empty();
+    public Optional<CardType> peek() {
+      return cardList.size() > 0 ? Optional.of(cardList.get(0).getCardType()) : Optional.empty();
     }
 
     /**

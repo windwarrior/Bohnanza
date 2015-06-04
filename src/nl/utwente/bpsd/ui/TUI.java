@@ -78,7 +78,7 @@ public class TUI implements Observer {
                     if(!result) System.out.println("Action was not completed, is the move valid?");
                 } catch (NumberFormatException e) {
                     System.err.println("Please include a valid field index");
-                } catch (ArrayIndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e){
                     System.err.println("Please include a field index");
                 }
                break;
@@ -91,7 +91,7 @@ public class TUI implements Observer {
                     if(!result) System.out.println("Action was not completed, is the move valid?");
                 } catch (NumberFormatException e) {
                     System.err.println("Please include a valid field and trading index");
-                } catch (ArrayIndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e){
                     System.err.println("Please include a field and trading index");
                 }
                 break;
@@ -103,7 +103,7 @@ public class TUI implements Observer {
                     if(!result) System.out.println("Action was not completed, is the move valid?");
                 } catch (NumberFormatException e) {
                     System.err.println("Please include a valid field index");
-                } catch (ArrayIndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e){
                     System.err.println("Please include a field index");
                 }
                 break;
@@ -148,7 +148,7 @@ public class TUI implements Observer {
         for(int i = 0; i < player.getAllFields().size(); i++){
             Pile pile = player.getAllFields().get(i);
             fields += "\tField " + (i+1) + ": " + pile.pileSize() + " beans of type: " +
-                    pile.peek().map((Card c) -> c.getCardType().toString()).orElse("no beans") + "\n";
+                    pile.peek().map((CardType ct) -> ct.toString()).orElse("no beans") + "\n";
         }
         System.out.println(hand+fields+trading+treasury);
     }

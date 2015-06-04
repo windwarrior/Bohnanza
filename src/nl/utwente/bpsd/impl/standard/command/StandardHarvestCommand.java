@@ -24,7 +24,6 @@ public class StandardHarvestCommand extends StandardGameCommand {
         StandardGame game = (StandardGame) g; // Cast it because it is now indeed a StandardGame
         StandardPlayer player = (StandardPlayer) p;
 
-        // TODO: checking if this.fieldIndex is in range and this.player != null this.fieldIndex != null && g != null
         if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0) return StandardGameCommandResult.INVALID;
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
@@ -45,7 +44,7 @@ public class StandardHarvestCommand extends StandardGameCommand {
 
         if (field.peek().isPresent() && singleCard) {
             int fieldSize = field.pileSize();
-            TreeMap<Integer, Integer> beanOMeter = new TreeMap<Integer, Integer>(field.peek().get().getCardType().getBeanOMeter());
+            TreeMap<Integer, Integer> beanOMeter = new TreeMap<Integer, Integer>(field.peek().get().getBeanOMeter());
 
             int earnedCoins = 0;
             if(field.pileSize() > 1) {

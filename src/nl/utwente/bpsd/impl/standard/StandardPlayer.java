@@ -29,6 +29,15 @@ public class StandardPlayer extends Player {
         trading = new HandPile();
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+    public boolean skip() {
+        StandardSkipCommand dc = new StandardSkipCommand();
+        return super.executeCommand(dc);
+    }
+
     public boolean drawIntoHand() {
         StandardDrawHandCommand dc = new StandardDrawHandCommand();
 
@@ -44,18 +53,15 @@ public class StandardPlayer extends Player {
     public boolean plantFromTrading(int tradingIndex, int fieldIndex) {
         StandardPlantCommand dc = new StandardPlantCommand();
         dc.setFieldIndex(fieldIndex);
-        Optional<Card> card = ((HandPile) (this.getTrading())).getCard(tradingIndex);
-        // TODO: check if optional card contains a card otherwise error
-        dc.setCard(card.get());
+        dc.setCardIndex(tradingIndex);
+
         return super.executeCommand(dc);
     }
 
     public boolean plantFromHand(int fieldIndex) {
-        // TODO: handle states
         StandardPlantCommand dc = new StandardPlantCommand();
         dc.setFieldIndex(fieldIndex);
-        // TODO: This should have some check to see if a player still has cards in his hand
-        dc.setCard(this.getHand().pop().get());
+
         return super.executeCommand(dc);
     }
 
