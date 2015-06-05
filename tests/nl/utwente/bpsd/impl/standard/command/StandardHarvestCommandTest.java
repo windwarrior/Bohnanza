@@ -75,6 +75,19 @@ public class StandardHarvestCommandTest extends TestCase {
         assertThat("Game's discardPile - 5 cards added", game.getDiscardPile().pileSize(), is(5));
     }
 
+    @Test
+    public void testHarvestLowerNumberOfCardsThanInLowestBeanometer() throws Exception{
+        generateFieldCards(1, 1);
+        generateFieldCards(0, 2);
+        harvestC.setFieldIndex(0);
+        GameCommandResult result = harvestC.execute(player,game);
+        assertThat("Harvesting from field with not equal number of cards to those required in beanOMeter: result ", result, is(StandardGameCommandResult.HARVEST));
+        assertThat("Player's field after harvesting should be empty", player.getAllFields().get(0).pileSize(), is(0));
+        assertThat("Number of cards on other fields should not be changed", player.getAllFields().get(1).pileSize(), is(1));
+        assertThat("Player's treasury - no cards added", player.getTreasury().pileSize(), is(0));
+        assertThat("Game's discardPile - 2 cards added", game.getDiscardPile().pileSize(), is(2));
+    }
+
     /**
      * adds Chili Bean cards to player's field
      *

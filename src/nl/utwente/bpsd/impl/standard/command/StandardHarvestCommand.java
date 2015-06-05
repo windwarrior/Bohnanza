@@ -14,7 +14,7 @@ public class StandardHarvestCommand extends StandardGameCommand {
     int fieldIndex;
 
     /**
-     * Sells beans from the player's selected bean field
+     * Sells beans from the player's selected bean field indicated by fieldIndex
      *
      * @requires this.player != null this.fieldIndex != null && g != null;
      */
@@ -24,7 +24,8 @@ public class StandardHarvestCommand extends StandardGameCommand {
         StandardGame game = (StandardGame) g; // Cast it because it is now indeed a StandardGame
         StandardPlayer player = (StandardPlayer) p;
 
-        if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0) return StandardGameCommandResult.INVALID;
+        if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0)
+            return StandardGameCommandResult.INVALID;
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
 
@@ -47,8 +48,12 @@ public class StandardHarvestCommand extends StandardGameCommand {
             TreeMap<Integer, Integer> beanOMeter = new TreeMap<Integer, Integer>(field.peek().get().getBeanOMeter());
 
             int earnedCoins = 0;
-            if(field.pileSize() > 1) {
-                Integer previousKey = beanOMeter.firstKey();
+            Integer previousKey = beanOMeter.firstKey();
+            /*
+             * if player can get any coins from harvest ->
+             * field has equal or bigger number of cards than indicated in lowest BeanOMeter
+             */
+            if(fieldSize >= previousKey) {
                 for (Integer key : beanOMeter.keySet()) {
                     if (key <= fieldSize) {
                         previousKey = key;
