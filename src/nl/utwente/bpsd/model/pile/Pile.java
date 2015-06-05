@@ -39,7 +39,7 @@ public class Pile {
     }
 
     /**
-    * Look a the top card without removing it.
+    * Look at the top card without removing it.
     */
     public Optional<CardType> peek() {
       return cardList.size() > 0 ? Optional.of(cardList.get(0).getCardType()) : Optional.empty();

@@ -25,19 +25,23 @@ public class StandardPlantCommand extends StandardGameCommand {
         super.execute(p,g); // force a check that this is indeed a defaultGame
         StandardPlayer player = (StandardPlayer) p;
 
-        if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0) return StandardGameCommandResult.INVALID;
+        if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0)
+            return StandardGameCommandResult.INVALID;
         List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
 
-        //Get the card type
+        /*
+         * Check if planting from player's hand or from trading pile +
+         * Get CardType of planted card
+         */
         // TODO: correct use of optionals
-        Optional<CardType> ct = tradingIndex == -1 ? player.getHand().peek() : ((HandPile) player.getTrading()).getCardType(fieldIndex);
+        Optional<CardType> ct = tradingIndex == -1 ? player.getHand().peek() : ((HandPile) player.getTrading()).getCardType(tradingIndex);
 
         /*
          * Player can only plant card on empty field or on
          * field with matching card types
          */
-        if(ct.isPresent() && !(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(ct.get())) {
+        if(!ct.isPresent() || (ct.isPresent() && !(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(ct.get()))) {
             return StandardGameCommandResult.INVALID;
         }
         else {
