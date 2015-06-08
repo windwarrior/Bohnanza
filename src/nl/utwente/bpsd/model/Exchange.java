@@ -23,7 +23,7 @@ public interface Exchange {
      * Returns the exchange state of the specified Player.
      * @require isPlayerInExchange(p)
      */
-    public Exchange.SideState getPartyState(Player p);
+    public Exchange.SideState getSideState(Player p);
 
     /**
      * Determines if this exchange was started by both player sides.

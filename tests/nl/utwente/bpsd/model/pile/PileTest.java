@@ -23,8 +23,8 @@ public class PileTest {
 
     @Before
     public void setUp() throws Exception {
-        Card c1 = new Card(new CardType("TestCT", new HashMap<>(), 1));
-        Card c2 = new Card(new CardType("TestCT2", new HashMap<>(), 2));
+        Card c1 = new Card(new CardType("TestCT", new HashMap<>(), 1), 1);
+        Card c2 = new Card(new CardType("TestCT2", new HashMap<>(), 2), 2);
         List<Card> cards = new ArrayList<>();
         cards.add(c1);
         cards.add(c2);
@@ -35,7 +35,7 @@ public class PileTest {
 
     @Test
     public void testAppend() throws Exception {
-        Card c3 = new Card(new CardType("TestCT", new HashMap<>(), 1));
+        Card c3 = new Card(new CardType("TestCT", new HashMap<>(), 1), 3);
         testPile.append(c3);
         assertThat("Added card to a pile with 2 cards", testPile.pileSize(), is(3));
         noCards.append(c3);
@@ -44,7 +44,7 @@ public class PileTest {
 
     @Test
     public void testPop() throws Exception {
-        Optional<Card> expected = Optional.of(new Card(new CardType("TestCT", new HashMap<>(), 1)));
+        Optional<Card> expected = Optional.of(new Card(new CardType("TestCT", new HashMap<>(), 1), 1));
         Optional<Card> result = testPile.pop();
         assertThat("Get correct card from pile with cards", result, is(expected));
         assertThat("One cards less in pile after pop()", testPile.pileSize(), is(1));

@@ -4,20 +4,14 @@ import nl.utwente.bpsd.impl.standard.StandardExchange;
 import nl.utwente.bpsd.impl.standard.StandardGame;
 import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.impl.standard.StandardPlayer;
-import nl.utwente.bpsd.model.Exchange;
-import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.GameCommandResult;
-import nl.utwente.bpsd.model.Player;
+import nl.utwente.bpsd.model.*;
 
+import java.util.List;
 import java.util.Optional;
 
-/**
- * Command which allows player taking part in exchange to stop it.
- * It results in deleting exchange from game.
- */
-public class StandardStopExchangeCommand extends StandardGameCommand {
-
+public class StandardRemoveCardFromExchangeCommand extends StandardGameCommand{
     Player opponent;
+    int cardIndex = -1;
 
     @Override
     public GameCommandResult execute(Player p, Game g) {
@@ -25,25 +19,33 @@ public class StandardStopExchangeCommand extends StandardGameCommand {
         StandardGame game = (StandardGame) g; // Cast it because it is now indeed a StandardGame
         StandardPlayer player = (StandardPlayer) p;
 
+        /*
+         * There must be already created exchange between indicated two players
+         */
         Optional<Exchange> ex = game.getExchange(player, opponent);
-        //there must be already created exchange between these two players
-        if (!ex.isPresent())
+        if( !ex.isPresent() )
             return StandardGameCommandResult.INVALID;
 
         StandardExchange exchange = (StandardExchange)ex.get();
-        //exchange cannot be finished
-        if(exchange.isFinished())
+        /*
+         * Exchange must be already started by two players and
+         * not finished
+         */
+        if(exchange.isFinished() || !exchange.isStarted())
             return StandardGameCommandResult.INVALID;
-        //can not stop when exchange is in isStarted phase (when exchange isStarted only decline can be invoked)
-        if(exchange.isStarted())
+
+        List<Card> offeredCards = exchange.getOfferedCards(player);
+        if(cardIndex < 0 || cardIndex >= offeredCards.size())
             return StandardGameCommandResult.INVALID;
-        exchange.setSideState(player, Exchange.SideState.IDLE);
-        //remove exchange from game
-        game.getExchanges().remove(exchange);
+
+        exchange.getOfferedCards(player).remove(cardIndex);
         return StandardGameCommandResult.TRADE;
     }
 
     public void setOpponent(Player opp) {
         this.opponent = opp;
+    }
+    public void setCardIndex(int index){
+        this.cardIndex = index;
     }
 }

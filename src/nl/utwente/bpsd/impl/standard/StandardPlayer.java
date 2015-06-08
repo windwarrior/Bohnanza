@@ -5,7 +5,6 @@ import nl.utwente.bpsd.impl.standard.command.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Player;
 
 import nl.utwente.bpsd.model.pile.HandPile;
@@ -79,8 +78,53 @@ public class StandardPlayer extends Player {
 
     public boolean buyField() {
         StandardBuyFieldCommand dc = new StandardBuyFieldCommand();
-
         return super.executeCommand(dc);
+    }
+
+    public boolean startExchange(Player opponent){
+        StandardStartExchangeCommand ec = new StandardStartExchangeCommand();
+        ec.setOpponent(opponent);
+        return super.executeCommand(ec);
+    }
+
+    //do we need this command?
+    public boolean stopExchange(Player opponent){
+        StandardStopExchangeCommand ec = new StandardStopExchangeCommand();
+        ec.setOpponent(opponent);
+        return super.executeCommand(ec);
+    }
+
+    public boolean acceptExchange(Player opponent){
+        StandardAcceptExchangeCommand ec = new StandardAcceptExchangeCommand();
+        ec.setOpponent(opponent);
+        return super.executeCommand(ec);
+    }
+
+    public boolean declineExchange(Player opponent){
+        StandardDeclineExchangeCommand ec = new StandardDeclineExchangeCommand();
+        ec.setOpponent(opponent);
+        return super.executeCommand(ec);
+    }
+
+    public boolean addHandCardToExchange(Player opponent, int cardIndex){
+        StandardAddHandCardToExchangeCommand ec = new StandardAddHandCardToExchangeCommand();
+        ec.setOpponent(opponent);
+        ec.setCardIndex(cardIndex);
+        return super.executeCommand(ec);
+    }
+
+    public boolean addTradingAreaCardToExchange(Player opponent, int cardIndex){
+        StandardAddTradingAreaCardToExchangeCommand ec = new StandardAddTradingAreaCardToExchangeCommand();
+        ec.setOpponent(opponent);
+        ec.setCardIndex(cardIndex);
+        return super.executeCommand(ec);
+    }
+
+    public boolean removeCardFromExchange(Player opponent, int cardIndex){
+        StandardRemoveCardFromExchangeCommand ec = new StandardRemoveCardFromExchangeCommand();
+        ec.setOpponent(opponent);
+        ec.setCardIndex(cardIndex);
+        return super.executeCommand(ec);
     }
 
     public Pile getHand() {
@@ -98,25 +142,6 @@ public class StandardPlayer extends Player {
     public List<Pile> getAllFields() {
         return fields;
     }
-
-    public boolean startExchange(Player opponent){
-        StandardStartExchangeCommand ec = new StandardStartExchangeCommand();
-        ec.setOpponent(opponent);
-        return super.executeCommand(ec);
-    }
-    //TODO
-    public boolean stopExchange(Player opponent){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean acceptExchange(Player opponent){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean declineExchange(Player opponent){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean addHandCardToExchange(Player opponent, int cardIndex){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean addTradingAreaCardToExchange(Player opponent, int cardIndex){throw new UnsupportedOperationException("Not supported yet.");}
-    //TODO
-    public boolean removeCardFromExchange(Player opponent, int cardIndex){throw new UnsupportedOperationException("Not supported yet.");}
-
 
     @Override
     public String toString() {

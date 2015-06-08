@@ -71,7 +71,7 @@ public class StandardReshuffleCommandTest {
         chiliBeanOMeter.put(8, 3);
         chiliBeanOMeter.put(9, 4);
         CardType chiliBean = new CardType("Chili Bean", chiliBeanOMeter, 18);
-        Card c = new Card(chiliBean);
+        Card c = new Card(chiliBean, 1);
         this.gamePile.append(c);
     }
 
@@ -133,16 +133,16 @@ public class StandardReshuffleCommandTest {
         stinkBeanOMeter.put(8, 4);
         CardType stinkBean = new CardType("Stink Bean", stinkBeanOMeter, 16);
 
-        cardsToAdd.add(new Card(chiliBean));
-        cardsToAdd.add(new Card(chiliBean));
-        cardsToAdd.add(new Card(cocoaBean));
-        cardsToAdd.add(new Card(redBean));
-        cardsToAdd.add(new Card(gardenBean));
-        cardsToAdd.add(new Card(blackeyedBean));
-        cardsToAdd.add(new Card(gardenBean));
-        cardsToAdd.add(new Card(greenBean));
-        cardsToAdd.add(new Card(soyBean));
-        cardsToAdd.add(new Card(stinkBean));
+        cardsToAdd.add(new Card(chiliBean, 1));
+        cardsToAdd.add(new Card(chiliBean, 2));
+        cardsToAdd.add(new Card(cocoaBean, 3));
+        cardsToAdd.add(new Card(redBean, 4));
+        cardsToAdd.add(new Card(gardenBean, 5));
+        cardsToAdd.add(new Card(blackeyedBean, 6));
+        cardsToAdd.add(new Card(gardenBean, 7));
+        cardsToAdd.add(new Card(greenBean, 8));
+        cardsToAdd.add(new Card(soyBean, 9));
+        cardsToAdd.add(new Card(stinkBean, 10));
 
         for (Card c : cardsToAdd) {
             discardPile.append(c);

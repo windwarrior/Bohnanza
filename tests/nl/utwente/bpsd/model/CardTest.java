@@ -22,7 +22,7 @@ public class CardTest {
         beanOMeter.put(8, 3);
         beanOMeter.put(10, 4);
         CardType cardType = new CardType("Blue Bean", beanOMeter, 20);
-        testCard = new Card(cardType);
+        testCard = new Card(cardType, 1);
     }
 
     @Test
@@ -48,6 +48,17 @@ public class CardTest {
         assertThat("Wrong name", testCard.getCardType(), not(wrongNameBean));
         assertThat("Wrong beanOMeter", testCard.getCardType(), not(wrongBeanOMeterBean));
         assertThat("Wrong numberOfCardType", testCard.getCardType(), not(wrongNumberBean));
+
+        Map<Integer, Integer> beanOMeter = new HashMap<>();
+        beanOMeter.put(4, 1);
+        beanOMeter.put(6, 2);
+        beanOMeter.put(8, 3);
+        beanOMeter.put(10, 4);
+        CardType cardType = new CardType("Blue Bean", beanOMeter, 20);
+        Card equalCard = new Card(cardType, 1);
+        assertThat("Right cardNumber", testCard.getCardNumber(), is(1));
+        assertThat("Wrong cardNumber", testCard.getCardNumber(), not(5));
+        assertThat("Different cards by cardNumber", testCard.equals(equalCard), is(true));
     }
 
 }

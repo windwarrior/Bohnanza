@@ -20,7 +20,7 @@ public class DiscardPileTest{
         testPile = new DiscardPile();
         Card c;
         for(int i=1; i<11; ++i) {
-            c = new Card(new CardType(Integer.toString(i), new HashMap<>(), i));
+            c = new Card(new CardType(Integer.toString(i), new HashMap<>(), i), i);
             testPile.append(c);
         }
     }

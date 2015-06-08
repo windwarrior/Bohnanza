@@ -103,7 +103,7 @@ public class StandardHarvestCommandTest extends TestCase {
         chiliBeanOMeter.put(9, 4);
         CardType chiliBean = new CardType("Chili Bean", chiliBeanOMeter, 18);
         for (int i = 0; i < num; ++i) {
-            Card c = new Card(chiliBean);
+            Card c = new Card(chiliBean, i);
             this.player.getAllFields().get(index).append(c);
         }
     }

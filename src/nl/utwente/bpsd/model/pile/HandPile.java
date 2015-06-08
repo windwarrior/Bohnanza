@@ -34,4 +34,25 @@ public class HandPile extends Pile{
             result = Optional.of(getCardList().get(index).getCardType());
         return result;
     }
+    
+    /**
+     * Removes from this list all of its elements
+     * that are contained in the specified list
+     * (used by AcceptExchangeCommand)
+     */
+    public void removeAll(List<Card> cards){
+        getCardList().removeAll(cards);
+    }
+
+    /**
+     * returns the card at index index from the pile without its removal from pile
+     * (used in addTreadingAreaCardToExchange and AddHandCardToExchange commands)
+     */
+    public Optional<Card> getCardCopy(int index){
+        Optional<Card> result = Optional.empty();
+        if(0 <= index && index < getCardList().size()){
+            result = Optional.of(getCardList().get(index));
+        }
+        return result;
+    }
 }

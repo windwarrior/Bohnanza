@@ -4,20 +4,14 @@ import nl.utwente.bpsd.impl.standard.StandardExchange;
 import nl.utwente.bpsd.impl.standard.StandardGame;
 import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.impl.standard.StandardPlayer;
-import nl.utwente.bpsd.model.Exchange;
-import nl.utwente.bpsd.model.Game;
-import nl.utwente.bpsd.model.GameCommandResult;
-import nl.utwente.bpsd.model.Player;
+import nl.utwente.bpsd.model.*;
+import nl.utwente.bpsd.model.pile.HandPile;
 
 import java.util.Optional;
 
-/**
- * Command which allows player taking part in exchange to stop it.
- * It results in deleting exchange from game.
- */
-public class StandardStopExchangeCommand extends StandardGameCommand {
-
+public class StandardAddHandCardToExchangeCommand extends StandardGameCommand{
     Player opponent;
+    int cardIndex = -1;
 
     @Override
     public GameCommandResult execute(Player p, Game g) {
@@ -25,25 +19,31 @@ public class StandardStopExchangeCommand extends StandardGameCommand {
         StandardGame game = (StandardGame) g; // Cast it because it is now indeed a StandardGame
         StandardPlayer player = (StandardPlayer) p;
 
+        if(player.getHand().pileSize() <= cardIndex || cardIndex < 0)
+            return StandardGameCommandResult.INVALID;
         Optional<Exchange> ex = game.getExchange(player, opponent);
         //there must be already created exchange between these two players
         if (!ex.isPresent())
             return StandardGameCommandResult.INVALID;
-
         StandardExchange exchange = (StandardExchange)ex.get();
-        //exchange cannot be finished
-        if(exchange.isFinished())
+        //exchange cannot be finished and must be already started by both player sides
+        if(exchange.isFinished() || !exchange.isStarted())
             return StandardGameCommandResult.INVALID;
-        //can not stop when exchange is in isStarted phase (when exchange isStarted only decline can be invoked)
-        if(exchange.isStarted())
-            return StandardGameCommandResult.INVALID;
-        exchange.setSideState(player, Exchange.SideState.IDLE);
-        //remove exchange from game
-        game.getExchanges().remove(exchange);
-        return StandardGameCommandResult.TRADE;
-    }
 
+        //the same card can be added to exchange only once
+        StandardGameCommandResult result = ((HandPile)(player.getHand())).getCardCopy(cardIndex).map((Card c) -> {
+            if (!exchange.getOfferedCards(player).contains(c)) {
+                exchange.getOfferedCards(player).add(c);
+                return StandardGameCommandResult.TRADE;
+            } else
+                return StandardGameCommandResult.INVALID;
+        }).orElse(StandardGameCommandResult.INVALID);
+        return result;
+    }
     public void setOpponent(Player opp) {
         this.opponent = opp;
+    }
+    public void setCardIndex(int index){
+        this.cardIndex = index;
     }
 }

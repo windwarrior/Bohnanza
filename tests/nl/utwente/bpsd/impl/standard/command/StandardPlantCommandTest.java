@@ -37,8 +37,8 @@ public class StandardPlantCommandTest extends TestCase {
         blackeyedBeanOMeter.put(5, 3);
         blackeyedBeanOMeter.put(6, 4);
         CardType blackeyedBean = new CardType("Black-eyed Bean", blackeyedBeanOMeter, 18);
-        player.getHand().append(new Card(blackeyedBean));
-        player.getHand().append(new Card(blackeyedBean));
+        player.getHand().append(new Card(blackeyedBean, 1));
+        player.getHand().append(new Card(blackeyedBean, 2));
 
         //player's trading area with  blackeyedBean, and redBean
         Map<Integer, Integer> redBeanOMeter = new HashMap<>();
@@ -47,8 +47,8 @@ public class StandardPlantCommandTest extends TestCase {
         redBeanOMeter.put(4, 3);
         redBeanOMeter.put(5, 4);
         CardType redBean = new CardType("Red Bean", redBeanOMeter, 18);
-        player.getTrading().append(new Card(blackeyedBean));
-        player.getTrading().append(new Card(redBean));
+        player.getTrading().append(new Card(blackeyedBean, 3));
+        player.getTrading().append(new Card(redBean, 4));
 
         plantC = new StandardPlantCommand();
         plantC.setFieldIndex(0);
@@ -99,7 +99,7 @@ public class StandardPlantCommandTest extends TestCase {
         player.getHand().pop();
         player.getHand().pop();
         //add redBean to player's hand
-        player.getHand().append(new Card(redBean));
+        player.getHand().append(new Card(redBean, 6));
         generateFieldCards(1, 3);
 
         plantC.setFieldIndex(1);
@@ -210,7 +210,7 @@ public class StandardPlantCommandTest extends TestCase {
         blackeyedBeanOMeter.put(6, 4);
         CardType blackeyedBean = new CardType("Black-eyed Bean", blackeyedBeanOMeter, 18);
         for (int i = 0; i < num; ++i) {
-            Card c = new Card(blackeyedBean);
+            Card c = new Card(blackeyedBean, i);
             this.player.getAllFields().get(index).append(c);
         }
     }

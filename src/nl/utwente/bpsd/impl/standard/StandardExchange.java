@@ -52,13 +52,20 @@ public class StandardExchange implements Exchange {
     }
 
     @Override
-    public Exchange.SideState getPartyState(Player player) {
+    public Exchange.SideState getSideState(Player player) {
         SideState res = null;
         if (((StandardPlayer)player).getName().equals(firstSideName))
             res = firstSideState;
         if (((StandardPlayer)player).getName().equals(secondSideName))
             res = secondSideState;
         return res;
+    }
+
+    public void setSideState(Player p, SideState newState) {
+        if (firstSideName.equals(((StandardPlayer) p).getName()))
+            this.firstSideState = newState;
+        else if (secondSideName.equals(((StandardPlayer)p).getName()))
+            this.secondSideState = newState;
     }
 
     @Override
@@ -71,23 +78,37 @@ public class StandardExchange implements Exchange {
         return res;
     }
 
+    @Override
     public boolean isStarted(){
-        throw new UnsupportedOperationException("Not supported yet.");
+        //both exchange sides need to be in NEGOTIATING state
+        return firstSideState == SideState.NEGOTIATING
+                && secondSideState == SideState.NEGOTIATING;
     }
 
+    @Override
     public boolean isStopped(){
-        throw new UnsupportedOperationException("Not supported yet.");
+        //if any of exchange sides stopped it -> is in IDLE state
+        return firstSideState == SideState.IDLE
+                || secondSideState == SideState.IDLE;
     }
 
+    @Override
     public boolean isAccepted(){
-        throw new UnsupportedOperationException("Not supported yet.");
+        //both exchange sides have already accepted exchange -> both sides are in ACCEPTING state
+        return firstSideState == SideState.ACCEPTING
+                && secondSideState == SideState.ACCEPTING;
     }
 
+    @Override
     public boolean isDeclined(){
-        throw new UnsupportedOperationException("Not supported yet.");
+        //if any of exchange sides declined it -> is in DECLINING state
+        return firstSideState == SideState.DECLINING
+                || secondSideState == SideState.DECLINING;
     }
 
+    @Override
     public boolean isFinished(){
-        throw new UnsupportedOperationException("Not supported yet.");
+        //both sides accepted the exchange or one of them declined it
+        return isAccepted() || isDeclined();
     }
 }

@@ -143,8 +143,18 @@ public class StandardGame extends Game {
         return reshuffleCounter;
     }
 
-    public List<Exchange> getExchanges() {
-        return exchanges;
+    public List<Exchange> getExchanges() { return exchanges; }
+
+    /**
+     * @return  Optional<Exchange> exchange with indicated in parameters player sides,
+     * in case of no such exchange returns Optional.empty().
+     */
+    public Optional<Exchange> getExchange(Player player, Player opponent) {
+        for (Exchange exchange : exchanges) {
+            if (exchange.isPlayerInExchange(player) && exchange.isPlayerInExchange(opponent))
+                return Optional.of(exchange);
+        }
+        return Optional.empty();
     }
 
     /**
@@ -241,21 +251,20 @@ public class StandardGame extends Game {
 
         List<Card> allCards = new ArrayList<>();
         for (CardType ct : allCardType) {
-            Card c = new Card(ct);
             for (int i = 0; i < ct.getNumberOfType(); i++) {
-                allCards.add(c);
+                allCards.add(new Card(ct, i));
             }
         }
 
-        List<Card> testCards = new ArrayList<>();
+        /*List<Card> testCards = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            Card c = new Card(chiliBean);
+            Card c = new Card(chiliBean, i);
             testCards.add(c);
-        }
+        }*/
 
         Collections.shuffle(allCards);
             gamePile = new Pile();
-            for (Card c : testCards) {
+            for (Card c : allCards) {
                 gamePile.append(c);
         }
     }
