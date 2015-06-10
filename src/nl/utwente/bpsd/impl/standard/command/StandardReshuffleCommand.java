@@ -11,6 +11,8 @@ import nl.utwente.bpsd.model.pile.DiscardPile;
 
 import java.util.List;
 
+
+//TODO: This should become an internal command!
 public class StandardReshuffleCommand extends StandardGameCommand {
     /**
      * Adds reshuffled list of cards from discardPile to gamePile.

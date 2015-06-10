@@ -1,7 +1,5 @@
 package nl.utwente.bpsd.impl.mafia.command;
 
-/**
- * Created by Jochem on 6/10/2015.
- */
+//TODO: what does this command do? is it not the same as MafiaPlantFromRevealToHandCommand?
 public class MafiaPlantFromRevealArrayCommand extends MafiaGameCommand {
 }
