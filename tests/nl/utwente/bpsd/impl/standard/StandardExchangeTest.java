@@ -91,16 +91,6 @@ public class StandardExchangeTest {
     }
 
     @Test
-    public void testIsStopped() throws Exception {
-        assertThat("Test if exchange isStopped, default player's SideStates", exchange.isStopped(), is(false));
-        exchange.setSideState(first, Exchange.SideState.DECLINING);
-        exchange.setSideState(second, Exchange.SideState.DECLINING);
-        assertThat("Test if exchange isStopped, wrong player's SideStates", exchange.isStopped(), is(false));
-        exchange.setSideState(second, Exchange.SideState.IDLE);
-        assertThat("Test if exchange isStopped, correct player's SideStates", exchange.isStopped(), is(true));
-    }
-
-    @Test
     public void testIsAccepted() throws Exception {
         assertThat("Test if exchange isAccepted, default player's SideStates", exchange.isAccepted(), is(false));
         exchange.setSideState(first, Exchange.SideState.ACCEPTING);

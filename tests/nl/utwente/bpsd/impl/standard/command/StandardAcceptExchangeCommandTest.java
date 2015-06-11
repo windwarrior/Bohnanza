@@ -26,6 +26,7 @@ public class StandardAcceptExchangeCommandTest {
 
     StandardPlayer first;
     StandardPlayer second;
+    StandardPlayer third;
     StandardGame game;
     StandardAcceptExchangeCommand acceptExchangeC;
     GameCommandResult result;
@@ -34,16 +35,16 @@ public class StandardAcceptExchangeCommandTest {
     public void setUp() throws Exception {
         first = new StandardPlayer("First");
         second = new StandardPlayer("Second");
+        third = new StandardPlayer("Third");
         game = new StandardGame();
         game.initialize();
-        StandardPlayer t[] = new StandardPlayer[]{first, second};
+        StandardPlayer t[] = new StandardPlayer[]{first, second, third};
         game.addPlayers(t);
         acceptExchangeC = new StandardAcceptExchangeCommand();
     }
 
     @Test
     public void testSAcceptExchangeNoExchangeBetweenSides() throws Exception {
-        StandardPlayer third = new StandardPlayer("Third");
         acceptExchangeC.setOpponent(third);
         result = acceptExchangeC.execute(first,game);
         assertThat("AcceptExchange: no exchanges in game, command result checking", result, is(StandardGameCommandResult.INVALID));
@@ -79,7 +80,7 @@ public class StandardAcceptExchangeCommandTest {
     }
 
     @Test
-    public void testSAcceptExchangeCorrectExchnageState() throws Exception {
+    public void testSAcceptExchangeCorrectExchangeState() throws Exception {
         game.getExchanges().add(new StandardExchange(first, second));
         StandardExchange exchange = (StandardExchange)game.getExchanges().get(0);
 

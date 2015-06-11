@@ -33,13 +33,6 @@ public interface Exchange {
     public boolean isStarted();
 
     /**
-     * Determines if this exchange was stopped by any player side.
-     * @return {@code true} if any of the sides stopped the exchange; otherwise
-     *         {@code false}.
-     */
-    public boolean isStopped();
-
-    /**
      * Determines if this exchange was accepted by both parties.
      * @return {@code true} if both sides accepted the exchange; otherwise
      *         {@code false}.

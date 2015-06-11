@@ -38,12 +38,12 @@ public class StandardExchange implements Exchange {
     public StandardExchange(Player first, Player second) {
         this.firstSideName = ((StandardPlayer)first).getName();
         this.secondSideName = ((StandardPlayer)second).getName();
+        this.firstSideState = SideState.IDLE;
+        this.secondSideState = SideState.IDLE;
     }
 
     public SideState getFirstSideState() {return firstSideState;}
     public SideState getSecondSideState() {return secondSideState;}
-    public String getFirstSideName() {return firstSideName;}
-    public String getSecondSideName() {return secondSideName;}
 
     @Override
     public boolean isPlayerInExchange(Player player) {
@@ -83,13 +83,6 @@ public class StandardExchange implements Exchange {
         //both exchange sides need to be in NEGOTIATING state
         return firstSideState == SideState.NEGOTIATING
                 && secondSideState == SideState.NEGOTIATING;
-    }
-
-    @Override
-    public boolean isStopped(){
-        //if any of exchange sides stopped it -> is in IDLE state
-        return firstSideState == SideState.IDLE
-                || secondSideState == SideState.IDLE;
     }
 
     @Override

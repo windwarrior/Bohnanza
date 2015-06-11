@@ -87,13 +87,6 @@ public class StandardPlayer extends Player {
         return super.executeCommand(ec);
     }
 
-    //do we need this command?
-    public boolean stopExchange(Player opponent){
-        StandardStopExchangeCommand ec = new StandardStopExchangeCommand();
-        ec.setOpponent(opponent);
-        return super.executeCommand(ec);
-    }
-
     public boolean acceptExchange(Player opponent){
         StandardAcceptExchangeCommand ec = new StandardAcceptExchangeCommand();
         ec.setOpponent(opponent);

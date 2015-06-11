@@ -9,6 +9,11 @@ import nl.utwente.bpsd.model.pile.HandPile;
 
 import java.util.Optional;
 
+/**
+ * Command invoked by player if he/she would like to exchange any of hand cards.
+ * Adds indicated card to player's offered cards in exchange.
+ * Do not remove card from hand.
+ */
 public class StandardAddHandCardToExchangeCommand extends StandardGameCommand{
     Player opponent;
     int cardIndex = -1;

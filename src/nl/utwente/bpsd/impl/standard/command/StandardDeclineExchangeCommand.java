@@ -11,6 +11,10 @@ import nl.utwente.bpsd.model.Player;
 
 import java.util.Optional;
 
+/**
+ * Invoked by player at any time during the exchange in order to end it.
+ * It results in removing indicated exchange from game.
+ */
 public class StandardDeclineExchangeCommand extends StandardGameCommand {
     Player opponent;
 
@@ -26,10 +30,12 @@ public class StandardDeclineExchangeCommand extends StandardGameCommand {
             return StandardGameCommandResult.INVALID;
         StandardExchange exchange = (StandardExchange)ex.get();
         //exchange cannot be finished and must be already started by both player sides
-        if(exchange.isFinished() || !exchange.isStarted())
+        if(exchange.isFinished())
             return StandardGameCommandResult.INVALID;
 
         exchange.setSideState(player, Exchange.SideState.DECLINING);
+        //remove exchange from game?
+        game.getExchanges().remove(exchange);
 
         return StandardGameCommandResult.TRADE;
     }

@@ -40,7 +40,7 @@ public class StandardAddHandCardToExchangeCommandTest {
     }
 
     @Test
-    public void testSAddCardsNoExchangeBetweenSides() throws Exception {
+    public void testSAddCardNoExchangeBetweenSides() throws Exception {
         Card card = Mockito.mock(Card.class);
         first.getHand().append(card);
         addHandCardC.setOpponent(third);
@@ -57,7 +57,7 @@ public class StandardAddHandCardToExchangeCommandTest {
     }
 
     @Test
-    public void testSAddHandCardsWrongCardIndex() throws Exception {
+    public void testSAddHandCardWrongCardIndex() throws Exception {
         game.getExchanges().add(new StandardExchange(first, second));
         StandardExchange exchange = (StandardExchange)game.getExchanges().get(0);
 
@@ -67,13 +67,15 @@ public class StandardAddHandCardToExchangeCommandTest {
         result = addHandCardC.execute(first,game);
         assertThat("(1)AddHandCardToExchange: wrong card index, command result checking", result, is(StandardGameCommandResult.INVALID));
 
+        Card card = Mockito.mock(Card.class);
+        first.getHand().append(card);
         addHandCardC.setCardIndex(2);
         result = addHandCardC.execute(first,game);
         assertThat("(2)AddHandCardToExchange: wrong card index, command result checking", result, is(StandardGameCommandResult.INVALID));
     }
 
     @Test
-    public void testSAddHandCardsWrongExchangeState() throws Exception {
+    public void testSAddHandCardWrongExchangeState() throws Exception {
         Card card = Mockito.mock(Card.class);
         first.getHand().append(card);
         game.getExchanges().add(new StandardExchange(first, second));
@@ -97,7 +99,7 @@ public class StandardAddHandCardToExchangeCommandTest {
     }
 
     @Test
-    public void testSAddHandCardsWrongCardType() throws Exception {
+    public void testSAddHandCardWrongCardType() throws Exception {
         Map<Integer, Integer> chiliBeanOMeter = new HashMap<>();
         chiliBeanOMeter.put(3, 1);
         chiliBeanOMeter.put(6, 2);
@@ -121,7 +123,7 @@ public class StandardAddHandCardToExchangeCommandTest {
     }
 
     @Test
-    public void testSAddHandCardsCorrect() throws Exception {
+    public void testSAddHandCardCorrect() throws Exception {
         Map<Integer, Integer> chiliBeanOMeter = new HashMap<>();
         chiliBeanOMeter.put(3, 1);
         chiliBeanOMeter.put(6, 2);

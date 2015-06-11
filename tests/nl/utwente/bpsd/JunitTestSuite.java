@@ -29,6 +29,9 @@ import org.junit.runners.Suite;
         StandardAcceptExchangeCommandTest.class,
         StandardAddHandCardToExchangeCommandTest.class,
         StandardAddTradingAreaCardToExchangeCommandTest.class,
+        StandardRemoveCardFromExchangeCommandTest.class,
+        StandardDeclineExchangeCommandTest.class,
+        StandardStartExchangeCommandTest.class,
         StandardExchangeTest.class,
         StateTest.class
 })

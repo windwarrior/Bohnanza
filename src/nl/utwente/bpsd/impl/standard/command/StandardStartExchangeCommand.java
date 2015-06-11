@@ -29,14 +29,10 @@ public class StandardStartExchangeCommand extends StandardGameCommand {
         if(!(player.getName().equals(currentPlayerName) || ((StandardPlayer)opponent).getName().equals(currentPlayerName)))
             return StandardGameCommandResult.INVALID;
 
-        // Only one exchange per player pair is allowed.
-        for (Exchange exchange : game.getExchanges()) {
-            if (exchange.isPlayerInExchange(opponent) && exchange.isPlayerInExchange(player))
-                return StandardGameCommandResult.INVALID;
-        }
-
         StandardExchange exchange;
-        //if there is no exchange between this players, add new one to list
+        /* If there is no exchange between this players, add new one to list.
+         * Only one exchange per player pair is allowed.
+         */
         if (!game.getExchange(opponent, p).isPresent()) {
             exchange = new StandardExchange(player, opponent);
             game.getExchanges().add(exchange);
@@ -46,7 +42,7 @@ public class StandardStartExchangeCommand extends StandardGameCommand {
         //boolean wasStarted = exchange.isStarted();
         exchange.setSideState(player, Exchange.SideState.NEGOTIATING);
 
-        //Consider following if statement. What to do when exchange have already started (both players have started it)? return invalid?
+        //Consider following if statement. What to do when exchange has already started (both players have started it)? return invalid?
         //next exchange state only if both players started it
         //if(!wasStarted && exchange.isStarted())
         return StandardGameCommandResult.TRADE;
