@@ -35,6 +35,7 @@ public class StandardAcceptExchangeCommandTest {
         first = new StandardPlayer("First");
         second = new StandardPlayer("Second");
         game = new StandardGame();
+        game.initialize();
         StandardPlayer t[] = new StandardPlayer[]{first, second};
         game.addPlayers(t);
         acceptExchangeC = new StandardAcceptExchangeCommand();
@@ -52,7 +53,6 @@ public class StandardAcceptExchangeCommandTest {
         result = acceptExchangeC.execute(first,game);
         assertThat("AcceptExchange: no exchange between indicated players, command result checking", result, is(StandardGameCommandResult.INVALID));
         assertThat("AcceptExchange: no exchange between indicated players, size of game exchanges list check", game.getExchanges().size(), is(1));
-
     }
 
     @Test

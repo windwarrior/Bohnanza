@@ -34,6 +34,7 @@ public class StandardAddHandCardToExchangeCommandTest {
         third = new StandardPlayer("Third");
         game = new StandardGame();
         StandardPlayer t[] = new StandardPlayer[]{first, second, third};
+        game.initialize();
         game.addPlayers(t);
         addHandCardC = new StandardAddHandCardToExchangeCommand();
     }
