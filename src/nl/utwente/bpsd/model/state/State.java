@@ -28,6 +28,10 @@ public class State<K, C> {
         transitions = new HashMap<>();
     }
     
+    public List<Class<? extends C>> getAllowedClasses() {
+        return this.allowedClasses;
+    }
+    
     /** 
      * Adds a transition to this state going to another state.
      * 
