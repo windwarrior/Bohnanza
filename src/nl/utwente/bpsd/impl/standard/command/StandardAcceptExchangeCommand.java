@@ -30,11 +30,11 @@ public class StandardAcceptExchangeCommand extends StandardGameCommand {
         if (!ex.isPresent())
             return StandardGameCommandResult.INVALID;
         StandardExchange exchange = (StandardExchange)ex.get();
-        //exchange cannot be finished and must be already started by both player sides
-        if(exchange.isFinished() || !exchange.isStarted())
+        //exchange cannot be finished
+        if(exchange.isFinished())
             return StandardGameCommandResult.INVALID;
-        //if player already accepted the exchange
-        if(exchange.getSideState(player)== Exchange.SideState.ACCEPTING)
+        //exchange must be already started by both players, opponent could already accept exchange
+        if(!(exchange.getSideState(player)== Exchange.SideState.NEGOTIATING && exchange.getSideState(opponent)== Exchange.SideState.ACCEPTING || exchange.isStarted()))
             return StandardGameCommandResult.INVALID;
 
         exchange.setSideState(player, Exchange.SideState.ACCEPTING);

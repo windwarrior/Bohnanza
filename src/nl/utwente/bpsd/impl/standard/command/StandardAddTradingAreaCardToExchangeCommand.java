@@ -37,7 +37,7 @@ public class StandardAddTradingAreaCardToExchangeCommand extends StandardGameCom
             return StandardGameCommandResult.INVALID;
 
         //the same card can be added to exchange only once
-        StandardGameCommandResult result = ((HandPile)(player.getTrading())).getCard(cardIndex).map((Card c) -> {
+        StandardGameCommandResult result = ((HandPile)(player.getTrading())).getCardCopy(cardIndex).map((Card c) -> {
             if (!exchange.getOfferedCards(player).contains(c)) {
                 exchange.getOfferedCards(player).add(c);
                 return StandardGameCommandResult.TRADE;

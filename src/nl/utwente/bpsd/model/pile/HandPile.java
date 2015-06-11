@@ -46,7 +46,7 @@ public class HandPile extends Pile{
 
     /**
      * returns the card at index index from the pile without its removal from pile
-     * (used in addTreadingAreaCardToExchange and AddHandCardToExchange commands)
+     * (used in addTreadingAreaCardToExchange and AddHandCardToExchange commands and in exchange tests)
      */
     public Optional<Card> getCardCopy(int index){
         Optional<Card> result = Optional.empty();

@@ -271,6 +271,7 @@ public class StandardGame extends Game {
 
     @Override
     public void addPlayers(Player... players) {
+        //TODO: Check if player has unique name
         this.players = Arrays.asList(players);
         for(Player p:players) p.setGame(this);
     }

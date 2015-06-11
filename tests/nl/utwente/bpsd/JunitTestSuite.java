@@ -1,5 +1,6 @@
 package nl.utwente.bpsd;
 
+import nl.utwente.bpsd.impl.standard.StandardExchangeTest;
 import nl.utwente.bpsd.impl.standard.StandardPlayerTest;
 import nl.utwente.bpsd.impl.standard.command.*;
 import nl.utwente.bpsd.model.CardTest;
@@ -25,6 +26,10 @@ import org.junit.runners.Suite;
         StandardHarvestCommandTest.class,
         StandardPlantCommandTest.class,
         StandardReshuffleCommandTest.class,
+        StandardAcceptExchangeCommandTest.class,
+        StandardAddHandCardToExchangeCommandTest.class,
+        StandardAddTradingAreaCardToExchangeCommandTest.class,
+        StandardExchangeTest.class,
         StateTest.class
 })
 public class JunitTestSuite {
