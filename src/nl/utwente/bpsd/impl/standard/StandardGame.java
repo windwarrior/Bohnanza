@@ -12,7 +12,14 @@ import nl.utwente.bpsd.model.state.StateManager;
 
 public class StandardGame extends Game {
 
+    /**
+     * Hard values for standard game
+     */
     public static final int NUMBER_START_CARDS = 5;
+    public static final int DRAW_HAND_AMOUNT = 3;
+    public static final int FIELDCOST = 3;
+    public static final int NUMMAXFIELDS = 3;
+    public static final int DRAW_TRADING_AMOUNT = 2;
 
     private List<Player> players;
     private Pile discardPile;
@@ -24,13 +31,12 @@ public class StandardGame extends Game {
 
     public StandardGame() {
 
-        players = new ArrayList<>();
-        exchanges = new ArrayList<>();
     }
 
     public void initialize() {
-        // TODO: Generate all variables in the game
         generateGameDeck();
+        players = new ArrayList<>();
+        exchanges = new ArrayList<>();
         discardPile = new DiscardPile();
         reshuffleCounter = 0;
         for(Player p:players){
@@ -38,7 +44,6 @@ public class StandardGame extends Game {
                 gamePile.pop().ifPresent((Card c) -> ((StandardPlayer)p).getHand().append(c));
             }
         }
-        currentPlayer = players.get(0);
 
         // This stateManager is only aware of the states that a certain player has
         // It should be parallely composed with a statemanager that holds track 
@@ -56,7 +61,6 @@ public class StandardGame extends Game {
 
         State<StandardGameCommandResult, Command> drawCardState = new State("Draw cards to your hand", StandardDrawHandCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
-        // TODO buy field command
         // These are per state all transitions that can be taken
         startState.addTransition(StandardGameCommandResult.HARVEST, startState);
         startState.addTransition(StandardGameCommandResult.PLANT, onePlantedState);
@@ -138,6 +142,10 @@ public class StandardGame extends Game {
     public Pile getDiscardPile() {
         return discardPile;
     }
+
+    protected void setGamePile(Pile pile) { this.gamePile = pile;}
+
+    protected void setDiscardPile(Pile pile) {this.discardPile = pile;}
 
     public int getReshuffleCounter() {
         return reshuffleCounter;
@@ -273,6 +281,7 @@ public class StandardGame extends Game {
     public void addPlayers(Player... players) {
         //TODO: Check if player has unique name
         this.players = Arrays.asList(players);
+        currentPlayer = this.players.get(0);
         for(Player p:players) p.setGame(this);
     }
 

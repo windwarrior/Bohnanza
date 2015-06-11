@@ -8,8 +8,6 @@ import nl.utwente.bpsd.model.pile.Pile;
 
 public class StandardDrawHandCommand extends StandardGameCommand {
 
-    public static final int DRAW_HAND_AMOUNT = 3;
-
     /**
      * Draw three cards from Game g gamePile into Player player hand
      */
@@ -22,8 +20,8 @@ public class StandardDrawHandCommand extends StandardGameCommand {
         GameCommandResult result = StandardGameCommandResult.RESHUFFLE;
 
         Pile gamePile = game.getGamePile();
-        if(gamePile.pileSize() > DRAW_HAND_AMOUNT) {
-            for (int i = 0; i < DRAW_HAND_AMOUNT && result != StandardGameCommandResult.INVALID; i++) {
+        if(gamePile.pileSize() > StandardGame.DRAW_HAND_AMOUNT) {
+            for (int i = 0; i < StandardGame.DRAW_HAND_AMOUNT && result != StandardGameCommandResult.INVALID; i++) {
                 result = gamePile.pop().map((Card c) -> {
                     player.getHand().append(c);
                     return StandardGameCommandResult.DRAWN_TO_HAND;

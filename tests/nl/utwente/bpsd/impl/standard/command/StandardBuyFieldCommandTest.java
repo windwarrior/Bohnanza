@@ -77,7 +77,7 @@ public class StandardBuyFieldCommandTest {
 
     //Put some coins (cards) from the game pill into the players treasury
     private void fillTreasury() {
-        for (int i = 0; i < StandardBuyFieldCommand.FIELDCOST; i++) {
+        for (int i = 0; i < StandardGame.FIELDCOST; i++) {
             game.getGamePile().pop().ifPresent((Card c) -> player.getTreasury().append(c));
         }
     }

@@ -40,8 +40,8 @@ public class StandardDrawTradeCommandTest {
         int gamePileSize = testPile.pileSize();
         int playerTradingSize = player.getTrading().pileSize();
         GameCommandResult result = drawTradeC.execute(player, game);
-        assertThat("Game pile removes two cards", game.getGamePile().pileSize(), is(gamePileSize - StandardDrawTradeCommand.DRAW_TRADING_AMOUNT));
-        assertThat("Trading pile gets two cards", player.getTrading().pileSize(), is(playerTradingSize + StandardDrawTradeCommand.DRAW_TRADING_AMOUNT));
+        assertThat("Game pile removes two cards", game.getGamePile().pileSize(), is(gamePileSize - StandardGame.DRAW_TRADING_AMOUNT));
+        assertThat("Trading pile gets two cards", player.getTrading().pileSize(), is(playerTradingSize + StandardGame.DRAW_TRADING_AMOUNT));
         //Test if correct cards are added to trading area
         //TODO: fix Optional .get() calls to something neater?
         assertThat("First card", ((HandPile) player.getTrading()).getCardType(0).get(), is(testPile.pop().get().getCardType()));
@@ -55,12 +55,12 @@ public class StandardDrawTradeCommandTest {
      */
     @Test
     public void testReshuffledDraw() throws Exception {
-        while(game.getGamePile().pileSize() >= StandardDrawTradeCommand.DRAW_TRADING_AMOUNT) {
+        while(game.getGamePile().pileSize() >= StandardGame.DRAW_TRADING_AMOUNT) {
             game.getGamePile().pop();
         }
         int gamePileSize = game.getGamePile().pileSize();
         int playerTradingSize = player.getTrading().pileSize();
-        assertThat("Pile is small enough",gamePileSize,is(StandardDrawTradeCommand.DRAW_TRADING_AMOUNT-1));
+        assertThat("Pile is small enough",gamePileSize,is(StandardGame.DRAW_TRADING_AMOUNT-1));
         GameCommandResult result = drawTradeC.execute(player,game);
         assertThat("No gamePile size chance",game.getGamePile().pileSize(),is(gamePileSize));
         assertThat("No tradingPile size chance",player.getTrading().pileSize(),is(playerTradingSize));
