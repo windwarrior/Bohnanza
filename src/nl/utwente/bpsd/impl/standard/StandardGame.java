@@ -3,6 +3,9 @@ package nl.utwente.bpsd.impl.standard;
 import nl.utwente.bpsd.impl.standard.command.*;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import nl.utwente.bpsd.exceptions.ImproperlyConfiguredException;
 
 import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.model.pile.DiscardPile;
@@ -103,25 +106,23 @@ public class StandardGame extends Game {
 
             if (result) {
                 this.stateManager.doTransition(commandOutput);
-
-/*                if(commandOutput == StandardGameCommandResult.RESHUFFLE) {
-                    //TODO: Reshuffle
-                    //end game or:
-                    ++reshuffleCounter;
-                    commandOutput = klass.execute(this);
-                }*/
-
-                if(commandOutput == StandardGameCommandResult.DRAWN_TO_HAND) {
-                    int currentPlayerIndex = this.players.indexOf(this.currentPlayer);
-
-                    this.currentPlayer = this.players.get((currentPlayerIndex + 1) % this.players.size());
-                    // Notify observers
-                    this.setChanged();
-                    this.notifyObservers();
-                }
-
-                if (this.stateManager.isInAcceptingState()) {
-                    this.gameEnd();
+                
+                
+                List<Class<? extends Command>> allowedClasses = this.stateManager.getCurrentState().getAllowedClasses();
+                
+                
+                for (Class<? extends Command> thing : allowedClasses) {
+                    if (thing.isAssignableFrom(InternalCommand.class)) {
+                        try {
+                            // we can do an internal command
+                            this.executeCommand(p, thing.newInstance());
+                        } catch (InstantiationException | IllegalAccessException ex) {
+                            // This exception should never happen, only goes wrong if thing requires parameters or is private or something
+                            // This exception shall be treated as a runtime exception from now on
+                            throw new ImproperlyConfiguredException("Something was not configured right! Could not create instance of " + thing + " because it threw " + ex);
+                        }
+                        break; // no need to search any further, we found our internal command
+                    }
                 }
             }
         }
@@ -133,6 +134,10 @@ public class StandardGame extends Game {
     @Override
     public Player getCurrentPlayer() {
         return this.currentPlayer;
+    }
+    
+    public Player setCurrentPlayer(Player p) {
+        this.currentPlayer = p;
     }
 
     public Pile getGamePile() {
@@ -307,5 +312,13 @@ public class StandardGame extends Game {
      */
     public State getCurrentState(){
         return stateManager.getCurrentState();
+    }
+
+    public int getMaxReshuffleCount() {
+        return 3; // For reshuffle command
+    }
+
+    public List<Player> getPlayers() {
+        return this.players;
     }
 }
