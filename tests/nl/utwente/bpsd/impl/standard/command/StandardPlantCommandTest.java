@@ -106,7 +106,7 @@ public class StandardPlantCommandTest extends TestCase {
         GameCommandResult result = plantC.execute(player,game);
         assertThat("Planting from hand on field with wrong cards' type: command result checking", result, is(StandardGameCommandResult.INVALID));
         assertThat("Planting from hand on field with wrong cards' type: field size checking ", player.getAllFields().get(1).pileSize(), is(3));
-        assertThat("Planting from hand on empty field: hand size checking", player.getHand().pileSize(), is(oldHandSize));
+        assertThat("Planting from hand on field with wrong cards' type: hand size checking", player.getHand().pileSize(), is(oldHandSize));
     }
 
     @Test

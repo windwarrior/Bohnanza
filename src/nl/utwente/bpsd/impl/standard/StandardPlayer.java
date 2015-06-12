@@ -64,7 +64,7 @@ public class StandardPlayer extends Player {
         return super.executeCommand(dc);
     }
 
-    //Still needs consideration
+    //TODO: remove this command
     public boolean trade() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

@@ -1,8 +1,6 @@
 package nl.utwente.bpsd.impl.mafia;
 
-import nl.utwente.bpsd.impl.mafia.command.MafiaPlanFromHandToMafiaCommand;
-import nl.utwente.bpsd.impl.mafia.command.MafiaPlantFromRevealToFieldCommand;
-import nl.utwente.bpsd.impl.mafia.command.MafiaPlantFromRevealToMafiaCommand;
+import nl.utwente.bpsd.impl.mafia.command.*;
 import nl.utwente.bpsd.impl.standard.StandardPlayer;
 
 public class MafiaPlayer extends StandardPlayer {
@@ -12,7 +10,7 @@ public class MafiaPlayer extends StandardPlayer {
     }
 
     public boolean plantFromHandToMafia(){
-        MafiaPlanFromHandToMafiaCommand dc = new MafiaPlanFromHandToMafiaCommand();
+        MafiaPlantFromHandToMafiaCommand dc = new MafiaPlantFromHandToMafiaCommand();
         return super.executeCommand(dc);
     }
 
@@ -21,8 +19,16 @@ public class MafiaPlayer extends StandardPlayer {
         return super.executeCommand(dc);
     }
 
-    public boolean plantFromRevealToField(){
+    public boolean plantFromRevealToField(int fieldIndex, int revealIndex){
         MafiaPlantFromRevealToFieldCommand dc = new MafiaPlantFromRevealToFieldCommand();
+        dc.setFieldIndex(fieldIndex);
+        dc.setRevealIndex(revealIndex);
+        return super.executeCommand(dc);
+    }
+
+    public boolean plantFromHandToField(int fieldIndex){
+        MafiaPlantFromHandToFieldCommand dc = new MafiaPlantFromHandToFieldCommand();
+        dc.setFieldIndex(fieldIndex);
         return super.executeCommand(dc);
     }
 }

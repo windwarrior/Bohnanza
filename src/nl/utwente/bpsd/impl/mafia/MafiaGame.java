@@ -24,6 +24,7 @@ public class MafiaGame extends StandardGame{
         generateGameDeck();
         alCabohne = new Pile();
         donCorlebohne = new Pile();
+        revealArray = new ArrayList<Pile>();
         //TODO: if 1-player game joeBohnano should be set
         mafiaTreasury = new Pile();
         this.setDiscardPile(new DiscardPile());
@@ -33,5 +34,7 @@ public class MafiaGame extends StandardGame{
     private void generateGameDeck(){
         this.setGamePile(new Pile());
     }
+
+    public ArrayList<Pile> getRevealArray() { return revealArray; }
 
 }
