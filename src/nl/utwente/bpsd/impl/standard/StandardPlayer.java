@@ -124,10 +124,12 @@ public class StandardPlayer extends Player {
         return hand;
     }
 
+
+    @Override
     public Pile getTreasury() {
         return treasury;
     }
-
+    
     public Pile getTrading() {
         return trading;
     }

@@ -31,6 +31,7 @@ public class StandardGame extends Game {
     private int reshuffleCounter;
     private StateManager stateManager;
     private List<Exchange> exchanges;
+    private List<Player> winners;
 
     public StandardGame() {
         players = new ArrayList<>();
@@ -315,5 +316,10 @@ public class StandardGame extends Game {
 
     public List<Player> getPlayers() {
         return this.players;
+    }
+
+    @Override
+    public void setWinners(List<Player> ps) {
+        this.winners = ps;
     }
 }

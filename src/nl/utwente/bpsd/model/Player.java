@@ -17,4 +17,8 @@ public abstract class Player {
     
     public abstract Optional<Pile> getPileByName(String name);
 
+    public abstract Pile getTreasury();
+    
+    public abstract Pile getHand();
+
 }

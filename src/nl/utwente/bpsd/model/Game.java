@@ -23,4 +23,6 @@ public abstract class Game extends Observable {
     public abstract Optional<Pile> getPileByName(String name);
     
     public abstract void gameEnd();
+    
+    public abstract void setWinners(List<Player> ps);
 }
