@@ -136,7 +136,7 @@ public class StandardGame extends Game {
         return this.currentPlayer;
     }
     
-    public Player setCurrentPlayer(Player p) {
+    public void setCurrentPlayer(Player p) {
         this.currentPlayer = p;
     }
 
@@ -268,12 +268,6 @@ public class StandardGame extends Game {
                 allCards.add(new Card(ct, i));
             }
         }
-
-        /*List<Card> testCards = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Card c = new Card(chiliBean, i);
-            testCards.add(c);
-        }*/
 
         Collections.shuffle(allCards);
             gamePile = new Pile();

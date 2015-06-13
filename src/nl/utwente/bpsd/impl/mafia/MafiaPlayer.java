@@ -14,15 +14,11 @@ public class MafiaPlayer extends StandardPlayer {
         return super.executeCommand(dc);
     }
 
-    public boolean plantFromRevealToMafia(){
-        MafiaPlantFromRevealToMafiaCommand dc = new MafiaPlantFromRevealToMafiaCommand();
-        return super.executeCommand(dc);
-    }
-
-    public boolean plantFromRevealToField(int fieldIndex, int revealIndex){
-        MafiaPlantFromRevealToFieldCommand dc = new MafiaPlantFromRevealToFieldCommand();
+    public boolean plantFromReveal(int fieldIndex, int revealIndex, boolean fieldType){
+        MafiaPlantFromRevealCommand dc = new MafiaPlantFromRevealCommand();
         dc.setFieldIndex(fieldIndex);
         dc.setRevealIndex(revealIndex);
+        dc.setFieldType(fieldType);
         return super.executeCommand(dc);
     }
 

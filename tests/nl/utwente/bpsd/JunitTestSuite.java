@@ -3,6 +3,7 @@ package nl.utwente.bpsd;
 import nl.utwente.bpsd.impl.standard.StandardExchangeTest;
 import nl.utwente.bpsd.impl.standard.StandardPlayerTest;
 import nl.utwente.bpsd.impl.standard.command.*;
+import nl.utwente.bpsd.impl.mafia.command.*;
 import nl.utwente.bpsd.model.CardTest;
 import nl.utwente.bpsd.model.CardTypeTest;
 import nl.utwente.bpsd.model.pile.DiscardPileTest;
@@ -33,7 +34,8 @@ import org.junit.runners.Suite;
         StandardDeclineExchangeCommandTest.class,
         StandardStartExchangeCommandTest.class,
         StandardExchangeTest.class,
-        StateTest.class
+        StateTest.class,
+        MafiaPlantFromRevealCommandTest.class
 })
 public class JunitTestSuite {
 }

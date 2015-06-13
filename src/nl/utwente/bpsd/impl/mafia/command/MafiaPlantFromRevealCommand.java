@@ -13,23 +13,26 @@ import java.util.List;
 
 /** Current player choose card from any of reveal piles
  * and plant it on any of his/her fields.
- * in Phase 5) from Al Cabohne game rules
+ * in Phase 1 & 5 from Al Cabohne game rules
  */
-public class MafiaPlantFromRevealToFieldCommand extends MafiaGameCommand {
+public class MafiaPlantFromRevealCommand extends MafiaGameCommand {
     int fieldIndex;
     int revealIndex;
+    //false indicated player field and true indicates mafia field.
+    boolean fieldType;
 
     @Override
     public GameCommandResult execute(Player p, Game g) {
-        super.execute(p,g); // force a check that this is indeed a defaultGame
+        super.execute(p,g); // force a check that this is indeed a MafiaGame
         MafiaGame game = (MafiaGame) g;
         MafiaPlayer player = (MafiaPlayer) p;
 
-        if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0
+        List<Pile> fields = fieldType ? game.getMafia() : player.getAllFields();
+
+        if(fields.size() <= fieldIndex || fieldIndex < 0
                 || game.getRevealArray().size() <= revealIndex || revealIndex < 0)
             return MafiaGameCommandResult.INVALID;
 
-        List<Pile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
         Pile reveal = game.getRevealArray().get(revealIndex);
         GameCommandResult result;
@@ -56,6 +59,7 @@ public class MafiaPlantFromRevealToFieldCommand extends MafiaGameCommand {
     public void setRevealIndex(int index){
         this.revealIndex = index;
     }
+    public void setFieldType(boolean field) {this.fieldType = field; }
 
     /**
      *@return true if player has other field with the same card types

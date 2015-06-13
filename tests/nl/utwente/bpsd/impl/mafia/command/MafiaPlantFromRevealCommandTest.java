@@ -17,10 +17,10 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
-public class MafiaPlantFromRevealToFieldCommandTest {
+public class MafiaPlantFromRevealCommandTest {
     MafiaPlayer player;
     Game game;
-    MafiaPlantFromRevealToFieldCommand plantC;
+    MafiaPlantFromRevealCommand plantC;
 
     @Before
     public void setUp() throws Exception {
@@ -39,7 +39,7 @@ public class MafiaPlantFromRevealToFieldCommandTest {
         ((MafiaGame)game).getRevealArray().get(0).append(new Card(blackeyedBean, 1));
         ((MafiaGame)game).getRevealArray().get(0).append(new Card(blackeyedBean, 2));
 
-        plantC = new MafiaPlantFromRevealToFieldCommand();
+        plantC = new MafiaPlantFromRevealCommand();
         plantC.setFieldIndex(0);
         plantC.setRevealIndex(0);
     }
