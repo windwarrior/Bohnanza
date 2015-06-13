@@ -44,10 +44,11 @@ public class MafiaPlantFromRevealCommand extends MafiaGameCommand {
              * Player can only plant card on empty field or on
              * field with matching card types.
              */
-            if(isOtherFieldWithCardType(ct, fields) || (!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(ct)))
+            if(isOtherFieldWithCardType(ct, fields) || (!(field.pileSize() == 0)
+                    && field.peek().isPresent() && !field.peek().get().equals(ct)))
                 return MafiaGameCommandResult.INVALID;
             field.append(reveal.pop().get());
-            return MafiaGameCommandResult.PLANT_REVEAL_FIELD;
+            return MafiaGameCommandResult.PLANT_REVEAL;
         }).orElse(MafiaGameCommandResult.INVALID);
 
         return result;

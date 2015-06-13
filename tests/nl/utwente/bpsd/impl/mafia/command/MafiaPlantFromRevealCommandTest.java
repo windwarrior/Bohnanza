@@ -121,7 +121,7 @@ public class MafiaPlantFromRevealCommandTest {
         generateFieldCards(1, 2);
         plantC.setFieldIndex(1);
         GameCommandResult result = plantC.execute(player,game);
-        assertThat("Planting from reveal on non empty field: command result checking", result, is(MafiaGameCommandResult.PLANT_REVEAL_FIELD));
+        assertThat("Planting from reveal on non empty field: command result checking", result, is(MafiaGameCommandResult.PLANT_REVEAL));
         assertThat("Planting from reveal on not empty field: field size checking", player.getAllFields().get(1).pileSize(), is(3));
         assertThat("Planting from reveal on not empty field: reveal pile size checking", ((MafiaGame)game).getRevealArray().get(0).pileSize(), is(oldRevealPileSize - 1));
     }
@@ -130,7 +130,7 @@ public class MafiaPlantFromRevealCommandTest {
     public void testPlantFromRevealToFieldOnEmpty() throws Exception {
         int oldRevealPileSize = ((MafiaGame)game).getRevealArray().get(0).pileSize();
         GameCommandResult status = plantC.execute(player,game);
-        assertThat("Planting from reveal on empty field: command result checking", status, is(MafiaGameCommandResult.PLANT_REVEAL_FIELD));
+        assertThat("Planting from reveal on empty field: command result checking", status, is(MafiaGameCommandResult.PLANT_REVEAL));
         assertThat("Planting from reveal on empty field: field size checking ", player.getAllFields().get(0).pileSize(), is(1));
         assertThat("Planting from reveal on empty field: reveal pile size checking", ((MafiaGame)game).getRevealArray().get(0).pileSize(), is(oldRevealPileSize - 1));
     }

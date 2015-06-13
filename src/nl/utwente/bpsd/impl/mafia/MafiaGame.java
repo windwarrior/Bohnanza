@@ -24,9 +24,8 @@ public class MafiaGame extends StandardGame{
 
     @Override
     public void initialize(){
-        generateGameDeck();
         mafia = new ArrayList<>();
-        //Order in game: "Al Cabohne", "Don Corlebohne" and optionally "JoeBohnano"
+        //Order in game: "Al Cabohne", "Don Corlebohne" and optionally "Joe Bohnano"
         for (int i = 0; i < numPlayers; i++) {
             mafia.add(new Pile());
         }
@@ -34,12 +33,23 @@ public class MafiaGame extends StandardGame{
         //TODO: if 1-player game joeBohnano should be set
         mafiaTreasury = new Pile();
         this.setDiscardPile(new DiscardPile());
+        this.generateGameDeck();
+        this.setupPhase();
+    }
+
+    private void setupPhase(){
+        //Players get cards
         for(Player p:getPlayers()){
             for (int i = 0; i < NUMBER_START_CARDS; i++) {
                 getGamePile().pop().ifPresent((Card c) -> ((MafiaPlayer)p).getHand().append(c));
             }
         }
-
+        //Al Cabohne gets cards
+        do {
+            getGamePile().pop().ifPresent((Card c) -> mafia.get(0).append(c));
+        }while(getGamePile().peek().equals(mafia.get(0).peek()));
+        //Don Corlebohne gets cards
+        getGamePile().pop().ifPresent((Card c) -> mafia.get(1).append(c));
     }
 
     private void generateGameDeck() {
@@ -117,5 +127,7 @@ public class MafiaGame extends StandardGame{
     public ArrayList<Pile> getRevealArray() { return revealArray; }
 
     public ArrayList<Pile> getMafia() { return mafia; }
+
+    public Pile getMafiaTreasury() { return mafiaTreasury; }
 
 }

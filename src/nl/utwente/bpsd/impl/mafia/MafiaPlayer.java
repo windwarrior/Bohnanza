@@ -9,8 +9,10 @@ public class MafiaPlayer extends StandardPlayer {
         super(name);
     }
 
-    public boolean plantFromHandToMafia(){
+    public boolean plantFromHandToMafia(int fieldIndex, int handIndex){
         MafiaPlantFromHandToMafiaCommand dc = new MafiaPlantFromHandToMafiaCommand();
+        dc.setFieldIndex(fieldIndex);
+        dc.setHandIndex(handIndex);
         return super.executeCommand(dc);
     }
 

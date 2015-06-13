@@ -33,12 +33,11 @@ public class StandardGame extends Game {
     private List<Exchange> exchanges;
 
     public StandardGame() {
-
+        players = new ArrayList<>();
     }
 
     public void initialize() {
         generateGameDeck();
-        players = new ArrayList<>();
         exchanges = new ArrayList<>();
         discardPile = new DiscardPile();
         reshuffleCounter = 0;
@@ -279,9 +278,11 @@ public class StandardGame extends Game {
     @Override
     public void addPlayers(Player... players) {
         //TODO: Check if player has unique name
-        this.players = Arrays.asList(players);
+        for(Player p : players){
+            this.players.add(p);
+            p.setGame(this);
+        }
         currentPlayer = this.players.get(0);
-        for(Player p:players) p.setGame(this);
     }
 
     @Override
@@ -302,7 +303,7 @@ public class StandardGame extends Game {
     }
 
     /**
-     * Help function to make TUI more readable
+     * Help function to make StandardTUI more readable
      */
     public State getCurrentState(){
         return stateManager.getCurrentState();
