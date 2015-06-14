@@ -1,5 +1,6 @@
 package nl.utwente.bpsd.impl.mafia.command;
 
+import nl.utwente.bpsd.impl.mafia.MafiaBoss;
 import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
@@ -9,6 +10,7 @@ import nl.utwente.bpsd.model.GameCommandResult;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** Current player choose card from any of reveal piles
@@ -27,7 +29,13 @@ public class MafiaPlantFromRevealCommand extends MafiaGameCommand {
         MafiaGame game = (MafiaGame) g;
         MafiaPlayer player = (MafiaPlayer) p;
 
-        List<Pile> fields = fieldType ? game.getMafia() : player.getAllFields();
+
+        List<Pile> mafiaFields = new ArrayList<>();
+        if(fieldType) {
+            for (MafiaBoss mafiaBoss : game.getMafia())
+                mafiaFields.add(mafiaBoss.getPile());
+        }
+        List<Pile> fields = fieldType ? mafiaFields : player.getAllFields();
 
         if(fields.size() <= fieldIndex || fieldIndex < 0
                 || game.getRevealArray().size() <= revealIndex || revealIndex < 0)

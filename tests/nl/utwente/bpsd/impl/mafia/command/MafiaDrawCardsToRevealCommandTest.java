@@ -46,7 +46,7 @@ public class MafiaDrawCardsToRevealCommandTest {
                     pile.peek().map((CardType ct) -> ct.toString()).orElse("no beans") + "\n";
         }
         for(int i = 0; i < game.getMafia().size(); i++){
-            Pile pile = game.getMafia().get(i);
+            Pile pile = game.getMafia().get(i).getPile();
             reveal +=  "Mafia: " + pile.pileSize() + " beans of type: " +
                     pile.peek().map((CardType ct) -> ct.toString()).orElse("no beans") + "\n";
         }
