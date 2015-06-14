@@ -1,5 +1,6 @@
 package nl.utwente.bpsd.impl.mafia.command;
 
+import nl.utwente.bpsd.impl.mafia.MafiaBoss;
 import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
@@ -19,7 +20,7 @@ public class MafiaDrawCardsToRevealCommand extends MafiaGameCommand{
         MafiaGameCommandResult result = MafiaGameCommandResult.DRAW_REVEAL;
 
         ArrayList<Pile> reveal = game.getRevealArray();
-        ArrayList<Pile> mafia = game.getMafia();
+        ArrayList<MafiaBoss> mafiaBosses = game.getMafia();
         int revealCounter = 0;
         boolean mafiaPlant;
         boolean discardMatch;
@@ -33,9 +34,9 @@ public class MafiaDrawCardsToRevealCommand extends MafiaGameCommand{
                 }//TODO: reshuffle
 
                 //2. compare to the beans planted in mafia fields -> if equal plant to mafia (harvest if possible)
-                for (Pile mafiaPile : mafia) {
-                    if (mafiaPile.peek().equals(topDeck)) {
-                        game.getGamePile().pop().ifPresent((Card c) -> mafiaPile.append(c));
+                for (MafiaBoss mafiaBoss : mafiaBosses) {
+                    if (mafiaBoss.getPile().peek().equals(topDeck)) {
+                        game.getGamePile().pop().ifPresent((Card c) -> mafiaBoss.getPile().append(c));
                         mafiaPlant = true;
                         //TODO: possible harvest of MafiaPile
                     }
@@ -56,9 +57,9 @@ public class MafiaDrawCardsToRevealCommand extends MafiaGameCommand{
                 discardMatch = false;
                 Optional<CardType> topDeck = game.getDiscardPile().peek();
                 if (topDeck.isPresent()){
-                    for(Pile mafiaPile : mafia) {
-                        if (!discardMatch && mafiaPile.peek().equals(topDeck)) {
-                            game.getDiscardPile().pop().ifPresent((Card c) -> mafiaPile.append(c));
+                    for(MafiaBoss mafiaBoss : mafiaBosses) {
+                        if (!discardMatch && mafiaBoss.getPile().peek().equals(topDeck)) {
+                            game.getDiscardPile().pop().ifPresent((Card c) -> mafiaBoss.getPile().append(c));
                             discardMatch = true;
                             //TODO: possible harvest of MafiaPile
                         }

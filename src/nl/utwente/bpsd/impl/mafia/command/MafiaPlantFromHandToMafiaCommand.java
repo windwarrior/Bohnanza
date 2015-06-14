@@ -1,5 +1,6 @@
 package nl.utwente.bpsd.impl.mafia.command;
 
+import nl.utwente.bpsd.impl.mafia.MafiaBoss;
 import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
@@ -23,18 +24,18 @@ public class MafiaPlantFromHandToMafiaCommand extends MafiaGameCommand{
         MafiaGame game = (MafiaGame) g;
         MafiaPlayer player = (MafiaPlayer) p;
 
-        List<MafiaBoss> fields = game.getMafia();
+        List<MafiaBoss> mafiaBosses = game.getMafia();
         HandPile hand = (HandPile) player.getHand();
-        Pile field = fields.get(fieldIndex);
+        Pile field = mafiaBosses.get(fieldIndex).getPile();
 
-        if(fields.size() <= fieldIndex || fieldIndex < 0
+        if(mafiaBosses.size() <= fieldIndex || fieldIndex < 0
                 || hand.pileSize() <= handIndex || handIndex < 0)
             return MafiaGameCommandResult.INVALID;
 
         GameCommandResult result;
 
         result = hand.getCardType(handIndex).map((CardType ct) -> {
-            if(isOtherFieldWithCardType(ct,fields) || (!(field.pileSize() == 0)
+            if(isOtherFieldWithCardType(ct,mafiaBosses) || (!(field.pileSize() == 0)
                     && field.peek().isPresent() && !field.peek().get().equals(ct)))
                 return MafiaGameCommandResult.INVALID;
             field.append(hand.getCard(handIndex).get());
@@ -48,9 +49,9 @@ public class MafiaPlantFromHandToMafiaCommand extends MafiaGameCommand{
     public void setFieldIndex(int index){ this.fieldIndex = index;}
 
     //Taken from MafiaPlantFromRevealCommand
-    private boolean isOtherFieldWithCardType(CardType ct, List<Pile> fields){
-        for (int i=0; i<fields.size(); ++i) {
-            if(i!=fieldIndex && fields.get(i).peek().isPresent() && fields.get(i).peek().get().equals(ct))
+    private boolean isOtherFieldWithCardType(CardType ct, List<MafiaBoss> mafiaBosses){
+        for (int i=0; i<mafiaBosses.size(); ++i) {
+            if(i!=fieldIndex && mafiaBosses.get(i).getPile().peek().isPresent() && mafiaBosses.get(i).getPile().peek().get().equals(ct))
                 return true;
         }
         return false;
