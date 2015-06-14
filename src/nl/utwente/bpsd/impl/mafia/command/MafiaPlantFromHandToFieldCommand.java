@@ -27,7 +27,7 @@ public class MafiaPlantFromHandToFieldCommand extends MafiaGameCommand{
         //check if player has any card in hand
         result = player.getHand().peek().map((CardType ct) -> {
             /*
-             * Cards of the same type must be plant on the same field.
+             * Cards of the same type must be planted on the same field.
              * Player can only plant card on empty field or on
              * field with matching card types.
              */
