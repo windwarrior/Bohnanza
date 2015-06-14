@@ -35,7 +35,9 @@ import org.junit.runners.Suite;
         StandardStartExchangeCommandTest.class,
         StandardExchangeTest.class,
         StateTest.class,
-        MafiaPlantFromRevealCommandTest.class
+        MafiaPlantFromRevealCommandTest.class,
+        MafiaPlantFromHandToMafiaCommandTest.class,
+        MafiaPlantFromHandToFieldCommandTest.class
 })
 public class JunitTestSuite {
 }

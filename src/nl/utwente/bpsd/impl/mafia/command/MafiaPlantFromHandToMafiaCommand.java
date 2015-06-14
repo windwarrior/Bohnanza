@@ -26,12 +26,12 @@ public class MafiaPlantFromHandToMafiaCommand extends MafiaGameCommand{
 
         List<MafiaBoss> mafiaBosses = game.getMafia();
         HandPile hand = (HandPile) player.getHand();
-        Pile field = mafiaBosses.get(fieldIndex).getPile();
 
         if(mafiaBosses.size() <= fieldIndex || fieldIndex < 0
                 || hand.pileSize() <= handIndex || handIndex < 0)
             return MafiaGameCommandResult.INVALID;
 
+        Pile field = mafiaBosses.get(fieldIndex).getPile();
         GameCommandResult result;
 
         result = hand.getCardType(handIndex).map((CardType ct) -> {
