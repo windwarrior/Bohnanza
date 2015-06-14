@@ -11,6 +11,8 @@ import java.util.*;
 
 public class MafiaGame extends StandardGame{
 
+    public static final int NUM_REVEAL_PILES = 3;
+
     //@requires 1 < numPlayers && numPlayers <= 3;
     private int numPlayers = 2;
     private ArrayList<Pile> mafia;
@@ -29,7 +31,10 @@ public class MafiaGame extends StandardGame{
         for (int i = 0; i < numPlayers; i++) {
             mafia.add(new Pile());
         }
-        revealArray = new ArrayList<Pile>();
+        revealArray = new ArrayList<>();
+        for (int i = 0; i < this.NUM_REVEAL_PILES; i++) {
+            revealArray.add(new Pile());
+        }
         //TODO: if 1-player game joeBohnano should be set
         mafiaTreasury = new Pile();
         this.setDiscardPile(new DiscardPile());
