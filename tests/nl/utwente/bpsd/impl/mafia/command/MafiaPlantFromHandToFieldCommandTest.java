@@ -3,6 +3,7 @@ package nl.utwente.bpsd.impl.mafia.command;
 import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
+import nl.utwente.bpsd.impl.standard.StandardGame;
 import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.CardType;
 import nl.utwente.bpsd.model.Game;
@@ -27,7 +28,9 @@ public class MafiaPlantFromHandToFieldCommandTest {
         game = new MafiaGame();
         game.addPlayers(player);
         game.initialize();
-
+        //delete player's cards added through initialization
+        for (int i = 0; i < StandardGame.NUMBER_START_CARDS; ++i)
+            player.getHand().pop();
         //player's hand with 2 blackeyedBeans
         Map<Integer, Integer> blackeyedBeanOMeter = new HashMap<>();
         blackeyedBeanOMeter.put(2, 1);
