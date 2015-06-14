@@ -59,4 +59,8 @@ public class HarvestablePile extends Pile {
         
         return true;
     }
+
+    public int isWorth() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
