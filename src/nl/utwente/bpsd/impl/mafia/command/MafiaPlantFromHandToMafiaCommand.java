@@ -11,6 +11,7 @@ import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
+import nl.utwente.bpsd.impl.mafia.MafiaBoss;
 
 public class MafiaPlantFromHandToMafiaCommand extends MafiaGameCommand{
 
@@ -23,11 +24,11 @@ public class MafiaPlantFromHandToMafiaCommand extends MafiaGameCommand{
         MafiaGame game = (MafiaGame) g;
         MafiaPlayer player = (MafiaPlayer) p;
 
-        List<Pile> fields = game.getMafia();
+        List<MafiaBoss> mafia = game.getMafia();
         HandPile hand = (HandPile) player.getHand();
-        Pile field = fields.get(fieldIndex);
+        Pile field = mafia.get(fieldIndex).getPile();
 
-        if(fields.size() <= fieldIndex || fieldIndex < 0
+        if(mafia.size() <= fieldIndex || fieldIndex < 0
                 || hand.pileSize() <= handIndex || handIndex < 0)
             return MafiaGameCommandResult.INVALID;
 
