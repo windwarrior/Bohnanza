@@ -8,6 +8,7 @@ import nl.utwente.bpsd.model.pile.DiscardPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.*;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 
 public class MafiaGame extends StandardGame{
 
@@ -15,7 +16,7 @@ public class MafiaGame extends StandardGame{
 
     //@requires 1 < numPlayers && numPlayers <= 3;
     private int numPlayers = 2;
-    private ArrayList<Pile> mafia;
+    private ArrayList<MafiaBoss> mafia;
     private Pile mafiaTreasury;
 
     private ArrayList<Pile> revealArray;
@@ -28,8 +29,17 @@ public class MafiaGame extends StandardGame{
     public void initialize(){
         mafia = new ArrayList<>();
         //Order in game: "Al Cabohne", "Don Corlebohne" and optionally "Joe Bohnano"
-        for (int i = 0; i < numPlayers; i++) {
-            mafia.add(new Pile());
+        
+        MafiaBoss alCabone = new MafiaBoss("Al Cabone", new HarvestablePile(this.getMafiaTreasury(), this.getDiscardPile()), 3);
+        MafiaBoss donCorlebohne = new MafiaBoss("Al Cabone", new HarvestablePile(this.getMafiaTreasury(), this.getDiscardPile()), 2);
+        MafiaBoss joeBohnano = new MafiaBoss("Al Cabone", new HarvestablePile(this.getMafiaTreasury(), this.getDiscardPile()), 1);
+        
+        
+        this.mafia.add(alCabone);
+        this.mafia.add(donCorlebohne);
+        
+        if (numPlayers == 1) {
+            this.mafia.add(joeBohnano);
         }
         revealArray = new ArrayList<>();
         for (int i = 0; i < this.NUM_REVEAL_PILES; i++) {
@@ -51,10 +61,10 @@ public class MafiaGame extends StandardGame{
         }
         //Al Cabohne gets cards
         do {
-            getGamePile().pop().ifPresent((Card c) -> mafia.get(0).append(c));
-        }while(getGamePile().peek().equals(mafia.get(0).peek()));
+            getGamePile().pop().ifPresent((Card c) -> mafia.get(0).getPile().append(c));
+        }while(getGamePile().peek().equals(mafia.get(0).getPile().peek()));
         //Don Corlebohne gets cards
-        getGamePile().pop().ifPresent((Card c) -> mafia.get(1).append(c));
+        getGamePile().pop().ifPresent((Card c) -> mafia.get(1).getPile().append(c));
     }
 
     private void generateGameDeck() {
@@ -131,7 +141,7 @@ public class MafiaGame extends StandardGame{
 
     public ArrayList<Pile> getRevealArray() { return revealArray; }
 
-    public ArrayList<Pile> getMafia() { return mafia; }
+    public ArrayList<MafiaBoss> getMafia() { return mafia; }
 
     public Pile getMafiaTreasury() { return mafiaTreasury; }
 

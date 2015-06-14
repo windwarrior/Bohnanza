@@ -23,7 +23,7 @@ public class MafiaPlantFromHandToMafiaCommand extends MafiaGameCommand{
         MafiaGame game = (MafiaGame) g;
         MafiaPlayer player = (MafiaPlayer) p;
 
-        List<Pile> fields = game.getMafia();
+        List<MafiaBoss> fields = game.getMafia();
         HandPile hand = (HandPile) player.getHand();
         Pile field = fields.get(fieldIndex);
 
