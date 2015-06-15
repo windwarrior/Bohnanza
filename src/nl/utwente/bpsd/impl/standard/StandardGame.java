@@ -18,8 +18,8 @@ public class StandardGame extends Game {
     /**
      * Hard values for standard game
      */
-    public static final int NUMBER_START_CARDS = 5;
-    public static final int DRAW_HAND_AMOUNT = 3;
+    public static int number_start_cards = 5;
+    public static int draw_hand_amount = 3;
     public static final int FIELDCOST = 3;
     public static final int NUMMAXFIELDS = 3;
     public static final int DRAW_TRADING_AMOUNT = 2;
@@ -43,7 +43,7 @@ public class StandardGame extends Game {
         discardPile = new DiscardPile();
         reshuffleCounter = 0;
         for(Player p:players){
-            for (int i = 0; i < NUMBER_START_CARDS; i++) {
+            for (int i = 0; i < number_start_cards; i++) {
                 gamePile.pop().ifPresent((Card c) -> ((StandardPlayer)p).getHand().append(c));
             }
         }

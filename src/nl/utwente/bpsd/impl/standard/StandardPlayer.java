@@ -13,6 +13,7 @@ import nl.utwente.bpsd.model.pile.Pile;
 public class StandardPlayer extends Player {
 
     private String name;
+    //TODO: should these now also be harvest piles?
     private List<Pile> fields;
     private Pile hand;
     private Pile treasury;

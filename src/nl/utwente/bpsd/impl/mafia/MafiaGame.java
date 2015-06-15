@@ -17,8 +17,6 @@ public class MafiaGame extends StandardGame{
 
     public static final int NUM_REVEAL_PILES = 3;
 
-    //@requires 1 < numPlayers && numPlayers <= 3;
-    private int numPlayers = 2;
     private ArrayList<MafiaBoss> mafia;
     private Pile mafiaTreasury;
     private ArrayList<Pile> revealArray;
@@ -40,8 +38,12 @@ public class MafiaGame extends StandardGame{
         this.mafia.add(alCabone);
         this.mafia.add(donCorlebohne);
         
-        if (numPlayers == 1) {
+        if (this.getPlayers().size() == 1) {
             this.mafia.add(joeBohnano);
+            this.number_start_cards = 7;
+            this.draw_hand_amount = 2;
+            //Add third field to solo player
+            ((MafiaPlayer)this.getPlayers().get(0)).getAllFields().add(new Pile());
         }
         revealArray = new ArrayList<>();
         for (int i = 0; i < this.NUM_REVEAL_PILES; i++) {
@@ -51,13 +53,13 @@ public class MafiaGame extends StandardGame{
         this.setDiscardPile(new DiscardPile());
         this.generateGameDeck();
         this.setupPhase();
-        generateGameDeck();
+        this.generateStateManager();
     }
 
     private void setupPhase(){
         //Players get cards
         for(Player p:getPlayers()){
-            for (int i = 0; i < NUMBER_START_CARDS; i++) {
+            for (int i = 0; i < number_start_cards; i++) {
                 getGamePile().pop().ifPresent((Card c) -> ((MafiaPlayer)p).getHand().append(c));
             }
         }
@@ -65,18 +67,29 @@ public class MafiaGame extends StandardGame{
         do {
             getGamePile().pop().ifPresent((Card c) -> mafia.get(0).getPile().append(c));
         }while(getGamePile().peek().equals(mafia.get(0).getPile().peek()));
-        //Don Corlebohne gets cards
-        getGamePile().pop().ifPresent((Card c) -> mafia.get(1).getPile().append(c));
+
+
+        if(this.getPlayers().size() == 1) {
+            //Don Corlebohne gets cards
+            do {
+                getGamePile().pop().ifPresent((Card c) -> mafia.get(1).getPile().append(c));
+            }while(getGamePile().peek().equals(mafia.get(1).getPile().peek()));
+            //Joe Bohnano gets cards
+            getGamePile().pop().ifPresent((Card c) -> mafia.get(2).getPile().append(c));
+        }else{
+            //Don Corlebohne gets cards
+            getGamePile().pop().ifPresent((Card c) -> mafia.get(1).getPile().append(c));
+        }
     }
 
     private void generateStateManager(){
         boolean onePlayer = this.getPlayers().size() == 1;
         //ALL STATES
         State<GameCommandResult, Command> phaseThreeA = new State("Phase 3a", MafiaPlantFromHandToFieldCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
-        State<GameCommandResult, Command> phaseThreeB = new State("Phase 3b", StandardSkipCommand.class, StandardPlantCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
-        State<GameCommandResult, Command> phaseFour = new State("Phase 4", MafiaPlantFromHandToFieldCommand.class, StandardBuyFieldCommand.class);
+        State<GameCommandResult, Command> phaseThreeB = new State("Phase 3b", StandardSkipCommand.class, MafiaPlantFromHandToFieldCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        State<GameCommandResult, Command> phaseFour = new State("Phase 4", MafiaDrawCardsToRevealCommand.class, StandardBuyFieldCommand.class);
         State<GameCommandResult, Command> phaseFive = new State("Phase 5", StandardBuyFieldCommand.class, StandardHarvestCommand.class,
-                MafiaPlantFromRevealToFieldCommand.class, MafiaPlantFromRevealToMafiaCommand.class, MafiaPlantFromHandToMafiaCommand.class, MafiaPlantFromHandToFieldCommand.class,
+                MafiaPlantFromRevealToFieldCommand.class, MafiaPlantFromRevealToMafiaCommand.class, MafiaPlantFromHandToMafiaCommand.class,
                 MafiaSkipToPhaseSixCommand.class);
         State<GameCommandResult, Command> phaseSix = new State("Phase 6", StandardDrawHandCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
         //ONE PLAYER STATE

@@ -2,10 +2,13 @@ package nl.utwente.bpsd.impl.mafia.command;
 
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.model.*;
+import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
+import java.util.Optional;
 
 /** Current player plants first card from hand to one of his/her fields
  * in Phase 3) from Al Cabohne game rules
@@ -24,16 +27,19 @@ public class MafiaPlantFromHandToFieldCommand extends MafiaGameCommand{
         Pile field = fields.get(fieldIndex);
         GameCommandResult result;
 
-        //check if player has any card in hand
-        result = player.getHand().peek().map((CardType ct) -> {
-            /*
-             * Cards of the same type must be planted on the same field.
-             * Player can only plant card on empty field or on
-             * field with matching card types.
-             */
-            if(isOtherFieldWithCardType(ct, fields) || (!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(ct)))
-                return MafiaGameCommandResult.INVALID;
-            field.append(player.getHand().pop().get());
+        Optional<CardType> cardType = player.getHand().peek();
+
+        /*
+         * Cards of the same type must be planted on the same field.
+         * Player can only plant card on empty field or on
+         * field with matching card types.
+         */
+        if((cardType.isPresent() && isOtherFieldWithCardType(cardType.get(), fields)) || (!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().equals(cardType)))
+            return MafiaGameCommandResult.INVALID;
+
+
+        result = player.getHand().pop().map((Card c) -> {
+            field.append(c);
             return MafiaGameCommandResult.PLANT_HAND_FIELD;
         }).orElse(MafiaGameCommandResult.INVALID);
 
