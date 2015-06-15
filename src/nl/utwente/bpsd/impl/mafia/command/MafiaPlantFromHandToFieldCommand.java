@@ -34,9 +34,7 @@ public class MafiaPlantFromHandToFieldCommand extends MafiaGameCommand{
          * Player can only plant card on empty field or on
          * field with matching card types.
          */
-        if(cardType.isPresent() && isOtherFieldWithCardType(cardType.get(), fields))
-            return MafiaGameCommandResult.INVALID;
-        if(!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().equals(cardType))
+        if((cardType.isPresent() && isOtherFieldWithCardType(cardType.get(), fields)) || (!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().equals(cardType)))
             return MafiaGameCommandResult.INVALID;
 
 
@@ -44,15 +42,6 @@ public class MafiaPlantFromHandToFieldCommand extends MafiaGameCommand{
             field.append(c);
             return MafiaGameCommandResult.PLANT_HAND_FIELD;
         }).orElse(MafiaGameCommandResult.INVALID);
-//
-//        //check if player has any card in hand
-//        result = cardType.map((CardType ct) -> {
-//
-//            if(isOtherFieldWithCardType(ct, fields) || (!(field.pileSize() == 0) && field.peek().isPresent() && !field.peek().get().equals(ct)))
-//                return MafiaGameCommandResult.INVALID;
-//            field.append(player.getHand().pop().get());
-//            return MafiaGameCommandResult.PLANT_HAND_FIELD;
-//        }).orElse(MafiaGameCommandResult.INVALID);
 
         return result;
     }

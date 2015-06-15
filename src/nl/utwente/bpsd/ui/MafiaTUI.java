@@ -21,6 +21,7 @@ public class MafiaTUI implements Observer{
     Scanner in;
     Boolean running = true;
     MafiaPlayer currentPlayer;
+    int numPlayers;
 
     public static final String[] MAFIA_NAMES = {"Al Cabohne","Don Corlebohne","Joe Bohnano"};
 
@@ -28,23 +29,26 @@ public class MafiaTUI implements Observer{
         System.out.println("Al Cabohne Bohnanza!");
         System.out.println("Currently only two player game is available...");
         in = new Scanner(System.in);
-        String[] names;
+        String[] names = null;
         do {
-            System.out.println("Please give player names (2): ");
+            System.out.println("Please give player names (1 or 2): ");
             System.out.print("> ");
-            names = in.nextLine().split(" ");
-        }while(names.length > 2);
+            String line = in.nextLine();
+            if(!line.equals(""))
+                names = line.split(" ");
+        }while(names == null || names.length > 2);
         game = new MafiaGame();
         for(String name : names) {
             game.addPlayers(new MafiaPlayer(name));
         }
+        numPlayers = game.getPlayers().size();
         game.initialize();
         currentPlayer = (MafiaPlayer)game.getCurrentPlayer();
         game.addObserver(this);
     }
 
     public void run(){
-        System.out.println("2P Al Cabohne Game!");
+        System.out.println(numPlayers+"P Al Cabohne Game!");
         System.out.println("Type Help for help");
         while(running) {
             System.out.print("> ");
@@ -206,7 +210,7 @@ public class MafiaTUI implements Observer{
 
         //Player Two
         String playerTwoString = "";
-        if(game.getPlayers().size() == 2) {
+        if(numPlayers == 2) {
             MafiaPlayer playerTwo = (MafiaPlayer) game.getPlayers().get(1);
             String p2Name = "Player Two: " + playerTwo.getName() + "\n";
             String p2Hand = "\tHand: \n";
