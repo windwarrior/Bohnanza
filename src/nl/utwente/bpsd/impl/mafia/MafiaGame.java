@@ -5,7 +5,6 @@ import nl.utwente.bpsd.impl.standard.StandardGame;
 import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.impl.standard.command.*;
 import nl.utwente.bpsd.model.*;
-import nl.utwente.bpsd.model.pile.DiscardPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.*;
@@ -50,7 +49,7 @@ public class MafiaGame extends StandardGame{
             revealArray.add(new Pile());
         }
         mafiaTreasury = new Pile();
-        this.setDiscardPile(new DiscardPile());
+        this.setDiscardPile(new Pile());
         this.generateGameDeck();
         this.setupPhase();
         this.generateStateManager();
