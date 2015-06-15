@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 public class MafiaPlantFromRevealCommandTest {
     MafiaPlayer player;
     Game game;
-    MafiaPlantFromRevealCommand plantC;
+    MafiaPlantFromRevealToFieldCommand plantC;
 
     @Before
     public void setUp() throws Exception {
@@ -39,7 +39,7 @@ public class MafiaPlantFromRevealCommandTest {
         ((MafiaGame)game).getRevealArray().get(0).append(new Card(blackeyedBean, 1));
         ((MafiaGame)game).getRevealArray().get(0).append(new Card(blackeyedBean, 2));
 
-        plantC = new MafiaPlantFromRevealCommand();
+        plantC = new MafiaPlantFromRevealToFieldCommand();
         plantC.setFieldIndex(0);
         plantC.setRevealIndex(0);
     }

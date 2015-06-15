@@ -2,10 +2,7 @@ package nl.utwente.bpsd.impl.mafia;
 
 import nl.utwente.bpsd.model.pile.HarvestablePile;
 
-/**
- *
- * @author lennart
- */
+
 public class MafiaBoss {
     private final String name;
     private final HarvestablePile pile;

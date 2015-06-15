@@ -16,17 +16,28 @@ public class MafiaPlayer extends StandardPlayer {
         return super.executeCommand(dc);
     }
 
-    public boolean plantFromReveal(int fieldIndex, int revealIndex, boolean fieldType){
-        MafiaPlantFromRevealCommand dc = new MafiaPlantFromRevealCommand();
+    public boolean plantFromRevealToMafia(int fieldIndex, int revealIndex){
+        MafiaPlantFromRevealToMafiaCommand dc = new MafiaPlantFromRevealToMafiaCommand();
         dc.setFieldIndex(fieldIndex);
         dc.setRevealIndex(revealIndex);
-        dc.setFieldType(fieldType);
+        return super.executeCommand(dc);
+    }
+
+    public boolean plantFromRevealToField(int fieldIndex, int revealIndex){
+        MafiaPlantFromRevealToFieldCommand dc = new MafiaPlantFromRevealToFieldCommand();
+        dc.setFieldIndex(fieldIndex);
+        dc.setRevealIndex(revealIndex);
         return super.executeCommand(dc);
     }
 
     public boolean plantFromHandToField(int fieldIndex){
         MafiaPlantFromHandToFieldCommand dc = new MafiaPlantFromHandToFieldCommand();
         dc.setFieldIndex(fieldIndex);
+        return super.executeCommand(dc);
+    }
+
+    public boolean giveBeansToMafia(){
+        MafiaGiveBeansToMafiaCommand dc = new MafiaGiveBeansToMafiaCommand ();
         return super.executeCommand(dc);
     }
 }

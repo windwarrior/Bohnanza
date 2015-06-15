@@ -88,7 +88,7 @@ public class MafiaTUI implements Observer{
                 try {
                     int fieldIndex = Integer.parseInt(commandParts.get(1));
                     System.out.println("Planting from hand to field " + fieldIndex);
-                    result = currentPlayer.plantFromHand(fieldIndex-1);
+                    result = currentPlayer.plantFromHandToField(fieldIndex-1);
                     if(!result) System.out.println("Action was not completed, is the move valid?");
                 } catch (NumberFormatException e) {
                     System.err.println("Please include a valid field index");
@@ -114,7 +114,7 @@ public class MafiaTUI implements Observer{
                     int fieldIndex = Integer.parseInt(commandParts.get(1));
                     int revealIndex = Integer.parseInt(commandParts.get(2));
                     System.out.println("Planting from reveal " + revealIndex + " to field " + fieldIndex);
-                    result = currentPlayer.plantFromReveal(fieldIndex,revealIndex,false);
+                    result = currentPlayer.plantFromRevealToField(fieldIndex,revealIndex);
                     if(!result) System.out.println("Action was not completed, is the move valid?");
                 } catch (NumberFormatException e) {
                     System.err.println("Please include a valid field and trading index");
@@ -127,7 +127,7 @@ public class MafiaTUI implements Observer{
                     int mafiaIndex = Integer.parseInt(commandParts.get(1));
                     int revealIndex = Integer.parseInt(commandParts.get(2));
                     System.out.println("Planting from reveal " + revealIndex + " to mafia " + MAFIA_NAMES[mafiaIndex-1]);
-                    result = currentPlayer.plantFromReveal(mafiaIndex,revealIndex,true);
+                    result = currentPlayer.plantFromRevealToMafia(mafiaIndex,revealIndex);
                     if(!result) System.out.println("Action was not completed, is the move valid?");
                 } catch (NumberFormatException e) {
                     System.err.println("Please include a valid field and trading index");

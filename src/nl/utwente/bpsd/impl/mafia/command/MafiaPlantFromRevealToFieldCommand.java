@@ -17,11 +17,11 @@ import java.util.List;
  * and plant it on any of his/her fields.
  * in Phase 1 & 5 from Al Cabohne game rules
  */
-public class MafiaPlantFromRevealCommand extends MafiaGameCommand {
+public class MafiaPlantFromRevealToFieldCommand extends MafiaGameCommand {
     int fieldIndex;
     int revealIndex;
-    //false indicated player field and true indicates mafia field.
-    boolean fieldType;
+
+
 
     @Override
     public GameCommandResult execute(Player p, Game g) {
@@ -29,13 +29,7 @@ public class MafiaPlantFromRevealCommand extends MafiaGameCommand {
         MafiaGame game = (MafiaGame) g;
         MafiaPlayer player = (MafiaPlayer) p;
 
-
-        List<Pile> mafiaFields = new ArrayList<>();
-        if(fieldType) {
-            for (MafiaBoss mafiaBoss : game.getMafia())
-                mafiaFields.add(mafiaBoss.getPile());
-        }
-        List<Pile> fields = fieldType ? mafiaFields : player.getAllFields();
+        List<Pile> fields = this.getFields(player,game);
 
         if(fields.size() <= fieldIndex || fieldIndex < 0
                 || game.getRevealArray().size() <= revealIndex || revealIndex < 0)
@@ -68,7 +62,10 @@ public class MafiaPlantFromRevealCommand extends MafiaGameCommand {
     public void setRevealIndex(int index){
         this.revealIndex = index;
     }
-    public void setFieldType(boolean field) {this.fieldType = field; }
+
+    protected List<Pile> getFields(MafiaPlayer player, MafiaGame game){
+        return player.getAllFields();
+    }
 
     /**
      *@return true if player has other field with the same card types
