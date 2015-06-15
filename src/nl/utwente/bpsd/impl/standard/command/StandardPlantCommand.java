@@ -35,7 +35,6 @@ public class StandardPlantCommand extends StandardGameCommand {
          * Check if planting from player's hand or from trading pile +
          * Get CardType of planted card
          */
-        // TODO: correct use of optionals
         Optional<CardType> ct = tradingIndex == -1 ? player.getHand().peek() : ((HandPile) player.getTrading()).getCardType(tradingIndex);
 
         /*

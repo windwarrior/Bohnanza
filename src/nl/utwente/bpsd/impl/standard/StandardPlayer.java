@@ -15,7 +15,6 @@ import nl.utwente.bpsd.model.pile.Pile;
 public class StandardPlayer extends Player {
 
     private String name;
-    //TODO: should these now also be harvest piles?
     private List<HarvestablePile> fields;
     private Pile hand;
     private Pile treasury;
@@ -69,11 +68,6 @@ public class StandardPlayer extends Player {
         dc.setFieldIndex(fieldIndex);
 
         return super.executeCommand(dc);
-    }
-
-    //TODO: remove this command
-    public boolean trade() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public boolean harvest(int fieldIndex) {

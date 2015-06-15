@@ -1,6 +1,5 @@
 package nl.utwente.bpsd.model.state;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,24 +11,24 @@ import java.util.Set;
 
 public class State<K, C> {
     private final String name;
-    private final List<Class<? extends C>> allowedClasses;
+    private final List<C> allowed;
     private boolean isAcceptingState;
     
-    private Map<K, State> transitions;
+    private Map<K, State<K,C>> transitions;
     
-    public State(String name, Class<? extends C>... allowedClasses) {
+    public State(String name, C... allowedClasses) {
         this(name, false, allowedClasses);
     }
     
-    public State(String name, boolean isAcceptingState, Class<? extends C>... allowedClasses) {
+    public State(String name, boolean isAcceptingState, C... allowedClasses) {
         this.name = name;
         this.isAcceptingState = isAcceptingState;
-        this.allowedClasses = Arrays.asList(allowedClasses);
+        this.allowed = Arrays.asList(allowedClasses);
         transitions = new HashMap<>();
     }
     
-    public List<Class<? extends C>> getAllowedClasses() {
-        return this.allowedClasses;
+    public List<C> getAllowed() {
+        return this.allowed;
     }
     
     /** 
@@ -39,7 +38,7 @@ public class State<K, C> {
      * @param label The label of this transition
      * @param newState The state this transition transfers to
      */
-    public void addTransition(K label, State newState) {
+    public void addTransition(K label, State<K,C> newState) {
         transitions.put(label, newState);
     }
     
@@ -49,22 +48,22 @@ public class State<K, C> {
         this.transitions.remove(label);
     }
     
-    public Optional<State> getTransition(K label) {
+    public Optional<State<K,C>> getTransition(K label) {
         return Optional.ofNullable(transitions.get(label));
     }
     
-    public boolean isAllowedClass(Class<? extends C> command) {
-        return allowedClasses.contains(command);
+    public boolean isAllowed(C command) {
+        return allowed.contains(command);
     }
-    
+
     public boolean isAcceptingState() {
         return this.isAcceptingState;
     }
 
-    public Set<K> alphabet(List<Entry<K, State>> visitedTransitions) {
+    public Set<K> alphabet(List<Entry<K, State<K,C>>> visitedTransitions) {
         Set<K> alphabet = new HashSet<>();
         
-        for(Entry<K, State> transition: transitions.entrySet()) {
+        for(Entry<K, State<K,C>> transition: transitions.entrySet()) {
             if(!visitedTransitions.contains(transition)) {
                 // add letter to the alphabet
                 alphabet.add(transition.getKey());
@@ -82,12 +81,12 @@ public class State<K, C> {
         return alphabet;
     }
     
-    public Set<State> reachable(Set<State> visited) {
+    public Set<State> reachable(Set<State<K,C>> visited) {
         Set<State> reachable = new HashSet<>(Arrays.asList(this));
         
         visited.add(this);
         
-        for(Entry<K, State> transition: transitions.entrySet()) {
+        for(Entry<K, State<K,C>> transition: transitions.entrySet()) {
             if(!visited.contains(transition.getValue())) {
                 Set<State> otherReachable = transition.getValue().reachable(visited);
                 

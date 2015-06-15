@@ -5,7 +5,7 @@ package nl.utwente.bpsd.util;
  * 
  * 
  * 
- * @deprecated This seemed like a good idea at the time, but proved overkill.
+ * @flop This seemed like a good idea at the time, but proved overkill.
  *             I like to keep it because it is a good class in general, but not 
  *             on the place I used it at.
  * @author lennart
@@ -13,7 +13,8 @@ package nl.utwente.bpsd.util;
  *            element that is sorted on.
  * @param <R> The right value to be stored in this pair.
  */
-public class ImmutableOrderablePair<L extends Comparable, R extends Comparable> implements Comparable<ImmutableOrderablePair> {
+public class ImmutableOrderablePair<L extends Comparable, R extends Comparable> 
+    implements Comparable<ImmutableOrderablePair<L, R>> {
     private final L left;
     private final R right;
     
@@ -44,7 +45,7 @@ public class ImmutableOrderablePair<L extends Comparable, R extends Comparable> 
      * @return 
      */
     @Override
-    public int compareTo(ImmutableOrderablePair t) {
+    public int compareTo(ImmutableOrderablePair<L, R> t) {
         int result = this.getLeft().compareTo(t.getLeft());
         
         return result == 0 ? this.getRight().compareTo(t.getRight()) : result;

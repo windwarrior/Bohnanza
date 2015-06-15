@@ -39,7 +39,6 @@ public class StandardDrawHandCommandTest {
         Pile testPile = new Pile(game.getGamePile());
         this.setSizes();
         GameCommandResult result = drawHandC.execute(player, game);
-        //TODO: Fix these Optional .get() calls?
         assertThat("Game pile size decreased by three", game.getGamePile().pileSize(), is(expectedGamePileSize - StandardGame.draw_hand_amount));
         assertThat("Hand pile size increased by three", player.getHand().pileSize(), is(expectedPlayerHandPileSize + StandardGame.draw_hand_amount));
 

@@ -3,9 +3,6 @@ package nl.utwente.bpsd.ui;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Created by Jochem Elsinga on 6/13/2015.
- */
 public class TUI {
 
     Boolean running = true;

@@ -43,7 +43,6 @@ public class StandardDrawTradeCommandTest {
         assertThat("Game pile removes two cards", game.getGamePile().pileSize(), is(gamePileSize - StandardGame.DRAW_TRADING_AMOUNT));
         assertThat("Trading pile gets two cards", player.getTrading().pileSize(), is(playerTradingSize + StandardGame.DRAW_TRADING_AMOUNT));
         //Test if correct cards are added to trading area
-        //TODO: fix Optional .get() calls to something neater?
         assertThat("First card", ((HandPile) player.getTrading()).getCardType(0).get(), is(testPile.pop().get().getCardType()));
         assertThat("Second card", ((HandPile) player.getTrading()).getCardType(1).get(), is(testPile.pop().get().getCardType()));
         //Test if correct game command result is returned
