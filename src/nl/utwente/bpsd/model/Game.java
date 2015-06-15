@@ -24,7 +24,7 @@ public abstract class Game extends Observable {
         boolean result = false;
 
         // Yes comparison by reference, should be the same instance as well!
-        if (this.getCurrentPlayer() == p && this.getStateManager().isAllowedClass(klass.getClass())) {
+        if (this.getCurrentPlayer() == p && this.getStateManager().isAllowed(klass.getClass())) {
             GameCommandResult commandOutput = klass.execute(p,this);
 
             result = this.getStateManager().isTransition(commandOutput);
@@ -33,11 +33,11 @@ public abstract class Game extends Observable {
                 this.getStateManager().doTransition(commandOutput);
                 while(this.preempted.size() > 0) {
                     // first try internal commands
-                    List<Class<? extends Command>> allowedClasses = this.getStateManager().getCurrentState().getAllowedClasses();
+                    List<Class<? extends Command>> allowedClasses = this.getStateManager().getAllowed();
                     this.tryInternal(allowedClasses);
                     
                     // then try if we can resume preempted commands
-                    if (this.getStateManager().isAllowedClass(this.preempted.peek().getClass())) {
+                    if (this.getStateManager().isAllowed(this.preempted.peek().getClass())) {
                         this.preempted.pop().execute(p, this);
                     }
                 }
@@ -72,11 +72,9 @@ public abstract class Game extends Observable {
 
     public abstract Player getCurrentPlayer();
     
-    public abstract StateManager getStateManager();
+    public abstract StateManager<GameCommandResult, Class<? extends Command>> getStateManager();
     
     public abstract Optional<Pile> getPileByName(String name);
-    
-    public abstract void gameEnd();
     
     public abstract void setWinners(List<Player> ps);
 

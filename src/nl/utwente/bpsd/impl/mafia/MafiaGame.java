@@ -92,17 +92,17 @@ public class MafiaGame extends StandardGame{
     private void generateStateManager(){
         boolean onePlayer = this.getPlayers().size() == 1;
         //ALL STATES
-        State<GameCommandResult, Command> phaseThreeA = new State("Phase 3a", MafiaPlantFromHandToFieldCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
-        State<GameCommandResult, Command> phaseThreeB = new State("Phase 3b", StandardSkipCommand.class, MafiaPlantFromHandToFieldCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
-        State<GameCommandResult, Command> phaseFour = new State("Phase 4", MafiaDrawCardsToRevealCommand.class, StandardBuyFieldCommand.class);
-        State<GameCommandResult, Command> phaseFive = new State("Phase 5", StandardBuyFieldCommand.class, StandardHarvestCommand.class,
+        State<GameCommandResult, Class<? extends Command>> phaseThreeA = new State<>("Phase 3a", MafiaPlantFromHandToFieldCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        State<GameCommandResult, Class<? extends Command>> phaseThreeB = new State<>("Phase 3b", StandardSkipCommand.class, MafiaPlantFromHandToFieldCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        State<GameCommandResult, Class<? extends Command>> phaseFour = new State<>("Phase 4", MafiaDrawCardsToRevealCommand.class, StandardBuyFieldCommand.class);
+        State<GameCommandResult, Class<? extends Command>> phaseFive = new State<>("Phase 5", StandardBuyFieldCommand.class, StandardHarvestCommand.class,
                 MafiaPlantFromRevealToFieldCommand.class, MafiaPlantFromRevealToMafiaCommand.class, MafiaPlantFromHandToMafiaCommand.class,
                 MafiaSkipToPhaseSixCommand.class);
-        State<GameCommandResult, Command> phaseSix = new State("Phase 6", StandardDrawHandCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        State<GameCommandResult, Class<? extends Command>> phaseSix = new State<>("Phase 6", StandardDrawHandCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
         //ONE PLAYER STATE
-        State<GameCommandResult, Command> phaseOne1Player = new State("Phase 1", MafiaGiveBeansToMafiaCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        State<GameCommandResult, Class<? extends Command>> phaseOne1Player = new State<>("Phase 1", MafiaGiveBeansToMafiaCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
         //TWO PLAYER STATE
-        State<GameCommandResult, Command> phaseOne2Player = new State("Phase 1", MafiaPlantFromRevealToFieldCommand.class, MafiaGiveBeansToMafiaCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        State<GameCommandResult, Class<? extends Command>> phaseOne2Player = new State<>("Phase 1", MafiaPlantFromRevealToFieldCommand.class, MafiaGiveBeansToMafiaCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
 
 
         //GENERAL TRANSITIONS
@@ -145,7 +145,7 @@ public class MafiaGame extends StandardGame{
             phaseSix.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, phaseOne2Player);
         }
 
-        StateManager sm = new StateManager(phaseThreeA);
+        StateManager<GameCommandResult, Class<? extends Command>> sm = new StateManager<>(phaseThreeA);
         this.setStateManager(sm);
     }
 

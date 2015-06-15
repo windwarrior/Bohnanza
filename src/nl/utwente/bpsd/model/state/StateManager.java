@@ -7,22 +7,22 @@ import java.util.Optional;
 import java.util.Set;
 
 public class StateManager<K, C> {
-    private State currentState;
-    private final State initialState;
+    private State<K,C> currentState;
+    private final State<K,C> initialState;
     
-    public StateManager(State initial) {
+    public StateManager(State<K,C> initial) {
         this.initialState = initial;
         this.currentState = initial;
     }
     
-    public void addInitialState(State s) {
+    public void addInitialState(State<K,C> s) {
         this.currentState = s;
     }
     
-    public Optional<State> doTransition(K label) {
-        Optional<State> result = currentState.getTransition(label);
+    public Optional<State<K,C>> doTransition(K label) {
+        Optional<State<K,C>> result = currentState.getTransition(label);
         
-        result.ifPresent((State x) -> this.currentState = x);
+        result.ifPresent((State<K,C> x) -> this.currentState = x);
         
         return result;
     }
@@ -31,8 +31,12 @@ public class StateManager<K, C> {
         return currentState.getTransition(label).isPresent();
     }
     
-    public boolean isAllowedClass(Class<? extends C> klass) {
-        return currentState.isAllowedClass(klass);
+    public boolean isAllowed(C thing) {
+        return currentState.isAllowed(thing);
+    }
+    
+    public List<C> getAllowed() {
+        return currentState.getAllowed();
     }
     
     public boolean isInAcceptingState() {

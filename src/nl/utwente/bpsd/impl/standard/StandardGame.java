@@ -26,7 +26,7 @@ public class StandardGame extends Game {
     private Pile gamePile;
     private Player currentPlayer;
     private int reshuffleCounter;
-    private StateManager stateManager;
+    private StateManager<GameCommandResult, Class<? extends Command>> stateManager;
     private List<Exchange> exchanges;
     private List<Player> winners;
 
@@ -52,17 +52,17 @@ public class StandardGame extends Game {
         // It should be parallely composed with a statemanager that holds track 
         // of the players, but that is represented in the currentPlayer
         // Below are all states (with a name)
-        State<StandardGameCommandResult, Command> startState = new State("Turn", StandardPlantCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
+        State<GameCommandResult, Class<? extends Command>> startState = new State<>("Turn", StandardPlantCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
-        State<StandardGameCommandResult, Command> onePlantedState = new State("One bean planted", StandardPlantCommand.class, StandardSkipCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
+        State<GameCommandResult, Class<? extends Command>> onePlantedState = new State<>("One bean planted", StandardPlantCommand.class, StandardSkipCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
-        State<StandardGameCommandResult, Command> drawCardToTradingState =  new State("Draw cards to trading area", StandardDrawTradeCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
+        State<GameCommandResult, Class<? extends Command>> drawCardToTradingState =  new State<>("Draw cards to trading area", StandardDrawTradeCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
-        State<StandardGameCommandResult, Command> tradingState = new State("Start trading", StandardTradeCommand.class, StandardSkipCommand.class);
+        State<GameCommandResult, Class<? extends Command>> tradingState = new State<>("Start trading", StandardTradeCommand.class, StandardSkipCommand.class);
 
-        State<StandardGameCommandResult, Command> plantTradedCardsState = new State("Plant traded cards", StandardPlantCommand.class, StandardSkipCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
+        State<GameCommandResult, Class<? extends Command>> plantTradedCardsState = new State<>("Plant traded cards", StandardPlantCommand.class, StandardSkipCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
-        State<StandardGameCommandResult, Command> drawCardState = new State("Draw cards to your hand", StandardDrawHandCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
+        State<GameCommandResult, Class<? extends Command>> drawCardState = new State<>("Draw cards to your hand", StandardDrawHandCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
         // These are per state all transitions that can be taken
         startState.addTransition(StandardGameCommandResult.HARVEST, startState);
@@ -91,7 +91,7 @@ public class StandardGame extends Game {
         drawCardState.addTransition(StandardGameCommandResult.HARVEST, drawCardState);
         drawCardState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, drawCardState);
 
-        stateManager = new StateManager(startState);
+        stateManager = new StateManager<>(startState);
     }
 
     @Override
@@ -250,11 +250,6 @@ public class StandardGame extends Game {
     }
 
     @Override
-    public void gameEnd() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public Optional<Pile> getPileByName(String name) {
         switch (name.toLowerCase()) {
             case "discard":
@@ -281,14 +276,15 @@ public class StandardGame extends Game {
         return this.players;
     }
 
-    public void setStateManager(StateManager sm) {this.stateManager = sm;}
+    public void setStateManager(StateManager<GameCommandResult, Class<? extends Command>> sm) {this.stateManager = sm;}
     @Override
     public void setWinners(List<Player> ps) {
         this.winners = ps;
     }
 
+
     @Override
-    public StateManager getStateManager() {
+    public StateManager<GameCommandResult, Class<? extends Command>> getStateManager() {
         return this.stateManager;
     }
 }
