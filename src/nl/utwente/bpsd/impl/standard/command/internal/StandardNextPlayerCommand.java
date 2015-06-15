@@ -1,12 +1,8 @@
 package nl.utwente.bpsd.impl.standard.command.internal;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import nl.utwente.bpsd.impl.standard.StandardGame;
 import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.impl.standard.command.StandardGameCommand;
-import nl.utwente.bpsd.model.Card;
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.GameCommandResult;
 import nl.utwente.bpsd.model.InternalCommand;

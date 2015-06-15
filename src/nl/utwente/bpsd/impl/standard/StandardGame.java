@@ -3,6 +3,7 @@ package nl.utwente.bpsd.impl.standard;
 import nl.utwente.bpsd.impl.standard.command.*;
 
 import java.util.*;
+import nl.utwente.bpsd.impl.standard.command.internal.StandardNextPlayerCommand;
 
 import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.model.pile.HarvestablePile;
@@ -64,6 +65,7 @@ public class StandardGame extends Game {
 
         State<GameCommandResult, Class<? extends Command>> drawCardState = new State<>("Draw cards to your hand", StandardDrawHandCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
+        State<GameCommandResult, Class<? extends Command>> nextPlayerState = new State<>("Next player", StandardNextPlayerCommand.class);
         // These are per state all transitions that can be taken
         startState.addTransition(StandardGameCommandResult.HARVEST, startState);
         startState.addTransition(StandardGameCommandResult.PLANT, onePlantedState);
@@ -90,6 +92,10 @@ public class StandardGame extends Game {
         drawCardState.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, startState);
         drawCardState.addTransition(StandardGameCommandResult.HARVEST, drawCardState);
         drawCardState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, drawCardState);
+        
+        // After the draw state, the player needs to be advanced and the statemachine needs to reset
+        drawCardState.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, nextPlayerState);
+        nextPlayerState.addTransition(StandardGameCommandResult.PROGRESS, startState);
 
         stateManager = new StateManager<>(startState);
     }

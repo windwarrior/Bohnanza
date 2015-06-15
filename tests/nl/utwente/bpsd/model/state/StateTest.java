@@ -23,10 +23,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class StateTest {
-    private State<String, Command> s1;
-    private State<String, Command> s2;
-    private State<String, Command> s3;
-    private State<String, Command> s4;
+    private State<String, Class<? extends Command>> s1;
+    private State<String, Class<? extends Command>> s2;
+    private State<String, Class<? extends Command>> s3;
+    private State<String, Class<? extends Command>> s4;
     
     public StateTest() {
     }
@@ -135,27 +135,27 @@ public class StateTest {
     @Test
     public void testIsAllowedClass() {
         // Everything in state 1
-        assertThat(s1.isAllowedClass(CCommand.class), is(true));
+        assertThat(s1.isAllowed(CCommand.class), is(true));
 
-        assertThat(s1.isAllowedClass(ACommand.class), is(false));
-        assertThat(s1.isAllowedClass(BCommand.class), is(false));
+        assertThat(s1.isAllowed(ACommand.class), is(false));
+        assertThat(s1.isAllowed(BCommand.class), is(false));
         
         // Everything in state 2
-        assertThat(s2.isAllowedClass(BCommand.class), is(true));
+        assertThat(s2.isAllowed(BCommand.class), is(true));
 
-        assertThat(s2.isAllowedClass(ACommand.class), is(false));
-        assertThat(s2.isAllowedClass(CCommand.class), is(false));
+        assertThat(s2.isAllowed(ACommand.class), is(false));
+        assertThat(s2.isAllowed(CCommand.class), is(false));
         
         // Everything in state 3
-        assertThat(s3.isAllowedClass(ACommand.class), is(true));
-        assertThat(s3.isAllowedClass(BCommand.class), is(true));
+        assertThat(s3.isAllowed(ACommand.class), is(true));
+        assertThat(s3.isAllowed(BCommand.class), is(true));
         
-        assertThat(s3.isAllowedClass(CCommand.class), is(false));
+        assertThat(s3.isAllowed(CCommand.class), is(false));
         
         // Everything in state 4
-        assertThat(s4.isAllowedClass(ACommand.class), is(true));
-        assertThat(s4.isAllowedClass(BCommand.class), is(true));
-        assertThat(s4.isAllowedClass(CCommand.class), is(true));
+        assertThat(s4.isAllowed(ACommand.class), is(true));
+        assertThat(s4.isAllowed(BCommand.class), is(true));
+        assertThat(s4.isAllowed(CCommand.class), is(true));
     }
     
     @Test
