@@ -62,7 +62,8 @@ public class MafiaSkipToPhaseSixCommand extends MafiaGameCommand {
 
         //Additional 1Player check: reveal piles should be empty
         if(game.getPlayers().size() == 1){
-            for(Pile field : game.getRevealArray()) {
+            ArrayList<Pile> reveals = game.getRevealArray();
+            for(Pile field : reveals) {
                 if(field.pileSize() != 0)
                     return MafiaGameCommandResult.INVALID;
             }

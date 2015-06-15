@@ -2,9 +2,7 @@ package nl.utwente.bpsd.impl.mafia.command;
 
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
-import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.model.*;
-import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;

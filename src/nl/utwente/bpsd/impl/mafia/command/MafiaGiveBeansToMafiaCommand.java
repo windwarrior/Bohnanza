@@ -5,7 +5,6 @@ import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
 import nl.utwente.bpsd.model.*;
-import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
