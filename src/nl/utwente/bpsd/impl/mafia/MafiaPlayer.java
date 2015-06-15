@@ -40,4 +40,14 @@ public class MafiaPlayer extends StandardPlayer {
         MafiaGiveBeansToMafiaCommand dc = new MafiaGiveBeansToMafiaCommand ();
         return super.executeCommand(dc);
     }
+
+    public boolean skipToPhaseSix(){
+        MafiaSkipToPhaseSixCommand dc = new MafiaSkipToPhaseSixCommand();
+        return super.executeCommand(dc);
+    }
+
+    public boolean drawReveal(){
+        MafiaDrawCardsToRevealCommand dc = new MafiaDrawCardsToRevealCommand();
+        return super.executeCommand(dc);
+    }
 }
