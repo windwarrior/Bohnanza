@@ -45,7 +45,10 @@ public class MafiaDrawCardsToRevealCommand extends MafiaGameCommand{
                     if (mafiaBoss.getPile().peek().equals(topDeck)) {
                         game.getGamePile().pop().ifPresent((Card c) -> mafiaBoss.getPile().append(c));
                         mafiaPlant = true;
-                        if(mafiaBoss.getPile().isWorth() >= mafiaBoss.getCoinConditionToHarvest()) return MafiaGameCommandResult.HARVEST_MAFIA;
+                        if(mafiaBoss.getPile().isWorth() >= mafiaBoss.getCoinConditionToHarvest()) {
+                            game.suspend(this);
+                            return MafiaGameCommandResult.HARVEST_MAFIA;
+                        }
                     }
                 }
 
@@ -68,7 +71,10 @@ public class MafiaDrawCardsToRevealCommand extends MafiaGameCommand{
                         if (!discardMatch && mafiaBoss.getPile().peek().equals(topDeck)) {
                             game.getDiscardPile().pop().ifPresent((Card c) -> mafiaBoss.getPile().append(c));
                             discardMatch = true;
-                            if(mafiaBoss.getPile().isWorth() >= mafiaBoss.getCoinConditionToHarvest()) return MafiaGameCommandResult.HARVEST_MAFIA;
+                            if(mafiaBoss.getPile().isWorth() >= mafiaBoss.getCoinConditionToHarvest()) {
+                                game.suspend(this);
+                                return MafiaGameCommandResult.HARVEST_MAFIA;
+                            }
                         }
                     }
                     for(Pile revealPile : reveal) {
