@@ -4,7 +4,6 @@ import nl.utwente.bpsd.impl.mafia.MafiaBoss;
 import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
-import nl.utwente.bpsd.model.CardType;
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.GameCommandResult;
 import nl.utwente.bpsd.model.Player;
@@ -12,8 +11,8 @@ import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class MafiaSkipToPhaseSixCommand extends MafiaGameCommand {
 
@@ -23,41 +22,53 @@ public class MafiaSkipToPhaseSixCommand extends MafiaGameCommand {
         MafiaGame game = (MafiaGame) g;
         MafiaPlayer player = (MafiaPlayer) p;
 
-        MafiaGameCommandResult result = MafiaGameCommandResult.INVALID;
-
         List<Pile> empties = new ArrayList<>();
         List<Pile> filled = new ArrayList<>();
 
         for (MafiaBoss mafia : game.getMafia()) {
-            if (mafia.getPile().pileSize() == 0) empties.add(mafia.getPile());
-            else filled.add(mafia.getPile());
+            if (mafia.getPile().pileSize() == 0)
+                empties.add(mafia.getPile());
+            else
+                filled.add(mafia.getPile());
         }
 
-        //An empty field but player does not have valid card to give mafia:
+        //player do not need to give a card to mafia if there are no empty mafia fields or player's hand is empty
+        if(empties.size()!=0 && player.getHand().pileSize()!=0) {
+            /* every array field is associated with appropriate player's hand card,
+             * set to false means no other mafia boss has this card type
+             * otherwise array field should be set to true.
+             */
+            boolean[] matchArray = new boolean[player.getHand().pileSize()];
+            Arrays.fill(matchArray, false);
+            for (int i = 0; i < player.getHand().pileSize(); ++i) {
+                for(Pile mafiaField : filled) {
+                    //card from player's hand match card type of mafia boss's field
+                    if(mafiaField.peek().equals(((HandPile)player.getHand()).getCardType(i))) {
+                        matchArray[i] = true;
+                        break;
+                    }
+                }
+            }
 
-        for(Pile mafia : filled){
-            boolean match = true;
-            Optional<CardType> mafiaCT = mafia.peek();
-            for (int i = 0; i < player.getHand().pileSize() && match; i++) {
-                Optional<CardType> handCT = ((HandPile)player.getHand()).getCardType(i);
-                match = mafiaCT.equals(handCT);
+            /* All array fields set to true mean that player do not have cards that can be given to mafia.
+             * If there is at least one card that did not match other mafia bosses' fields,
+             * player must pass it to boss with an empty field before transition to next game phase.
+             */
+            for (boolean aMatchArray : matchArray) {
+                if (!aMatchArray)
+                    return MafiaGameCommandResult.INVALID;
             }
         }
 
-        //Additional 1Player check
-        boolean OnePlayerCheck = true;
+        //Additional 1Player check: reveal piles should be empty
         if(game.getPlayers().size() == 1){
-            for(Pile field : game.getRevealArray()){
-                OnePlayerCheck = OnePlayerCheck && field.pileSize() == 0;
+            for(Pile field : game.getRevealArray()) {
+                if(field.pileSize() != 0)
+                    return MafiaGameCommandResult.INVALID;
             }
         }
 
-        //All fields full or no cards in hand (for 1 player reveal is also empty):
-        if (OnePlayerCheck && (empties.size() == 0 || player.getHand().pileSize() == 0)) {
-            result = MafiaGameCommandResult.SKIP_TO_PHASE_SIX;
-        }
-
-        return result;
+        return MafiaGameCommandResult.SKIP_TO_PHASE_SIX;
     }
 
 }
