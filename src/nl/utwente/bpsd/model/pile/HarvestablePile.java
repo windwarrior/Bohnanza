@@ -36,31 +36,47 @@ public class HarvestablePile extends Pile {
         // First, we will seek the closest amount of beens
         CardType c = this.peek().get(); // we know for sure there is a card
         boolean found = false;
+        
+        boolean result = false;
+        
+        int amountOfCards = this.isWorth();
+        
+        if (amountOfCards > 0) {
+
+
+            while(amountOfCards >= 0) {
+                this.pop().ifPresent(x -> this.treasury.append(x));
+                amountOfCards--;
+            }
+
+            boolean iterate = true;
+
+            while(iterate) {
+                this.pop().map(x -> { discard.append(x); return true; }).orElse(iterate = false);
+            }
+            
+            result = true;
+        }
+        
+        return result;
+    }
+
+    public int isWorth() {
+        if (this.pileSize() == 0) {
+            return -1;
+        }
+        
+        // First, we will seek the closest amount of beens
+        CardType c = this.peek().get(); // we know for sure there is a card
+        boolean found = false;
         int amountOfCards = this.pileSize();
         
-        while (found = amountOfCards > 0 && (c.getBeanOMeter().get(amountOfCards + 1) != null)) {
+        while (found = amountOfCards > 0 && (c.getBeanOMeter().get(amountOfCards + 1) == null)) {
             amountOfCards--;
         };
         
         // in the variable amountOfCards we now have the amount of cards to harvest
         
-        int amountOfCardsToDiscard = (this.pileSize()) - amountOfCards;
-        
-        while(amountOfCards >= 0) {
-            this.pop().ifPresent(x -> this.treasury.append(x));
-            amountOfCards--;
-        }
-        
-        boolean iterate = true;
-        
-        while(iterate) {
-            this.pop().map(x -> { discard.append(x); return true; }).orElse(iterate = false);
-        }
-        
-        return true;
-    }
-
-    public int isWorth() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return c.getBeanOMeter().get(amountOfCards);
     }
 }
