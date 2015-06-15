@@ -3,7 +3,7 @@ package nl.utwente.bpsd.impl.mafia.command;
 import nl.utwente.bpsd.impl.mafia.MafiaBoss;
 import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
-import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.model.pile.Pile;
 
@@ -25,20 +25,24 @@ public class MafiaDrawCardsToRevealCommand extends MafiaGameCommand{
         boolean mafiaPlant;
         boolean discardMatch;
 
+        for( Pile pile : reveal){
+            if(pile.pileSize() != 0) revealCounter++;
+        }
+
         while(revealCounter < MafiaGame.NUM_REVEAL_PILES) {
             do {
                 mafiaPlant = false;
                 //1. Look at the top bean from the draw pile (if empty reshuffle -> if reshuffle fails go to step 4)
                 Optional<CardType> topDeck = game.getGamePile().peek();
-                if (!topDeck.isPresent()) {
-                }//TODO: reshuffle
+                if (!topDeck.isPresent()) return StandardGameCommandResult.RESHUFFLE;
+
 
                 //2. compare to the beans planted in mafia fields -> if equal plant to mafia (harvest if possible)
                 for (MafiaBoss mafiaBoss : mafiaBosses) {
                     if (mafiaBoss.getPile().peek().equals(topDeck)) {
                         game.getGamePile().pop().ifPresent((Card c) -> mafiaBoss.getPile().append(c));
                         mafiaPlant = true;
-                        //TODO: possible harvest of MafiaPile
+                        if(mafiaBoss.getPile().isWorth() >= mafiaBoss.getCoinConditionToHarvest()) return MafiaGameCommandResult.HARVEST_MAFIA;
                     }
                 }
 
@@ -61,7 +65,7 @@ public class MafiaDrawCardsToRevealCommand extends MafiaGameCommand{
                         if (!discardMatch && mafiaBoss.getPile().peek().equals(topDeck)) {
                             game.getDiscardPile().pop().ifPresent((Card c) -> mafiaBoss.getPile().append(c));
                             discardMatch = true;
-                            //TODO: possible harvest of MafiaPile
+                            if(mafiaBoss.getPile().isWorth() >= mafiaBoss.getCoinConditionToHarvest()) return MafiaGameCommandResult.HARVEST_MAFIA;
                         }
                     }
                     for(Pile revealPile : reveal) {
@@ -75,5 +79,4 @@ public class MafiaDrawCardsToRevealCommand extends MafiaGameCommand{
         }
         return result;
     }
-
 }
