@@ -1,6 +1,5 @@
 package nl.utwente.bpsd.model.state;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,7 +55,7 @@ public class State<K, C> {
     public boolean isAllowed(C command) {
         return allowed.contains(command);
     }
-    
+
     public boolean isAcceptingState() {
         return this.isAcceptingState;
     }
