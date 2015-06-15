@@ -29,4 +29,9 @@ public class MafiaPlayer extends StandardPlayer {
         dc.setFieldIndex(fieldIndex);
         return super.executeCommand(dc);
     }
+
+    public boolean giveBeansToMafia(){
+        MafiaGiveBeansToMafiaCommand dc = new MafiaGiveBeansToMafiaCommand ();
+        return super.executeCommand(dc);
+    }
 }

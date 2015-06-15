@@ -7,5 +7,6 @@ public enum MafiaGameCommandResult implements GameCommandResult{
     INVALID,
     PLANT_HAND_FIELD,
     PLANT_HAND_MAFIA,
-    PLANT_REVEAL
+    PLANT_REVEAL,
+    GIVE_BEANS
 }

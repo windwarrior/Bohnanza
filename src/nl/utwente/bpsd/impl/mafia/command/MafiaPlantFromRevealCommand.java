@@ -23,6 +23,8 @@ public class MafiaPlantFromRevealCommand extends MafiaGameCommand {
     //false indicated player field and true indicates mafia field.
     boolean fieldType;
 
+
+
     @Override
     public GameCommandResult execute(Player p, Game g) {
         super.execute(p,g); // force a check that this is indeed a MafiaGame
