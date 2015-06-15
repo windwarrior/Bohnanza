@@ -39,10 +39,12 @@ public class MafiaPlantFromHandToMafiaCommandTest {
             player.getHand().pop();
         //delete Mafia's cards
         bosses = ((MafiaGame)game).getMafia();
-        int pileSize = bosses.get(0).getPile().pileSize();
-        for (int i = 0; i < pileSize; ++i)
-            bosses.get(0).getPile().pop();
-        bosses.get(1).getPile().pop();
+        int bossPileSize;
+        for(int i=0; i<bosses.size(); ++i) {
+            bossPileSize = bosses.get(i).getPile().pileSize();
+            for (int j = 0; j < bossPileSize; ++j)
+                bosses.get(i).getPile().pop();
+        }
         //player's hand: (blackeyedBean, blackeyedBean and redBean)
         Map<Integer, Integer> blackeyedBeanOMeter = new HashMap<>();
         blackeyedBeanOMeter.put(2, 1);
@@ -69,7 +71,7 @@ public class MafiaPlantFromHandToMafiaCommandTest {
     public void testPlantFromHandToMafiaIncorrectMafiaFieldIndex() throws Exception {
         int oldHandSize = player.getHand().pileSize();
         generateMafiaCards(1, 2);
-        plantC.setFieldIndex(2);
+        plantC.setFieldIndex(3);
         GameCommandResult result = plantC.execute(player,game);
         assertThat("Planting from hand to mafia, incorrect field index: command result checking", result, is(MafiaGameCommandResult.INVALID));
         assertThat("Planting from hand to mafia, incorrect field index: 2nd mafia size checking", bosses.get(1).getPile().pileSize(), is(2));
