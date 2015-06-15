@@ -10,6 +10,7 @@ import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
 import java.util.Optional;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 
 /**
  * A bean card is taken from player's field and put into Mafia's field
@@ -26,7 +27,7 @@ public class MafiaGiveBeansToMafiaCommand extends MafiaGameCommand{
         MafiaPlayer player = (MafiaPlayer) p;
 
         List<MafiaBoss> mafiaBosses = game.getMafia();
-        List<Pile> fields = player.getAllFields();
+        List<HarvestablePile> fields = player.getAllFields();
 
         //Discard all leftover reveal pile to discard pile
         for(Pile pile : game.getRevealArray()){

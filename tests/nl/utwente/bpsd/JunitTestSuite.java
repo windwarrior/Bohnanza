@@ -6,7 +6,6 @@ import nl.utwente.bpsd.impl.standard.command.*;
 import nl.utwente.bpsd.impl.mafia.command.*;
 import nl.utwente.bpsd.model.CardTest;
 import nl.utwente.bpsd.model.CardTypeTest;
-import nl.utwente.bpsd.model.pile.DiscardPileTest;
 import nl.utwente.bpsd.model.pile.HandPileTest;
 import nl.utwente.bpsd.model.pile.PileTest;
 import nl.utwente.bpsd.model.state.StateTest;
@@ -17,7 +16,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         PileTest.class,
         HandPileTest.class,
-        DiscardPileTest.class,
         CardTest.class,
         CardTypeTest.class,
         StandardPlayerTest.class,
@@ -26,7 +24,6 @@ import org.junit.runners.Suite;
         StandardDrawTradeCommandTest.class,
         StandardHarvestCommandTest.class,
         StandardPlantCommandTest.class,
-        StandardReshuffleCommandTest.class,
         StandardAcceptExchangeCommandTest.class,
         StandardAddHandCardToExchangeCommandTest.class,
         StandardAddTradingAreaCardToExchangeCommandTest.class,

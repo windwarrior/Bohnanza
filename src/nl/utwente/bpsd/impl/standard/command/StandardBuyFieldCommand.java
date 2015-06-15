@@ -9,6 +9,7 @@ import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
 import nl.utwente.bpsd.model.GameCommandResult;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 
 public class StandardBuyFieldCommand extends StandardGameCommand {
 
@@ -23,12 +24,12 @@ public class StandardBuyFieldCommand extends StandardGameCommand {
         GameCommandResult result = StandardGameCommandResult.INVALID;
 
         Pile treasury = player.getTreasury();
-        List<Pile> fields = player.getAllFields();
+        List<HarvestablePile> fields = player.getAllFields();
         if(treasury.pileSize() >= StandardGame.FIELDCOST && fields.size() < StandardGame.NUMMAXFIELDS){
             for (int i = 0; i < StandardGame.FIELDCOST; i++) {
                 treasury.pop();
             }
-            Pile newField = new Pile();
+            HarvestablePile newField = new HarvestablePile(player.getTreasury(), g.getDiscardPile());
             fields.add(newField);
             result = StandardGameCommandResult.BOUGHT_FIELD;
         }

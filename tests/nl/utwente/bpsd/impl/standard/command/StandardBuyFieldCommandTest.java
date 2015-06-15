@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.*;
@@ -59,14 +60,14 @@ public class StandardBuyFieldCommandTest {
     //  4. 3 fields + not enough money
     @Test
     public void testFieldConsistency() throws Exception {
-        List<Pile> testField = new ArrayList<>();
-        testField.add(new Pile());
-        testField.add(new Pile());
+        List<HarvestablePile> testField = new ArrayList<>();
+        testField.add(new HarvestablePile(player.getTreasury(), game.getDiscardPile()));
+        testField.add(new HarvestablePile(player.getTreasury(), game.getDiscardPile()));
         buyFieldC.execute(player,game);
         assertThat("Field integrity case 1", testField, is(player.getAllFields()));
         fillTreasury();
         buyFieldC.execute(player,game);
-        testField.add(new Pile());
+        testField.add(new HarvestablePile(player.getTreasury(), game.getDiscardPile()));
         assertThat("Field integrity case 2", testField, is(player.getAllFields()));
         buyFieldC.execute(player,game);
         assertThat("Field integrity case 3", testField, is(player.getAllFields()));
