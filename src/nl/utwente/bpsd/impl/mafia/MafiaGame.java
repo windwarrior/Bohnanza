@@ -1,14 +1,17 @@
 package nl.utwente.bpsd.impl.mafia;
 
+import nl.utwente.bpsd.impl.mafia.command.*;
 import nl.utwente.bpsd.impl.standard.StandardGame;
-import nl.utwente.bpsd.model.Card;
-import nl.utwente.bpsd.model.CardType;
-import nl.utwente.bpsd.model.Player;
+import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
+import nl.utwente.bpsd.impl.standard.command.*;
+import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.model.pile.DiscardPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.*;
 import nl.utwente.bpsd.model.pile.HarvestablePile;
+import nl.utwente.bpsd.model.state.State;
+import nl.utwente.bpsd.model.state.StateManager;
 
 public class MafiaGame extends StandardGame{
 
@@ -18,7 +21,6 @@ public class MafiaGame extends StandardGame{
     private int numPlayers = 2;
     private ArrayList<MafiaBoss> mafia;
     private Pile mafiaTreasury;
-
     private ArrayList<Pile> revealArray;
 
     public MafiaGame(){
@@ -31,8 +33,8 @@ public class MafiaGame extends StandardGame{
         //Order in game: "Al Cabohne", "Don Corlebohne" and optionally "Joe Bohnano"
         
         MafiaBoss alCabone = new MafiaBoss("Al Cabone", new HarvestablePile(this.getMafiaTreasury(), this.getDiscardPile()), 3);
-        MafiaBoss donCorlebohne = new MafiaBoss("Al Cabone", new HarvestablePile(this.getMafiaTreasury(), this.getDiscardPile()), 2);
-        MafiaBoss joeBohnano = new MafiaBoss("Al Cabone", new HarvestablePile(this.getMafiaTreasury(), this.getDiscardPile()), 1);
+        MafiaBoss donCorlebohne = new MafiaBoss("Don Corlebohne", new HarvestablePile(this.getMafiaTreasury(), this.getDiscardPile()), 2);
+        MafiaBoss joeBohnano = new MafiaBoss("Joe Bohnano", new HarvestablePile(this.getMafiaTreasury(), this.getDiscardPile()), 1);
         
         
         this.mafia.add(alCabone);
@@ -45,11 +47,11 @@ public class MafiaGame extends StandardGame{
         for (int i = 0; i < this.NUM_REVEAL_PILES; i++) {
             revealArray.add(new Pile());
         }
-        //TODO: if 1-player game joeBohnano should be set
         mafiaTreasury = new Pile();
         this.setDiscardPile(new DiscardPile());
         this.generateGameDeck();
         this.setupPhase();
+        generateGameDeck();
     }
 
     private void setupPhase(){
@@ -65,6 +67,66 @@ public class MafiaGame extends StandardGame{
         }while(getGamePile().peek().equals(mafia.get(0).getPile().peek()));
         //Don Corlebohne gets cards
         getGamePile().pop().ifPresent((Card c) -> mafia.get(1).getPile().append(c));
+    }
+
+    private void generateStateManager(){
+        boolean onePlayer = this.getPlayers().size() == 1;
+        //ALL STATES
+        State<GameCommandResult, Command> phaseThreeA = new State("Phase 3a", MafiaPlantFromHandToFieldCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        State<GameCommandResult, Command> phaseThreeB = new State("Phase 3b", StandardSkipCommand.class, StandardPlantCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        State<GameCommandResult, Command> phaseFour = new State("Phase 4", MafiaPlantFromHandToFieldCommand.class, StandardBuyFieldCommand.class);
+        State<GameCommandResult, Command> phaseFive = new State("Phase 5", StandardBuyFieldCommand.class, StandardHarvestCommand.class,
+                MafiaPlantFromRevealToFieldCommand.class, MafiaPlantFromRevealToMafiaCommand.class, MafiaPlantFromHandToMafiaCommand.class, MafiaPlantFromHandToFieldCommand.class,
+                MafiaSkipToPhaseSixCommand.class);
+        State<GameCommandResult, Command> phaseSix = new State("Phase 6", StandardDrawHandCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        //ONE PLAYER STATE
+        State<GameCommandResult, Command> phaseOne1Player = new State("Phase 1", MafiaGiveBeansToMafiaCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+        //TWO PLAYER STATE
+        State<GameCommandResult, Command> phaseOne2Player = new State("Phase 1", MafiaPlantFromRevealToFieldCommand.class, MafiaGiveBeansToMafiaCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
+
+
+        //GENERAL TRANSITIONS
+        phaseThreeA.addTransition(StandardGameCommandResult.HARVEST,phaseThreeA);
+        phaseThreeA.addTransition(StandardGameCommandResult.BOUGHT_FIELD,phaseThreeA);
+        phaseThreeA.addTransition(MafiaGameCommandResult.PLANT_HAND_FIELD,phaseThreeB);
+
+        phaseThreeB.addTransition(StandardGameCommandResult.HARVEST,phaseThreeB);
+        phaseThreeB.addTransition(StandardGameCommandResult.BOUGHT_FIELD,phaseThreeB);
+        phaseThreeB.addTransition(MafiaGameCommandResult.PLANT_HAND_FIELD,phaseFour);
+        phaseThreeB.addTransition(StandardGameCommandResult.SKIP,phaseFour);
+
+        phaseFour.addTransition(StandardGameCommandResult.BOUGHT_FIELD,phaseFour);
+        phaseFour.addTransition(MafiaGameCommandResult.DRAW_REVEAL,phaseFive);
+
+        phaseFive.addTransition(StandardGameCommandResult.HARVEST,phaseFive);
+        phaseFive.addTransition(StandardGameCommandResult.BOUGHT_FIELD,phaseFive);
+        phaseFive.addTransition(MafiaGameCommandResult.PLANT_HAND_MAFIA,phaseFive);
+        phaseFive.addTransition(MafiaGameCommandResult.PLANT_REVEAL,phaseFive);
+        phaseFive.addTransition(MafiaGameCommandResult.SKIP_TO_PHASE_SIX,phaseSix);
+
+        phaseSix.addTransition(StandardGameCommandResult.HARVEST,phaseSix);
+        phaseSix.addTransition(StandardGameCommandResult.BOUGHT_FIELD,phaseSix);
+
+        //1PLAYER SPECIFIC TRANSITIONS
+        if(onePlayer) {
+            phaseOne1Player.addTransition(MafiaGameCommandResult.GIVE_BEANS,phaseThreeA);
+            phaseOne1Player.addTransition(StandardGameCommandResult.HARVEST,phaseOne1Player);
+            phaseOne1Player.addTransition(StandardGameCommandResult.BOUGHT_FIELD, phaseOne1Player);
+
+            phaseSix.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, phaseOne1Player);
+        }
+        //2PLAYER SPECIFIC TRANSITIONS
+        else {
+            phaseOne2Player.addTransition(MafiaGameCommandResult.GIVE_BEANS,phaseThreeA);
+            phaseOne2Player.addTransition(StandardGameCommandResult.HARVEST,phaseOne2Player);
+            phaseOne2Player.addTransition(StandardGameCommandResult.BOUGHT_FIELD, phaseOne2Player);
+            phaseOne2Player.addTransition(MafiaGameCommandResult.PLANT_REVEAL,phaseOne2Player);
+
+            phaseSix.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, phaseOne2Player);
+        }
+
+        StateManager sm = new StateManager(phaseThreeA);
+        this.setStateManager(sm);
     }
 
     private void generateGameDeck() {

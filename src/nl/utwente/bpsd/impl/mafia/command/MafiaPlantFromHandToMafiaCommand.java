@@ -48,7 +48,7 @@ public class MafiaPlantFromHandToMafiaCommand extends MafiaGameCommand{
     public void setHandIndex(int index){ this.handIndex = index;}
     public void setFieldIndex(int index){ this.fieldIndex = index;}
 
-    //Taken from MafiaPlantFromRevealCommand
+    //Taken from MafiaPlantFromRevealToFieldCommand
     private boolean isOtherFieldWithCardType(CardType ct, List<MafiaBoss> mafiaBosses){
         for (int i=0; i<mafiaBosses.size(); ++i) {
             if(i!=fieldIndex && mafiaBosses.get(i).getPile().peek().isPresent() && mafiaBosses.get(i).getPile().peek().get().equals(ct))

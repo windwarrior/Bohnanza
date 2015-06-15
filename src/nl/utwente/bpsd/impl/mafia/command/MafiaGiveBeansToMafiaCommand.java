@@ -27,6 +27,13 @@ public class MafiaGiveBeansToMafiaCommand extends MafiaGameCommand{
         List<MafiaBoss> mafiaBosses = game.getMafia();
         List<Pile> fields = player.getAllFields();
 
+        //Discard all leftover reveal pile to discard pile
+        for(Pile pile : fields){
+            while(pile.pileSize() != 0){
+                pile.pop().ifPresent((Card c) -> game.getDiscardPile().append(c));
+            }
+        }
+
         for(MafiaBoss boss: mafiaBosses){
             CardType bossCard = boss.getPile().peek().get();
             for(Pile field: fields){

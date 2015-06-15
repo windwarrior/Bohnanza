@@ -318,6 +318,7 @@ public class StandardGame extends Game {
         return this.players;
     }
 
+    public void setStateManager(StateManager sm) {this.stateManager = sm;}
     @Override
     public void setWinners(List<Player> ps) {
         this.winners = ps;
