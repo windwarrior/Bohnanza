@@ -15,7 +15,7 @@ import nl.utwente.bpsd.model.state.StateManager;
 public class MafiaGame extends StandardGame{
 
     public static final int NUM_REVEAL_PILES = 3;
-    public static final int NUM_OF_PLAYER_FIELDS = 3;
+    public static final int NUM_OF_PLAYER_FIELDS = 2;
     private ArrayList<MafiaBoss> mafia;
     private Pile mafiaTreasury;
     private ArrayList<Pile> revealArray;
@@ -27,6 +27,8 @@ public class MafiaGame extends StandardGame{
     @Override
     public void initialize(){
         mafia = new ArrayList<>();
+        mafiaTreasury = new Pile();
+        this.setDiscardPile(new Pile());
         //Order in game: "Al Cabohne", "Don Corlebohne" and optionally "Joe Bohnano"
         
         MafiaBoss alCabone = new MafiaBoss("Al Cabone", new HarvestablePile(this.getMafiaTreasury(), this.getDiscardPile()), 3);
@@ -38,7 +40,7 @@ public class MafiaGame extends StandardGame{
         this.mafia.add(donCorlebohne);
         
         for (Player p : this.getPlayers()) {
-            for (int i = 0; i < NUM_OF_PLAYER_FIELDS-1; i++) {
+            for (int i = 0; i < NUM_OF_PLAYER_FIELDS; i++) {
                 p.addField(new HarvestablePile(p.getTreasury(), this.getDiscardPile()));
             }
         }
@@ -54,8 +56,6 @@ public class MafiaGame extends StandardGame{
         for (int i = 0; i < this.NUM_REVEAL_PILES; i++) {
             revealArray.add(new Pile());
         }
-        mafiaTreasury = new Pile();
-        this.setDiscardPile(new Pile());
         this.generateGameDeck();
         this.setupPhase();
         this.generateStateManager();
@@ -65,7 +65,7 @@ public class MafiaGame extends StandardGame{
         //Players get cards
         for(Player p:getPlayers()){
             for (int i = 0; i < number_start_cards; i++) {
-                getGamePile().pop().ifPresent((Card c) -> ((MafiaPlayer)p).getHand().append(c));
+                getGamePile().pop().ifPresent((Card c) -> p.getHand().append(c));
             }
         }
 

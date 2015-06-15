@@ -39,7 +39,7 @@ public class MafiaGiveBeansToMafiaCommand extends MafiaGameCommand{
         for(MafiaBoss mafia : mafiaBosses){
             Optional<CardType> mafiaCT = mafia.getPile().peek();
             for(Pile field : fields){
-                if(field.pileSize() != 0 && mafiaCT == field.peek())
+                if(field.pileSize() != 0 && mafiaCT.equals(field.peek()))
                     field.pop().ifPresent((Card c) -> mafia.getPile().append(c));
             }
         }
