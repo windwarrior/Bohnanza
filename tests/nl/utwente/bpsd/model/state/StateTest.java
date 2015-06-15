@@ -13,15 +13,14 @@ import nl.utwente.bpsd.impl.standard.StandardGameCommandResult;
 import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.Command;
 import nl.utwente.bpsd.model.Player;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.junit.matchers.JUnitMatchers.hasItems;
 
 public class StateTest {
     private State<String, Command> s1;
@@ -174,8 +173,9 @@ public class StateTest {
     
     @Test
     public void testReachable() {
-        System.out.println(s1.reachable(new HashSet<>()));
-        assertThat(s1.reachable(new HashSet<>()), contains(equalTo(s1),equalTo(s2), equalTo(s3), equalTo(s4)));
+        // TODO: this also tested on size, but that somehow broke *hamcrest*
+        // the result is correct tho.
+        assertThat(s1.reachable(new HashSet<>()), containsInAnyOrder(s1, s2, s3, s4));
     }
     
     class ACommand implements Command {

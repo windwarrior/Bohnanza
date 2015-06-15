@@ -5,27 +5,34 @@ import nl.utwente.bpsd.impl.standard.command.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.Player;
 
 import nl.utwente.bpsd.model.pile.HandPile;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 public class StandardPlayer extends Player {
 
     private String name;
-    private List<Pile> fields;
+    //TODO: should these now also be harvest piles?
+    private List<HarvestablePile> fields;
     private Pile hand;
     private Pile treasury;
     private Pile trading;
 
     public StandardPlayer(String name) {
         this.name = name;
-        fields = new ArrayList<>();
-        fields.add(new Pile());
-        fields.add(new Pile());
         hand = new HandPile();
         treasury = new Pile();
         trading = new HandPile();
+        
+        
+        fields = new ArrayList<>();
+    }
+    
+    public void addField(HarvestablePile p) {
+        fields.add(p);
     }
 
     public String getName(){
@@ -134,7 +141,7 @@ public class StandardPlayer extends Player {
         return trading;
     }
 
-    public List<Pile> getAllFields() {
+    public List<HarvestablePile> getAllFields() {
         return fields;
     }
 

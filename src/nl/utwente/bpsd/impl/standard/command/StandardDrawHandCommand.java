@@ -20,8 +20,8 @@ public class StandardDrawHandCommand extends StandardGameCommand {
         GameCommandResult result = StandardGameCommandResult.RESHUFFLE;
 
         Pile gamePile = game.getGamePile();
-        if(gamePile.pileSize() > StandardGame.DRAW_HAND_AMOUNT) {
-            for (int i = 0; i < StandardGame.DRAW_HAND_AMOUNT && result != StandardGameCommandResult.INVALID; i++) {
+        if(gamePile.pileSize() > StandardGame.draw_hand_amount) {
+            for (int i = 0; i < StandardGame.draw_hand_amount && result != StandardGameCommandResult.INVALID; i++) {
                 result = gamePile.pop().map((Card c) -> {
                     player.getHand().append(c);
                     return StandardGameCommandResult.DRAWN_TO_HAND;

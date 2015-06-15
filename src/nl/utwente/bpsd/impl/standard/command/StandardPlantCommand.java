@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import nl.utwente.bpsd.impl.standard.StandardGame;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 
 public class StandardPlantCommand extends StandardGameCommand {
     int fieldIndex;
@@ -27,7 +28,7 @@ public class StandardPlantCommand extends StandardGameCommand {
 
         if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0)
             return StandardGameCommandResult.INVALID;
-        List<Pile> fields = player.getAllFields();
+        List<HarvestablePile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
 
         /*

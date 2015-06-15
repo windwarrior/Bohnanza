@@ -29,7 +29,7 @@ public class MafiaPlantFromHandToFieldCommandTest {
         game.addPlayers(player);
         game.initialize();
         //delete player's cards added through initialization
-        for (int i = 0; i < StandardGame.NUMBER_START_CARDS; ++i)
+        for (int i = 0; i < StandardGame.number_start_cards; ++i)
             player.getHand().pop();
         //player's hand with 2 blackeyedBeans
         Map<Integer, Integer> blackeyedBeanOMeter = new HashMap<>();

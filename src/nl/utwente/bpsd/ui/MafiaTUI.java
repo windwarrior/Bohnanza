@@ -21,6 +21,7 @@ public class MafiaTUI implements Observer{
     Scanner in;
     Boolean running = true;
     MafiaPlayer currentPlayer;
+    int numPlayers;
 
     public static final String[] MAFIA_NAMES = {"Al Cabohne","Don Corlebohne","Joe Bohnano"};
 
@@ -28,23 +29,26 @@ public class MafiaTUI implements Observer{
         System.out.println("Al Cabohne Bohnanza!");
         System.out.println("Currently only two player game is available...");
         in = new Scanner(System.in);
-        String[] names;
+        String[] names = null;
         do {
-            System.out.println("Please give player names (2): ");
+            System.out.println("Please give player names (1 or 2): ");
             System.out.print("> ");
-            names = in.nextLine().split(" ");
-        }while(names.length != 2);
+            String line = in.nextLine();
+            if(!line.equals(""))
+                names = line.split(" ");
+        }while(names == null || names.length > 2);
         game = new MafiaGame();
         for(String name : names) {
             game.addPlayers(new MafiaPlayer(name));
         }
+        numPlayers = game.getPlayers().size();
         game.initialize();
         currentPlayer = (MafiaPlayer)game.getCurrentPlayer();
         game.addObserver(this);
     }
 
     public void run(){
-        System.out.println("2P Al Cabohne Game!");
+        System.out.println(numPlayers+"P Al Cabohne Game!");
         System.out.println("Type Help for help");
         while(running) {
             System.out.print("> ");
@@ -59,6 +63,10 @@ public class MafiaTUI implements Observer{
         while (inCommand.hasNext()) commandParts.add(inCommand.next());
         boolean result;
         switch (commandParts.get(0).toLowerCase()) {
+            case "movetosix":
+                result = currentPlayer.skipToPhaseSix();
+                if(!result) System.out.println("Action was not completed, is the move valid?");
+                break;
             case "skip":
                 result = currentPlayer.skip();
                 if(!result) System.out.println("Action was not completed, is the move valid?");
@@ -81,8 +89,12 @@ public class MafiaTUI implements Observer{
                 if(!result) System.out.println("Action was not completed, is the move valid?");
                 break;
             case "drawr":
-                //TODO: find out how action is implemented in the state machine
-                System.out.println("Should this move be implicit or explicit?");
+                result = currentPlayer.drawReveal();
+                if(!result) System.out.println("Action was not completed, is the move valid?");
+                break;
+            case "givebeans":
+                result = currentPlayer.giveBeansToMafia();
+                if(!result) System.out.println("Action was not completed, is the move valid?");
                 break;
             case "planthf":
                 try {
@@ -101,7 +113,7 @@ public class MafiaTUI implements Observer{
                     int handIndex = Integer.parseInt(commandParts.get(1));
                     int mafiaIndex = Integer.parseInt(commandParts.get(2));
                     System.out.println("Planting from hand " + handIndex + " to mafia " + MAFIA_NAMES[mafiaIndex-1]);
-                    result = currentPlayer.plantFromHandToMafia(mafiaIndex,handIndex);
+                    result = currentPlayer.plantFromHandToMafia(mafiaIndex-1,handIndex-1);
                     if(!result) System.out.println("Action was not completed, is the move valid?");
                 } catch (NumberFormatException e) {
                     System.err.println("Please include a valid field and trading index");
@@ -114,7 +126,7 @@ public class MafiaTUI implements Observer{
                     int fieldIndex = Integer.parseInt(commandParts.get(1));
                     int revealIndex = Integer.parseInt(commandParts.get(2));
                     System.out.println("Planting from reveal " + revealIndex + " to field " + fieldIndex);
-                    result = currentPlayer.plantFromRevealToField(fieldIndex,revealIndex);
+                    result = currentPlayer.plantFromRevealToField(fieldIndex-1,revealIndex-1);
                     if(!result) System.out.println("Action was not completed, is the move valid?");
                 } catch (NumberFormatException e) {
                     System.err.println("Please include a valid field and trading index");
@@ -127,7 +139,7 @@ public class MafiaTUI implements Observer{
                     int mafiaIndex = Integer.parseInt(commandParts.get(1));
                     int revealIndex = Integer.parseInt(commandParts.get(2));
                     System.out.println("Planting from reveal " + revealIndex + " to mafia " + MAFIA_NAMES[mafiaIndex-1]);
-                    result = currentPlayer.plantFromRevealToMafia(mafiaIndex,revealIndex);
+                    result = currentPlayer.plantFromRevealToMafia(mafiaIndex-1,revealIndex-1);
                     if(!result) System.out.println("Action was not completed, is the move valid?");
                 } catch (NumberFormatException e) {
                     System.err.println("Please include a valid field and trading index");
@@ -164,16 +176,18 @@ public class MafiaTUI implements Observer{
                 " 1. Overview ..........................shows player info \n"+
                 " 2. DrawH .............................draws cards into players hard \n"+
                 " 3. DrawR .............................draws cards into reveal area \n"+
-                " 4. PlantHF fieldIndex ................plant first bean from hand into player field \n"+
-                " 5. PlantHM handIndex mafiaIndex ......plant a bean from hand into mafia field \n"+
-                " 6. PlantRF fieldIndex revealIndex ....plant bean from reveal to player field \n"+
-                " 7. PlantRM mafiaIndex revealIndex ....plant bean from reveal to mafia field \n"+
-                " 8. Harvest fieldIndex ................harvest beans from field \n"+
-                " 9. Buy ...............................buys a new field \n"+
-                "10. Skip ..............................skips next move if possible \n"+
-                "11. State .............................returns current game state \n"+
-                "12. Help ..............................this help menu \n"+
-                "13. End ...............................ends the game";
+                " 4. GiveBeans .........................give beans to mafia \n"+
+                " 5. MoveToSix .........................moves game to phase six \n"+
+                " 6. PlantHF fieldIndex ................plant first bean from hand into player field \n"+
+                " 7. PlantHM handIndex mafiaIndex ......plant a bean from hand into mafia field \n"+
+                " 8. PlantRF fieldIndex revealIndex ....plant bean from reveal to player field \n"+
+                " 9. PlantRM mafiaIndex revealIndex ....plant bean from reveal to mafia field \n"+
+                "10. Harvest fieldIndex ................harvest beans from field \n"+
+                "11. Buy ...............................buys a new field \n"+
+                "12. Skip ..............................skips next move if possible \n"+
+                "13. State .............................returns current game state \n"+
+                "14. Help ..............................this help menu \n"+
+                "15. End ...............................ends the game";
         System.out.println(result);
     }
 
@@ -195,21 +209,23 @@ public class MafiaTUI implements Observer{
         String playerOneString = p1Name+p1Hand+p1Fields+p1Treasury+"\n";
 
         //Player Two
-        MafiaPlayer playerTwo = (MafiaPlayer) game.getPlayers().get(1);
-        String p2Name = "Player Two: "+playerTwo.getName()+"\n";
-        String p2Hand = "\tHand: \n";
-        String p2Fields = "\tFields: \n";
-        String p2Treasury = "\tTreasury size: "+playerTwo.getTreasury().pileSize();
-        for(int i = 0; i < playerTwo.getHand().pileSize(); i++){
-            p2Hand += "\t\t" + (i+1) + ": " +((HandPile)playerTwo.getHand()).getCardType(i).map(CardType::toString).orElse("no beans") + "\n";
+        String playerTwoString = "";
+        if(numPlayers == 2) {
+            MafiaPlayer playerTwo = (MafiaPlayer) game.getPlayers().get(1);
+            String p2Name = "Player Two: " + playerTwo.getName() + "\n";
+            String p2Hand = "\tHand: \n";
+            String p2Fields = "\tFields: \n";
+            String p2Treasury = "\tTreasury size: " + playerTwo.getTreasury().pileSize();
+            for (int i = 0; i < playerTwo.getHand().pileSize(); i++) {
+                p2Hand += "\t\t" + (i + 1) + ": " + ((HandPile) playerTwo.getHand()).getCardType(i).map(CardType::toString).orElse("no beans") + "\n";
+            }
+            for (int i = 0; i < playerTwo.getAllFields().size(); i++) {
+                Pile pile = playerTwo.getAllFields().get(i);
+                p2Fields += "\t\tField " + (i + 1) + ": " + pile.pileSize() + " beans of type: " +
+                        pile.peek().map((CardType ct) -> ct.toString()).orElse("no beans") + "\n";
+            }
+            playerTwoString = p2Name + p2Hand + p2Fields + p2Treasury + "\n";
         }
-        for(int i = 0; i < playerTwo.getAllFields().size(); i++){
-            Pile pile = playerTwo.getAllFields().get(i);
-            p2Fields += "\t\tField " + (i+1) + ": " + pile.pileSize() + " beans of type: " +
-                    pile.peek().map((CardType ct) -> ct.toString()).orElse("no beans") + "\n";
-        }
-        String playerTwoString = p2Name+p2Hand+p2Fields+p2Treasury+"\n";
-
         //Shared:
         String reveal = "Reveal: \n";
         String mafia = "";

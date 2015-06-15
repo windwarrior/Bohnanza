@@ -1,6 +1,7 @@
 package nl.utwente.bpsd.model;
 
 import java.util.Optional;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 public abstract class Player {
@@ -20,5 +21,7 @@ public abstract class Player {
     public abstract Pile getTreasury();
     
     public abstract Pile getHand();
+    
+    public abstract void addField(HarvestablePile p);
 
 }

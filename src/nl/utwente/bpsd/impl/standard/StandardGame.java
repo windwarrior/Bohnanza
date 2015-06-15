@@ -3,12 +3,9 @@ package nl.utwente.bpsd.impl.standard;
 import nl.utwente.bpsd.impl.standard.command.*;
 
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import nl.utwente.bpsd.exceptions.ImproperlyConfiguredException;
 
 import nl.utwente.bpsd.model.*;
-import nl.utwente.bpsd.model.pile.DiscardPile;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.model.state.State;
 import nl.utwente.bpsd.model.state.StateManager;
@@ -18,8 +15,8 @@ public class StandardGame extends Game {
     /**
      * Hard values for standard game
      */
-    public static final int NUMBER_START_CARDS = 5;
-    public static final int DRAW_HAND_AMOUNT = 3;
+    public static int number_start_cards = 5;
+    public static int draw_hand_amount = 3;
     public static final int FIELDCOST = 3;
     public static final int NUMMAXFIELDS = 3;
     public static final int DRAW_TRADING_AMOUNT = 2;
@@ -40,10 +37,13 @@ public class StandardGame extends Game {
     public void initialize() {
         generateGameDeck();
         exchanges = new ArrayList<>();
-        discardPile = new DiscardPile();
+        discardPile = new Pile();
         reshuffleCounter = 0;
         for(Player p:players){
-            for (int i = 0; i < NUMBER_START_CARDS; i++) {
+            for (int i = 0; i < 2; i++) {
+                p.addField(new HarvestablePile(p.getTreasury(), discardPile));
+            }
+            for (int i = 0; i < number_start_cards; i++) {
                 gamePile.pop().ifPresent((Card c) -> ((StandardPlayer)p).getHand().append(c));
             }
         }
@@ -92,43 +92,6 @@ public class StandardGame extends Game {
         drawCardState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, drawCardState);
 
         stateManager = new StateManager(startState);
-    }
-
-    @Override
-    public boolean executeCommand(Player p, Command klass) {
-        boolean result = false;
-
-        // Yes comparison by reference, should be the same instance as well!
-        if (this.currentPlayer == p && this.stateManager.isAllowedClass(klass.getClass())) {
-            GameCommandResult commandOutput = klass.execute(p,this);
-
-            result = this.stateManager.isTransition(commandOutput);
-
-            if (result) {
-                this.stateManager.doTransition(commandOutput);
-                
-                
-                List<Class<? extends Command>> allowedClasses = this.stateManager.getCurrentState().getAllowedClasses();
-                
-                
-                for (Class<? extends Command> thing : allowedClasses) {
-                    if (thing.isAssignableFrom(InternalCommand.class)) {
-                        try {
-                            // we can do an internal command
-                            this.executeCommand(p, thing.newInstance());
-                        } catch (InstantiationException | IllegalAccessException ex) {
-                            // This exception should never happen, only goes wrong if thing requires parameters or is private or something
-                            // This exception shall be treated as a runtime exception from now on
-                            throw new ImproperlyConfiguredException("Something was not configured right! Could not create instance of " + thing + " because it threw " + ex);
-                        }
-                        break; // no need to search any further, we found our internal command
-                    }
-                }
-            }
-        }
-
-        return result;
-
     }
 
     @Override
@@ -322,5 +285,10 @@ public class StandardGame extends Game {
     @Override
     public void setWinners(List<Player> ps) {
         this.winners = ps;
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return this.stateManager;
     }
 }

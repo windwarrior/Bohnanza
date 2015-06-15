@@ -35,7 +35,7 @@ public class MafiaPlantFromHandToMafiaCommandTest {
         game.addPlayers(player);
         game.initialize();
         //delete player's cards added through initialization
-        for (int i = 0; i < StandardGame.NUMBER_START_CARDS; ++i)
+        for (int i = 0; i < StandardGame.number_start_cards; ++i)
             player.getHand().pop();
         //delete Mafia's cards
         bosses = ((MafiaGame)game).getMafia();

@@ -40,8 +40,8 @@ public class StandardDrawHandCommandTest {
         this.setSizes();
         GameCommandResult result = drawHandC.execute(player, game);
         //TODO: Fix these Optional .get() calls?
-        assertThat("Game pile size decreased by three", game.getGamePile().pileSize(), is(expectedGamePileSize - StandardGame.DRAW_HAND_AMOUNT));
-        assertThat("Hand pile size increased by three", player.getHand().pileSize(), is(expectedPlayerHandPileSize + StandardGame.DRAW_HAND_AMOUNT));
+        assertThat("Game pile size decreased by three", game.getGamePile().pileSize(), is(expectedGamePileSize - StandardGame.draw_hand_amount));
+        assertThat("Hand pile size increased by three", player.getHand().pileSize(), is(expectedPlayerHandPileSize + StandardGame.draw_hand_amount));
 
         //Test if last three hand pile cards have types of the top of the game pile (in order)
         assertThat("first added card", ((HandPile) player.getHand()).getCardType(player.getHand().pileSize() - 3).get(), is((testPile.pop().get().getCardType())));
@@ -58,7 +58,7 @@ public class StandardDrawHandCommandTest {
      */
     @Test
     public void testEdgeCaseExecute() throws Exception {
-        while(game.getGamePile().pileSize() >= StandardGame.DRAW_HAND_AMOUNT) {
+        while(game.getGamePile().pileSize() >= StandardGame.draw_hand_amount) {
             game.getGamePile().pop();
         }
         this.setSizes();
