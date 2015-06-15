@@ -68,22 +68,24 @@ public class MafiaGame extends StandardGame{
                 getGamePile().pop().ifPresent((Card c) -> ((MafiaPlayer)p).getHand().append(c));
             }
         }
-        //Al Cabohne gets cards
+
         do {
             getGamePile().pop().ifPresent((Card c) -> mafia.get(0).getPile().append(c));
-        }while(getGamePile().peek().equals(mafia.get(0).getPile().peek()));
-
-
-        if(this.getPlayers().size() == 1) {
-            //Don Corlebohne gets cards
-            do {
-                getGamePile().pop().ifPresent((Card c) -> mafia.get(1).getPile().append(c));
-            }while(getGamePile().peek().equals(mafia.get(1).getPile().peek()));
-            //Joe Bohnano gets cards
-            getGamePile().pop().ifPresent((Card c) -> mafia.get(2).getPile().append(c));
-        }else{
-            //Don Corlebohne gets cards
-            getGamePile().pop().ifPresent((Card c) -> mafia.get(1).getPile().append(c));
+        } while (getGamePile().peek().equals(mafia.get(0).getPile().peek()));
+        getGamePile().pop().ifPresent((Card c) -> mafia.get(1).getPile().append(c));
+        if(this.getPlayers().size() == 1){
+            while (mafia.get(2).getPile().pileSize() == 0) {
+                Optional<CardType> topDeck = this.getGamePile().peek();
+                boolean added = false;
+                for(int i=0; i < mafia.size()-1 && !added; i++) {
+                    if (topDeck.equals(mafia.get(i).getPile().peek())) {
+                        Pile mafiaPile = mafia.get(i).getPile();
+                        getGamePile().pop().ifPresent((Card c) -> mafiaPile.append(c));
+                        added = true;
+                    }
+                }
+                if(!added)  getGamePile().pop().ifPresent((Card c) -> mafia.get(2).getPile().append(c));
+            }
         }
     }
 
