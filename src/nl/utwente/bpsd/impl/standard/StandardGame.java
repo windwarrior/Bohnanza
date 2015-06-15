@@ -95,43 +95,6 @@ public class StandardGame extends Game {
     }
 
     @Override
-    public boolean executeCommand(Player p, Command klass) {
-        boolean result = false;
-
-        // Yes comparison by reference, should be the same instance as well!
-        if (this.currentPlayer == p && this.stateManager.isAllowedClass(klass.getClass())) {
-            GameCommandResult commandOutput = klass.execute(p,this);
-
-            result = this.stateManager.isTransition(commandOutput);
-
-            if (result) {
-                this.stateManager.doTransition(commandOutput);
-                
-                
-                List<Class<? extends Command>> allowedClasses = this.stateManager.getCurrentState().getAllowedClasses();
-                
-                
-                for (Class<? extends Command> thing : allowedClasses) {
-                    if (thing.isAssignableFrom(InternalCommand.class)) {
-                        try {
-                            // we can do an internal command
-                            this.executeCommand(p, thing.newInstance());
-                        } catch (InstantiationException | IllegalAccessException ex) {
-                            // This exception should never happen, only goes wrong if thing requires parameters or is private or something
-                            // This exception shall be treated as a runtime exception from now on
-                            throw new ImproperlyConfiguredException("Something was not configured right! Could not create instance of " + thing + " because it threw " + ex);
-                        }
-                        break; // no need to search any further, we found our internal command
-                    }
-                }
-            }
-        }
-
-        return result;
-
-    }
-
-    @Override
     public Player getCurrentPlayer() {
         return this.currentPlayer;
     }
@@ -321,5 +284,10 @@ public class StandardGame extends Game {
     @Override
     public void setWinners(List<Player> ps) {
         this.winners = ps;
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return this.stateManager;
     }
 }
