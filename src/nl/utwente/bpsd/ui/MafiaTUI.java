@@ -3,18 +3,11 @@ package nl.utwente.bpsd.ui;
 import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
 import nl.utwente.bpsd.model.CardType;
-import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Scanner;
+import java.util.*;
 
-/**
- * Created by Jochem Elsinga on 6/13/2015.
- */
 public class MafiaTUI implements Observer{
 
     MafiaGame game;
