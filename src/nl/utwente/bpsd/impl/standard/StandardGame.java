@@ -4,6 +4,7 @@ import nl.utwente.bpsd.impl.standard.command.*;
 
 import java.util.*;
 import nl.utwente.bpsd.impl.standard.command.internal.StandardNextPlayerCommand;
+import nl.utwente.bpsd.impl.standard.command.internal.StandardReshuffleCommand;
 
 import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.model.pile.HarvestablePile;
@@ -64,7 +65,7 @@ public class StandardGame extends Game {
         State<GameCommandResult, Class<? extends Command>> plantTradedCardsState = new State<>("Plant traded cards", StandardPlantCommand.class, StandardSkipCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
         State<GameCommandResult, Class<? extends Command>> drawCardState = new State<>("Draw cards to your hand", StandardDrawHandCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
-
+               
         State<GameCommandResult, Class<? extends Command>> nextPlayerState = new State<>("Next player", StandardNextPlayerCommand.class);
         // These are per state all transitions that can be taken
         startState.addTransition(StandardGameCommandResult.HARVEST, startState);
@@ -96,8 +97,19 @@ public class StandardGame extends Game {
         // After the draw state, the player needs to be advanced and the statemachine needs to reset
         drawCardState.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, nextPlayerState);
         nextPlayerState.addTransition(StandardGameCommandResult.PROGRESS, startState);
+        
+        // Some state allow for reshuffing       
+        this.addShuffleState(drawCardState);
+        this.addShuffleState(drawCardToTradingState);
 
         stateManager = new StateManager<>(startState);
+    }
+    
+    protected void addShuffleState(State<GameCommandResult, Class<? extends Command>> stateToAddTo) {
+        State<GameCommandResult, Class<? extends Command>> drawState = new State<>("Draw cards state", StandardReshuffleCommand.class);
+        
+        stateToAddTo.addTransition(StandardGameCommandResult.RESHUFFLE, drawState);
+        drawState.addTransition(StandardGameCommandResult.RESHUFFLED, stateToAddTo);
     }
 
     @Override

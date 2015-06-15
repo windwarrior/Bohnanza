@@ -8,6 +8,8 @@ import nl.utwente.bpsd.model.*;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.*;
+import nl.utwente.bpsd.impl.standard.command.internal.StandardNextPlayerCommand;
+import nl.utwente.bpsd.impl.standard.command.internal.StandardReshuffleCommand;
 import nl.utwente.bpsd.model.pile.HarvestablePile;
 import nl.utwente.bpsd.model.state.State;
 import nl.utwente.bpsd.model.state.StateManager;
@@ -98,12 +100,14 @@ public class MafiaGame extends StandardGame{
         State<GameCommandResult, Class<? extends Command>> phaseFive = new State<>("Phase 5", StandardBuyFieldCommand.class, StandardHarvestCommand.class,
                 MafiaPlantFromRevealToFieldCommand.class, MafiaPlantFromRevealToMafiaCommand.class, MafiaPlantFromHandToMafiaCommand.class,
                 MafiaSkipToPhaseSixCommand.class);
+        State<GameCommandResult, Class<? extends Command>> nextPlayerState = new State<>("Next Player", StandardNextPlayerCommand.class);
+
+        
         State<GameCommandResult, Class<? extends Command>> phaseSix = new State<>("Phase 6", StandardDrawHandCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
         //ONE PLAYER STATE
         State<GameCommandResult, Class<? extends Command>> phaseOne1Player = new State<>("Phase 1", MafiaGiveBeansToMafiaCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
         //TWO PLAYER STATE
         State<GameCommandResult, Class<? extends Command>> phaseOne2Player = new State<>("Phase 1", MafiaPlantFromRevealToFieldCommand.class, MafiaGiveBeansToMafiaCommand.class, StandardBuyFieldCommand.class, StandardHarvestCommand.class);
-
 
         //GENERAL TRANSITIONS
         phaseThreeA.addTransition(StandardGameCommandResult.HARVEST,phaseThreeA);
@@ -126,7 +130,6 @@ public class MafiaGame extends StandardGame{
 
         phaseSix.addTransition(StandardGameCommandResult.HARVEST,phaseSix);
         phaseSix.addTransition(StandardGameCommandResult.BOUGHT_FIELD,phaseSix);
-
         //1PLAYER SPECIFIC TRANSITIONS
         if(onePlayer) {
             phaseOne1Player.addTransition(MafiaGameCommandResult.GIVE_BEANS,phaseThreeA);
@@ -141,12 +144,30 @@ public class MafiaGame extends StandardGame{
             phaseOne2Player.addTransition(StandardGameCommandResult.HARVEST,phaseOne2Player);
             phaseOne2Player.addTransition(StandardGameCommandResult.BOUGHT_FIELD, phaseOne2Player);
             phaseOne2Player.addTransition(MafiaGameCommandResult.PLANT_REVEAL,phaseOne2Player);
-
-            phaseSix.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, phaseOne2Player);
+            
+            // After the draw state, the player needs to be advanced and the statemachine needs to reset
+            phaseSix.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, nextPlayerState);
+            nextPlayerState.addTransition(StandardGameCommandResult.PROGRESS, phaseOne2Player);
         }
+        
+        this.addMafiaHarvest(phaseThreeA);
+        this.addMafiaHarvest(phaseThreeB);
+        
+        this.addShuffleState(phaseFour);
+        this.addMafiaHarvest(phaseFour);
+        
+        this.addMafiaHarvest(phaseOne1Player);
+        this.addMafiaHarvest(phaseOne2Player);
 
         StateManager<GameCommandResult, Class<? extends Command>> sm = new StateManager<>(phaseThreeA);
         this.setStateManager(sm);
+    }
+    
+    protected void addMafiaHarvest(State<GameCommandResult, Class<? extends Command>> stateToAddTo) {
+        State<GameCommandResult, Class<? extends Command>> mafiaHarvestState = new State<>("Mafia harvest state", StandardReshuffleCommand.class);
+        
+        stateToAddTo.addTransition(MafiaGameCommandResult.HARVEST_MAFIA, mafiaHarvestState);
+        mafiaHarvestState.addTransition(StandardGameCommandResult.PROGRESS, stateToAddTo);
     }
 
     private void generateGameDeck() {
