@@ -5,7 +5,6 @@ import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
 import nl.utwente.bpsd.model.*;
-import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.List;
  * (if bean types are matching).
  * Checks all of the players fields if there is a card that should be given to one of the Mafia bosses.
  * Phase 2 in 2-player MafiaGame/ Phase 1 in single player MafiaGame
- *
  */
 public class MafiaGiveBeansToMafiaCommand extends MafiaGameCommand{
 
@@ -34,13 +32,18 @@ public class MafiaGiveBeansToMafiaCommand extends MafiaGameCommand{
             }
         }
 
+        CardType bossCard;
+        CardType playersCard;
         for(MafiaBoss boss: mafiaBosses){
-            CardType bossCard = boss.getPile().peek().get();
+            //boss should have at least one card in field
+            if(boss.getPile().pileSize() == 0 || !boss.getPile().peek().isPresent())
+                continue;
+            bossCard = boss.getPile().peek().get();
             for(Pile field: fields){
                 //player's field can not be empty
                 if(field.pileSize() == 0 || !field.peek().isPresent())
                     continue;
-                CardType playersCard = field.peek().get();
+                playersCard = field.peek().get();
                 if(playersCard.equals(bossCard))
                     boss.getPile().append(field.pop().get());
             }
