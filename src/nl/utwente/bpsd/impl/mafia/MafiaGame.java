@@ -37,12 +37,18 @@ public class MafiaGame extends StandardGame{
         this.mafia.add(alCabone);
         this.mafia.add(donCorlebohne);
         
+        for (Player p : this.getPlayers()) {
+            for (int i = 0; i < 3; i++) {
+                p.addField(new HarvestablePile(p.getTreasury(), this.getDiscardPile()));
+            }
+        }
+        
         if (this.getPlayers().size() == 1) {
             this.mafia.add(joeBohnano);
             this.number_start_cards = 7;
             this.draw_hand_amount = 2;
             //Add third field to solo player
-            ((MafiaPlayer)this.getPlayers().get(0)).getAllFields().add(new Pile());
+            ((MafiaPlayer)this.getPlayers().get(0)).getAllFields().add(new HarvestablePile(this.getPlayers().get(0).getTreasury(), this.getDiscardPile()));
         }
         revealArray = new ArrayList<>();
         for (int i = 0; i < this.NUM_REVEAL_PILES; i++) {

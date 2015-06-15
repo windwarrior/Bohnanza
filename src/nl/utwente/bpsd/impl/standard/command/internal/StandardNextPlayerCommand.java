@@ -11,7 +11,6 @@ import nl.utwente.bpsd.model.Game;
 import nl.utwente.bpsd.model.GameCommandResult;
 import nl.utwente.bpsd.model.InternalCommand;
 import nl.utwente.bpsd.model.Player;
-import nl.utwente.bpsd.model.pile.Pile;
 
 /**
  *

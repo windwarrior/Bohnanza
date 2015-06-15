@@ -12,6 +12,7 @@ import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.ArrayList;
 import java.util.List;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 
 /** Current player choose card from any of reveal piles
  * and plant it on any of his/her fields.
@@ -29,7 +30,7 @@ public class MafiaPlantFromRevealToFieldCommand extends MafiaGameCommand {
         MafiaGame game = (MafiaGame) g;
         MafiaPlayer player = (MafiaPlayer) p;
 
-        List<Pile> fields = this.getFields(player,game);
+        List<HarvestablePile> fields = this.getFields(player,game);
 
         if(fields.size() <= fieldIndex || fieldIndex < 0
                 || game.getRevealArray().size() <= revealIndex || revealIndex < 0)
@@ -63,7 +64,7 @@ public class MafiaPlantFromRevealToFieldCommand extends MafiaGameCommand {
         this.revealIndex = index;
     }
 
-    protected List<Pile> getFields(MafiaPlayer player, MafiaGame game){
+    protected List<HarvestablePile> getFields(MafiaPlayer player, MafiaGame game){
         return player.getAllFields();
     }
 
@@ -71,7 +72,7 @@ public class MafiaPlantFromRevealToFieldCommand extends MafiaGameCommand {
      *@return true if player has other field with the same card types
      * otherwise returns false
      */
-    private boolean isOtherFieldWithCardType(CardType ct, List<Pile> fields){
+    private boolean isOtherFieldWithCardType(CardType ct, List<HarvestablePile> fields){
         for (int i=0; i<fields.size(); ++i) {
             if(i!=fieldIndex && fields.get(i).peek().isPresent() && fields.get(i).peek().get().equals(ct))
                 return true;

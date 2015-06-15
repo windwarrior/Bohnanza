@@ -5,6 +5,7 @@ import nl.utwente.bpsd.impl.standard.command.*;
 import java.util.*;
 
 import nl.utwente.bpsd.model.*;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.model.state.State;
 import nl.utwente.bpsd.model.state.StateManager;
@@ -39,6 +40,9 @@ public class StandardGame extends Game {
         discardPile = new Pile();
         reshuffleCounter = 0;
         for(Player p:players){
+            for (int i = 0; i < 2; i++) {
+                p.addField(new HarvestablePile(p.getTreasury(), discardPile));
+            }
             for (int i = 0; i < number_start_cards; i++) {
                 gamePile.pop().ifPresent((Card c) -> ((StandardPlayer)p).getHand().append(c));
             }

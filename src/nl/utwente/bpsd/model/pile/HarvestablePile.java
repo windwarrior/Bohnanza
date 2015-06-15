@@ -40,8 +40,6 @@ public class HarvestablePile extends Pile {
         CardType c = this.peek().get(); // we know for sure there is a card
         boolean found = false;
 
-        boolean result = false;
-
         int amountOfCards = this.isWorth();
 
         if (amountOfCards > 0) {
@@ -50,8 +48,6 @@ public class HarvestablePile extends Pile {
                 this.pop().ifPresent(x -> this.treasury.append(x));
                 amountOfCards--;
             }
-
-            result = true;
         }
 
         // Discard the remainder
@@ -63,7 +59,7 @@ public class HarvestablePile extends Pile {
             });
         }
 
-        return result;
+        return true;
     }
 
     public int isWorth() {

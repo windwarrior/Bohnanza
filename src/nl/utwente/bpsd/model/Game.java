@@ -79,4 +79,8 @@ public abstract class Game extends Observable {
     public abstract void gameEnd();
     
     public abstract void setWinners(List<Player> ps);
+
+    public Pile getDiscardPile() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

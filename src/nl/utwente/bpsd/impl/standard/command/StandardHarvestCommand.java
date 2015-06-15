@@ -8,6 +8,7 @@ import nl.utwente.bpsd.model.pile.Pile;
 import java.util.List;
 import java.util.TreeMap;
 import nl.utwente.bpsd.impl.standard.StandardGame;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 
 public class StandardHarvestCommand extends StandardGameCommand {
 
@@ -26,8 +27,8 @@ public class StandardHarvestCommand extends StandardGameCommand {
 
         if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0)
             return StandardGameCommandResult.INVALID;
-        List<Pile> fields = player.getAllFields();
-        Pile field = fields.get(fieldIndex);
+        List<HarvestablePile> fields = player.getAllFields();
+        HarvestablePile field = fields.get(fieldIndex);
 
         /*
          * Player can sell from any bean field where are at least 2 cards
@@ -42,47 +43,8 @@ public class StandardHarvestCommand extends StandardGameCommand {
                 }
             }
         }
-
-        if (field.peek().isPresent() && singleCard) {
-            int fieldSize = field.pileSize();
-            TreeMap<Integer, Integer> beanOMeter = new TreeMap<Integer, Integer>(field.peek().get().getBeanOMeter());
-
-            int earnedCoins = 0;
-            Integer previousKey = beanOMeter.firstKey();
-            /*
-             * if player can get any coins from harvest ->
-             * field has equal or bigger number of cards than indicated in lowest BeanOMeter
-             */
-            if(fieldSize >= previousKey) {
-                for (Integer key : beanOMeter.keySet()) {
-                    if (key <= fieldSize) {
-                        previousKey = key;
-                    }
-                }
-                earnedCoins = beanOMeter.get(previousKey);
-            }
-
-            int numberOfDiscarded = fieldSize - earnedCoins;
-            for (int i = numberOfDiscarded; i > 0; --i) {
-                // TODO do something with this result
-                StandardGameCommandResult res = field.pop().map((Card x) -> {
-                    game.getDiscardPile().append(x);
-                    return StandardGameCommandResult.HARVEST;
-                }).orElse(StandardGameCommandResult.INVALID);
-            }
-
-            for (int i = earnedCoins; i > 0; --i) {
-                // TODO do something with this result
-                StandardGameCommandResult res = field.pop().map((Card x) -> {
-                    player.getTreasury().append(x);
-                    return StandardGameCommandResult.HARVEST;
-                }).orElse(StandardGameCommandResult.INVALID);
-            }
-
-            return StandardGameCommandResult.HARVEST;
-        } else {
-            return StandardGameCommandResult.INVALID;
-        }
+        
+        return (singleCard && field.harvest()) ? StandardGameCommandResult.HARVEST : StandardGameCommandResult.INVALID;
 
     }
 

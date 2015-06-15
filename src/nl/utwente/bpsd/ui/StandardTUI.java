@@ -19,8 +19,9 @@ public class StandardTUI implements Observer {
     Boolean running = true;
 
     public StandardTUI() {
-        player = new StandardPlayer("New Player");
         game = new StandardGame();
+        player = new StandardPlayer("New Player");
+        
         in = new Scanner(System.in);
         game.addPlayers(player);
         game.initialize();

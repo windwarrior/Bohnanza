@@ -9,6 +9,7 @@ import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
 import java.util.Optional;
+import nl.utwente.bpsd.model.pile.HarvestablePile;
 
 /** Current player plants first card from hand to one of his/her fields
  * in Phase 3) from Al Cabohne game rules
@@ -23,7 +24,7 @@ public class MafiaPlantFromHandToFieldCommand extends MafiaGameCommand{
         if(player.getAllFields().size() <= fieldIndex || fieldIndex < 0)
             return MafiaGameCommandResult.INVALID;
 
-        List<Pile> fields = player.getAllFields();
+        List<HarvestablePile> fields = player.getAllFields();
         Pile field = fields.get(fieldIndex);
         GameCommandResult result;
 
@@ -54,7 +55,7 @@ public class MafiaPlantFromHandToFieldCommand extends MafiaGameCommand{
      *@return true if player has other field with the same card types
      * otherwise returns false
      */
-    private boolean isOtherFieldWithCardType(CardType ct, List<Pile> fields){
+    private boolean isOtherFieldWithCardType(CardType ct, List<HarvestablePile> fields){
         for (int i=0; i<fields.size(); ++i) {
             if(i!=fieldIndex && fields.get(i).peek().isPresent() && fields.get(i).peek().get().equals(ct))
                 return true;
