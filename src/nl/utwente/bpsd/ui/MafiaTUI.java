@@ -3,6 +3,7 @@ package nl.utwente.bpsd.ui;
 import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
 import nl.utwente.bpsd.model.CardType;
+import nl.utwente.bpsd.model.Command;
 import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
@@ -58,14 +59,22 @@ public class MafiaTUI implements Observer{
         switch (commandParts.get(0).toLowerCase()) {
             case "movetosix":
                 result = currentPlayer.skipToPhaseSix();
-                if(!result) System.out.println("Action was not completed, is the move valid?");
+                if (!result) System.out.println("Action was not completed, is the move valid?");
                 break;
             case "skip":
                 result = currentPlayer.skip();
-                if(!result) System.out.println("Action was not completed, is the move valid?");
+                if (!result) System.out.println("Action was not completed, is the move valid?");
                 break;
             case "state":
-                System.out.println("Current state is: "+game.getCurrentState());
+                System.out.println("Current state is: " + game.getCurrentState());
+                String commands = "These are the possible commands:";
+                List<Class<? extends Command>> allowed = game.getCurrentState().getAllowed();
+                int counter = 1;
+                for (Class<? extends Command> allow : allowed){
+                    commands += " "+counter+"."+classToStringCommand(allow.getSimpleName());
+                    counter++;
+                }
+                System.out.println(commands);
                 break;
             case "help":
                 printHelp();
@@ -178,7 +187,7 @@ public class MafiaTUI implements Observer{
                 "10. Harvest fieldIndex ................harvest beans from field \n"+
                 "11. Buy ...............................buys a new field \n"+
                 "12. Skip ..............................skips next move if possible \n"+
-                "13. State .............................returns current game state \n"+
+                "13. State .............................returns current game state and possible actions\n"+
                 "14. Help ..............................this help menu \n"+
                 "15. End ...............................ends the game";
         System.out.println(result);
@@ -236,6 +245,24 @@ public class MafiaTUI implements Observer{
         String gameString = reveal+mafia+mafiaTreasury;
 
         System.out.println(playerOneString+playerTwoString+gameString);
+    }
+
+    private String classToStringCommand(String command){
+        switch(command){
+            case "MafiaPlantFromHandToFieldCommand": return "PlantHF";
+            case "StandardBuyFieldCommand": return "Buy";
+            case "StandardHarvestCommand": return "Harvest";
+            case "MafiaDrawCardsToRevealCommand": return "DrawR";
+            case "MafiaGiveBeansToMafiaCommand": return "GiveBeans";
+            case "MafiaPlantFromHandToMafiaCommand": return "PlantHM";
+            case "MafiaPlantFromRevealToMafiaCommand": return "PlantRM";
+            case "MafiaPlantFromRevealToFieldCommand": return "PlantRF";
+            case "MafiaSkipToPhaseSixCommand": return "MoveToSix";
+            case "StandardSkipCommand": return "Skip";
+            case "StandardDrawHandCommand": return "DrawH";
+            default: return "Unknown";
+
+        }
     }
 
     @Override

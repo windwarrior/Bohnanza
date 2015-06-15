@@ -5,7 +5,6 @@ import nl.utwente.bpsd.impl.mafia.MafiaGame;
 import nl.utwente.bpsd.impl.mafia.MafiaGameCommandResult;
 import nl.utwente.bpsd.impl.mafia.MafiaPlayer;
 import nl.utwente.bpsd.model.*;
-import nl.utwente.bpsd.model.pile.HandPile;
 import nl.utwente.bpsd.model.pile.Pile;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class MafiaGiveBeansToMafiaCommand extends MafiaGameCommand{
         for(MafiaBoss mafia : mafiaBosses){
             Optional<CardType> mafiaCT = mafia.getPile().peek();
             for(Pile field : fields){
-                if(field.pileSize() != 0 && mafiaCT == field.peek())
+                if(field.pileSize() != 0 && mafiaCT.equals(field.peek()))
                     field.pop().ifPresent((Card c) -> mafia.getPile().append(c));
             }
         }
