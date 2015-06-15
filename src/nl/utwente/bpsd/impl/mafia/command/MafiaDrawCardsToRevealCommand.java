@@ -34,7 +34,10 @@ public class MafiaDrawCardsToRevealCommand extends MafiaGameCommand{
                 mafiaPlant = false;
                 //1. Look at the top bean from the draw pile (if empty reshuffle -> if reshuffle fails go to step 4)
                 Optional<CardType> topDeck = game.getGamePile().peek();
-                if (!topDeck.isPresent()) return StandardGameCommandResult.RESHUFFLE;
+                if (!topDeck.isPresent()) {
+                    game.suspend(this);
+                    return StandardGameCommandResult.RESHUFFLE;
+                }
 
 
                 //2. compare to the beans planted in mafia fields -> if equal plant to mafia (harvest if possible)

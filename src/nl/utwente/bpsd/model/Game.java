@@ -9,7 +9,7 @@ import nl.utwente.bpsd.model.pile.Pile;
 import nl.utwente.bpsd.model.state.StateManager;
 
 public abstract class Game extends Observable {
-    private Stack<Command> preempted = new Stack<>();
+    private Stack<Command> suspended = new Stack<>();
 
     /**
      * Give players this game
@@ -31,14 +31,14 @@ public abstract class Game extends Observable {
 
             if (result) {
                 this.getStateManager().doTransition(commandOutput);
-                while(this.preempted.size() > 0) {
+                while(this.suspended.size() > 0) {
                     // first try internal commands
                     List<Class<? extends Command>> allowedClasses = this.getStateManager().getAllowed();
                     this.tryInternal(allowedClasses);
                     
-                    // then try if we can resume preempted commands
-                    if (this.getStateManager().isAllowed(this.preempted.peek().getClass())) {
-                        this.preempted.pop().execute(p, this);
+                    // then try if we can resume suspended commands
+                    if (this.getStateManager().isAllowed(this.suspended.peek().getClass())) {
+                        this.suspended.pop().execute(p, this);
                     }
                 }
                 
@@ -66,8 +66,8 @@ public abstract class Game extends Observable {
         return false;
     }
 
-    public void preempt(Command c) {
-        this.preempted.push(c);
+    public void suspend(Command c) {
+        this.suspended.push(c);
     }
 
     public abstract Player getCurrentPlayer();
