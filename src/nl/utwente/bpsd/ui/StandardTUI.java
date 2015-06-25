@@ -1,5 +1,6 @@
 package nl.utwente.bpsd.ui;
 
+import com.google.common.base.Joiner;
 import nl.utwente.bpsd.impl.standard.StandardGame;
 import nl.utwente.bpsd.impl.standard.StandardPlayer;
 import nl.utwente.bpsd.model.CardType;
@@ -32,6 +33,8 @@ public class StandardTUI implements Observer {
         System.out.println("1P Bohnanza Game!");
         System.out.println("Type Help for help");
         while (running) {
+            printOverview();
+            System.out.println("Allowed actions: " + Joiner.on(", ").join(game.getStateManager().getAllowed().stream().map(x -> x.getSimpleName()).toArray()));
             System.out.print("> ");
             String line = in.nextLine();
             if (!line.equals("")) execute(line);
@@ -59,7 +62,7 @@ public class StandardTUI implements Observer {
                 running = false;
                 break;
             case "overview":
-                printOveriew();
+                printOverview();
 
                 break;
             case "drawh":
@@ -134,7 +137,7 @@ public class StandardTUI implements Observer {
     }
 
 
-    private void printOveriew(){
+    private void printOverview(){
         String hand = "Hand: \n";
         String trading = "Trading: \n";
         String fields = "Fields: \n";
