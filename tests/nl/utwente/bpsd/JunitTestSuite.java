@@ -7,6 +7,7 @@ import nl.utwente.bpsd.impl.mafia.command.*;
 import nl.utwente.bpsd.model.CardTest;
 import nl.utwente.bpsd.model.CardTypeTest;
 import nl.utwente.bpsd.model.pile.HandPileTest;
+import nl.utwente.bpsd.model.pile.HarvestablePileTest;
 import nl.utwente.bpsd.model.pile.PileTest;
 import nl.utwente.bpsd.model.state.StateTest;
 import org.junit.runner.RunWith;
@@ -35,7 +36,9 @@ import org.junit.runners.Suite;
         MafiaPlantFromRevealCommandTest.class,
         MafiaPlantFromHandToMafiaCommandTest.class,
         MafiaPlantFromHandToFieldCommandTest.class,
-        MafiaSkipToPhaseSixCommandTest.class
+        MafiaSkipToPhaseSixCommandTest.class,
+        MafiaDrawCardsToRevealCommandTest.class,
+        HarvestablePileTest.class
 })
 public class JunitTestSuite {
 }
