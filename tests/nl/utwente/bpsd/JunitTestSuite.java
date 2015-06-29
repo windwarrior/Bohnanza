@@ -38,7 +38,8 @@ import org.junit.runners.Suite;
         MafiaPlantFromHandToFieldCommandTest.class,
         MafiaSkipToPhaseSixCommandTest.class,
         MafiaDrawCardsToRevealCommandTest.class,
-        HarvestablePileTest.class
+        HarvestablePileTest.class,
+        InternalCommandTest.class
 })
 public class JunitTestSuite {
 }
