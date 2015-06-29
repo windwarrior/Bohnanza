@@ -13,10 +13,6 @@ import nl.utwente.bpsd.model.InternalCommand;
 import nl.utwente.bpsd.model.Player;
 import nl.utwente.bpsd.model.pile.Pile;
 
-/**
- *
- * @author lennart
- */
 public class StandardReshuffleCommand extends StandardGameCommand implements InternalCommand {
 
     @Override

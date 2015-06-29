@@ -12,7 +12,7 @@ import nl.utwente.bpsd.model.Player;
  *
  * @author lennart
  */
-public class HarvestMafiaFieldCommand extends MafiaGameCommand implements InternalCommand {
+public class MafiaHarvestMafiaFieldCommand extends MafiaGameCommand implements InternalCommand {
 
     @Override
     public GameCommandResult execute(Player player, Game game) {

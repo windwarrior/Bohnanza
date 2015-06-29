@@ -3,6 +3,8 @@ package nl.utwente.bpsd.impl.standard;
 import nl.utwente.bpsd.impl.standard.command.*;
 
 import java.util.*;
+
+import nl.utwente.bpsd.impl.standard.command.internal.StandardDetermineWinnerCommand;
 import nl.utwente.bpsd.impl.standard.command.internal.StandardNextPlayerCommand;
 import nl.utwente.bpsd.impl.standard.command.internal.StandardReshuffleCommand;
 
@@ -60,13 +62,20 @@ public class StandardGame extends Game {
 
         State<GameCommandResult, Class<? extends Command>> drawCardToTradingState =  new State<>("Draw cards to trading area", StandardDrawTradeCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
+        State<GameCommandResult, Class<? extends Command>> drawCardToTradingShuffleState =  new State<>("Reshuffle in step 2", StandardReshuffleCommand.class);
+
         State<GameCommandResult, Class<? extends Command>> tradingState = new State<>("Start trading", StandardTradeCommand.class, StandardSkipCommand.class);
 
         State<GameCommandResult, Class<? extends Command>> plantTradedCardsState = new State<>("Plant traded cards", StandardPlantCommand.class, StandardSkipCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
 
         State<GameCommandResult, Class<? extends Command>> drawCardState = new State<>("Draw cards to your hand", StandardDrawHandCommand.class, StandardHarvestCommand.class, StandardBuyFieldCommand.class);
-               
+
+        State<GameCommandResult, Class<? extends Command>> drawCardReshuffleState = new State<>("Reshuffle in step 4", StandardReshuffleCommand.class);
+
         State<GameCommandResult, Class<? extends Command>> nextPlayerState = new State<>("Next player", StandardNextPlayerCommand.class);
+
+        State<GameCommandResult, Class<? extends Command>> endState = new State<>("End state", StandardDetermineWinnerCommand.class);
+
         // These are per state all transitions that can be taken
         startState.addTransition(StandardGameCommandResult.HARVEST, startState);
         startState.addTransition(StandardGameCommandResult.PLANT, onePlantedState);
@@ -80,6 +89,10 @@ public class StandardGame extends Game {
         drawCardToTradingState.addTransition(StandardGameCommandResult.DRAWN_TO_TRADING, tradingState);
         drawCardToTradingState.addTransition(StandardGameCommandResult.HARVEST, drawCardToTradingState);
         drawCardToTradingState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, drawCardToTradingState);
+        drawCardToTradingState.addTransition(StandardGameCommandResult.RESHUFFLE, drawCardToTradingShuffleState);
+
+        drawCardToTradingShuffleState.addTransition(StandardGameCommandResult.RESHUFFLED, drawCardToTradingState);
+        drawCardToTradingShuffleState.addTransition(StandardGameCommandResult.FINISHED, drawCardToTradingState);
 
         // Trading is implemented in the statemachine, but not yet with the players
         tradingState.addTransition(StandardGameCommandResult.TRADE, tradingState);
@@ -93,23 +106,16 @@ public class StandardGame extends Game {
         drawCardState.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, startState);
         drawCardState.addTransition(StandardGameCommandResult.HARVEST, drawCardState);
         drawCardState.addTransition(StandardGameCommandResult.BOUGHT_FIELD, drawCardState);
-        
+        drawCardState.addTransition(StandardGameCommandResult.RESHUFFLE, drawCardReshuffleState);
+
+        drawCardReshuffleState.addTransition(StandardGameCommandResult.RESHUFFLED,drawCardState);
+        drawCardReshuffleState.addTransition(StandardGameCommandResult.FINISHED,endState);
+
         // After the draw state, the player needs to be advanced and the statemachine needs to reset
         drawCardState.addTransition(StandardGameCommandResult.DRAWN_TO_HAND, nextPlayerState);
         nextPlayerState.addTransition(StandardGameCommandResult.PROGRESS, startState);
-        
-        // Some state allow for reshuffing       
-        this.addShuffleState(drawCardState);
-        this.addShuffleState(drawCardToTradingState);
 
         stateManager = new StateManager<>(startState);
-    }
-    
-    protected void addShuffleState(State<GameCommandResult, Class<? extends Command>> stateToAddTo) {
-        State<GameCommandResult, Class<? extends Command>> drawState = new State<>("Draw cards state", StandardReshuffleCommand.class);
-        
-        stateToAddTo.addTransition(StandardGameCommandResult.RESHUFFLE, drawState);
-        drawState.addTransition(StandardGameCommandResult.RESHUFFLED, stateToAddTo);
     }
 
     @Override
