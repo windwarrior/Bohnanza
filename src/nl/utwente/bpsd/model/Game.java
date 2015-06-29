@@ -31,18 +31,12 @@ public abstract class Game extends Observable {
 
             if (result) {
                 this.getStateManager().doTransition(commandOutput);
-                while(this.suspended.size() > 0) {
-                    // first try internal commands
-                    List<Class<? extends Command>> allowedClasses = this.getStateManager().getAllowed();
-                    this.tryInternal(allowedClasses);
-                    
-                    // then try if we can resume suspended commands
-                    if (this.getStateManager().isAllowed(this.suspended.peek().getClass())) {
-                        this.suspended.pop().execute(p, this);
-                    }
-                }
                 
-                
+                // we are now in the next state, we assume internal actions to
+                // have priority so will try something internal.
+                // this will recurse as long as there is something internal to
+                // do, so make sure that internal actions dont loop.
+                this.tryInternal(this.getStateManager().getCurrentState().getAllowed());                
             }
         }
 
@@ -51,13 +45,14 @@ public abstract class Game extends Observable {
     
     private boolean tryInternal(List<Class<? extends Command>> allowedClasses) {
         for (Class<? extends Command> thing : allowedClasses) {
-            if (thing.isAssignableFrom(InternalCommand.class)) {
+            if (InternalCommand.class.isAssignableFrom(thing)) {
                 try {
                     // we can do an internal command
                     this.executeCommand(this.getCurrentPlayer(), thing.newInstance());
                 } catch (InstantiationException | IllegalAccessException ex) {
                             // This exception should never happen, only goes wrong if thing requires parameters or is private or something
                     // This exception shall be treated as a runtime exception from now on
+                    ex.printStackTrace();
                     throw new ImproperlyConfiguredException("Something was not configured right! Could not create instance of " + thing + " because it threw " + ex);
                 }
                 return true; // no need to search any further, we found our internal command
