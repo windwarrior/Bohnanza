@@ -4,6 +4,7 @@ import nl.utwente.bpsd.impl.standard.StandardExchangeTest;
 import nl.utwente.bpsd.impl.standard.StandardPlayerTest;
 import nl.utwente.bpsd.impl.standard.command.*;
 import nl.utwente.bpsd.impl.mafia.command.*;
+import nl.utwente.bpsd.integration.InternalCommandTest;
 import nl.utwente.bpsd.model.CardTest;
 import nl.utwente.bpsd.model.CardTypeTest;
 import nl.utwente.bpsd.model.pile.HandPileTest;
